@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">DFC Group</string>
+    <string name="base_url">https://dfcgroup.in/crmapi/public/api/</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ongoing">Ongoing Trips</string>
+    <string name="ideal">Ideal Vehicles</string>
+    <string name="currant">Currant Month</string>
+    <string name="previous">Previous Month</string>
+    <string name="pending_task">Pending Tasks</string>
+    <string name="complete_task">Complete Tasks</string>
+    <string name="vehicle_list">Vehicle list -</string>
+    <string name="back_button">Back</string>
+    <string name="ag">AG</string>
+    <string name="solutions">Solutions</string>
+    <string name="website_web_application_mobile_application_digital_marketing">WEBSITE | WEB APPLICATION \nMOBILE APPLICATION | DIGITAL MARKETING</string>
+    <string name="app_logo">DFC App Logo</string>
+    <string name="truck_image">Decorative truck image</string>
+    <string name="welcome_to_dfc">Welcome to DFC Group</string>
+    <string name="intro_description">With this app, you will have access to features that streamline processes, enhance collaboration, and ultimately increase your productivity. We are committed to supporting you every step of the way.</string>
+    <string name="get_started_button">Get Started Button</string>
+    <string name="privacy_policy"><u>Privacy Policy</u></string>
+    <string name="i_have_read_agree_to_the"><![CDATA[I have read & agree to the]]></string>
+    <string name="next">Next</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="_91">+91</string>
+    <string name="enter_your_mobile_number">Enter Your Mobile Number</string>
+    <string name="on_below_mobile_number">on below mobile number</string>
+    <string name="one_time_password">One Time Password</string>
+    <string name="we_will_send_you_an">We will send you an</string>
+    <string name="welcome">Welcome</string>
+    <string name="hello_welcome_back_to_your_account">Hello, welcome back to your account</string>
+    <string name="login_to_your_account">Login To Your Account</string>
+    <string name="mobile_number_is_not_registered">Mobile Number is Not Registered</string>
+    <string name="mobile_number_is_active">Mobile Number is Active</string>
+    <string name="chack_privacy">Chack Privacy</string>
+    <string name="please_enter_mobile_number">Please Enter Mobile Number!!</string>
+    <string name="valid_mobile_number_required">Valid Mobile Number required!</string>
+    <string name="verify">Verify</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="don_t_receive_the_otp">Don’t receive the OTP?</string>
+    <string name="on_this_mobile_number">on this mobile number</string>
+    <string name="enter_otp_sent_to">Enter OTP sent to</string>
+    <string name="otp_verification">OTP Verification</string>
+    <string name="mobile_number_verification">Mobile number verification</string>
+    <string name="verification">Verification</string>
+    <string name="please_enter_otp_first">Please Enter OTP First</string>
+    <string name="please_wait">Please wait...</string>
+
+</resources>

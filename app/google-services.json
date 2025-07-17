@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "173592588985",
+    "project_id": "dfc-user",
+    "storage_bucket": "dfc-user.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173592588985:android:d864fb66d0ebf1e22ce168",
+        "android_client_info": {
+          "package_name": "com.dfc.agsolutions"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5qtrzAOhh1eYmeDD7znIXPbooXqWCTeA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

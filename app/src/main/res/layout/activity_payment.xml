@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:orientation="vertical"
+    tools:context=".Activity.CreatTrip">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/icBack"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_back_a" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="7dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:maxLines="1"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:layout_gravity="center_vertical"
+            android:text="Create Payment"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/date_cd"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardBackgroundColor="@color/red"
+        android:elevation="2dp"
+        app:cardCornerRadius="8dp"
+        android:layout_gravity="center_vertical">
+
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/red">
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Payment Date"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="15dp" />
+
+
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/ic_date1"
+                    android:backgroundTint="@color/white"/>
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:id="@+id/linee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nametv"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="12dp"
+                    android:visibility="gone" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardBackgroundColor="@color/red"
+        android:elevation="2dp"
+        app:cardCornerRadius="8dp">
+
+
+        <RelativeLayout
+            android:id="@+id/evoucher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:visibility="gone"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_truck" />
+
+
+            <Spinner
+                android:id="@+id/spinnervoucher"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginLeft="8dp" />
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardBackgroundColor="@color/red"
+        android:elevation="2dp"
+        app:cardCornerRadius="8dp">
+
+
+        <RelativeLayout
+            android:id="@+id/edebit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:visibility="gone"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_truck" />
+
+
+            <Spinner
+                android:id="@+id/spinnerdebit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginLeft="8dp" />
+
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardBackgroundColor="@color/red"
+        android:elevation="2dp"
+        app:cardCornerRadius="8dp">
+
+
+        <RelativeLayout
+            android:id="@+id/ebranchname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:visibility="gone"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_truck" />
+
+
+            <Spinner
+                android:id="@+id/spinnerpayment"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginLeft="8dp" />
+
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_view_red"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/edtadvance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="Amount"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:textColor="#9E9E9E"
+            android:textColorHint="#9E9E9E"
+            android:textSize="18sp"
+            android:maxLength="6"/>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_view_red"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/transation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/poppins_regular"
+            android:clickable="false"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:hint="Transation Detail"
+            android:textAlignment="textStart"
+            android:textColor="#9E9E9E"
+            android:textColorHint="#9E9E9E"
+            android:visibility="visible"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/transation1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/poppins_regular"
+            android:clickable="false"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:hint="Cash"
+            android:visibility="gone"
+            android:textAlignment="textStart"
+            android:textColor="#9E9E9E"
+            android:textColorHint="#9E9E9E"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/nr"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_view_red"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/edtnarration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="Narration"
+            android:maxLength="10"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:textColor="#9E9E9E"
+            android:textColorHint="#9E9E9E"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/creattrip"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_creat" />
+
+</LinearLayout>

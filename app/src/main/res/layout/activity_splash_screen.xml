@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Activity.SplashScreen">
+
+    <!-- Center Logo & Brand Text -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ag_logo" />
+
+        <!-- Brand Text -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="#076894"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:paddingStart="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_3sdp"
+                android:text="@string/ag"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/black"
+                android:paddingStart="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text="@string/solutions"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Description Text -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom"
+        android:layout_marginBottom="20dp"
+        android:background="#076894"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_regular"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingEnd="@dimen/_15sdp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:text="@string/website_web_application_mobile_application_digital_marketing"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+    <!-- Bottom Loader Animation -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/bottom"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        app:lottie_autoPlay="true"
+        app:lottie_colorFilter="@color/agLogo"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loader" />
+
+</RelativeLayout>

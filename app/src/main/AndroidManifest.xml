@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.dfc.agsolutions">
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:name=".AppUtils.Myapplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/applogo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TruckDemo"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".Activity.SplashScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Activity.ActivityIntroScreen"
+            android:exported="false" />
+
+        <activity
+            android:name=".Activity.ActivityCheckMobileNumber"
+            android:exported="false" />
+
+        <activity
+            android:name=".Activity.ActivityLogin"
+            android:exported="false" />
+
+
+
+
+
+
+
+        <activity
+            android:name=".Activity.VehicleServiceAmountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ExpensesActicity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.PaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ToDoListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ServiceBookList"
+            android:exported="false" />
+
+
+        <!-- <activity -->
+        <!-- android:name=".CurrantHistory" -->
+        <!-- android:exported="false" /> -->
+        <!-- <activity -->
+        <!-- android:name=".HistoryFragment" -->
+        <!-- android:exported="false" /> -->
+
+
+        <activity
+            android:name=".Activity.ActivityHome"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.DriverListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.VehicleServiceActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".Activity.CreatTrip"
+            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".Activity.ComingSoonActivity"-->
+<!--            android:exported="false" />-->
+        <activity
+            android:name=".Activity.TripActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.AdminTripActivity"
+            android:exported="false" />
+         <!-- <activity -->
+        <!-- android:name=".Activity.HomeScreen" -->
+        <!-- android:exported="false" /> -->
+
+
+    </application>
+
+</manifest>
+

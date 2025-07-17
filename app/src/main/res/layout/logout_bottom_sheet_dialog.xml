@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_botomshit"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="Are you sure you want to log out ?"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="60dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/logout"
+                    android:layout_width="250dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/bg_txt_primary"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:text="Logout"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/delete"-->
+                <!--                    -->
+                <!--                    android:layout_width="140dp"-->
+                <!--                    android:layout_height="45dp"-->
+                <!--                    android:layout_gravity="end"-->
+                <!--                    android:layout_marginLeft="10dp"-->
+                <!--                    android:layout_marginRight="15dp"-->
+                <!--                    android:layout_marginBottom="10dp"-->
+                <!--                    android:background="@drawable/bg_txt_red"-->
+                <!--                    android:fontFamily="@font/poppins_semibold"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:text="Delete"-->
+                <!--                    android:textColor="#ffffff"-->
+                <!--                    android:textSize="18sp" />-->
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="Delete My Account ??  "
+                    android:textColor="#1E1E1E"
+                    android:layout_marginBottom="10dp"/>
+
+                <TextView
+                    android:id="@+id/delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="Click Here"
+                    android:textColor="#F63939"
+                    android:layout_marginBottom="10dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

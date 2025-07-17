@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#39439D</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="theamcolor">#39439D</color>
+    <color name="colorAccent">#39439D</color>
+    <color name="colorPrimary">#39439D</color>
+    <color name="agLogo">#076894</color>
+    <color name="colorPrimaryDark">#39439D</color>
+    <color name="light_grey">#4E4E4E</color>
+    <color name="dark_yellow">#FFBD00</color>
+    <color name="red">#FF4C43</color>
+    <color name="grey2">#707070</color>
+
+    <color name="transparnt">#00000000</color>
+    <color name="txt_blue">#EB0D49</color>
+    <color name="black1">#9E9E9E</color>
+
+</resources>

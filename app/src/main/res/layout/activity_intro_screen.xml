@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".Activity.ActivityIntroScreen">
+
+    <!-- DFC Logo -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/dfc_logo"
+        android:contentDescription="@string/app_logo" />
+
+    <!-- Truck Image -->
+    <ImageView
+        android:id="@+id/truck"
+        android:layout_width="320dp"
+        android:layout_height="200dp"
+        android:layout_above="@+id/bottom"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_truck_home"
+        android:contentDescription="@string/truck_image" />
+
+    <!-- Bottom Section -->
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:background="@drawable/bg_intro_top"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <!-- Welcome Heading -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:text="@string/welcome_to_dfc"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
+
+        <!-- Description Text -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:text="@string/intro_description"
+            android:textAlignment="center"
+            android:textColor="#4E4B4B"
+            android:textSize="14sp" />
+
+        <!-- Get Started Button (Image) -->
+        <ImageView
+            android:id="@+id/getStart"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_get_start"
+            android:contentDescription="@string/get_started_button" />
+
+    </LinearLayout>
+
+</RelativeLayout>

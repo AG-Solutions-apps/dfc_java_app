@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_items">
+        <item>Day</item>
+        <item>Night</item>
+        <!-- Add more items as needed -->
+    </string-array>
+    <string-array name="spinner_items1">
+        <item>TATA NORMAL SET UP</item>
+        <item>TATA KING SETUP</item>
+        <item>TATA FULL SETUP</item>
+        <item>EICHER NORMAL</item>
+        <item>EICHER FULL</item>
+        <!-- Add more items as needed -->
+    </string-array>
+
+</resources>
