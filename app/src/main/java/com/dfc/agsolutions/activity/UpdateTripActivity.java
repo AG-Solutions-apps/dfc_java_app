@@ -80,7 +80,7 @@ public class UpdateTripActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_trip);
 
-        ongoingTruckTypeModel = (OngoingTruckTypeModel) getIntent().getSerializableExtra("passdata");
+        ongoingTruckTypeModel = (OngoingTruckTypeModel) getIntent().getSerializableExtra("pass_data");
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();

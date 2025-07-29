@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dfc.agsolutions.activity.Api;
 import com.dfc.agsolutions.model.TruckTypeModel;
@@ -38,37 +37,21 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link IdealFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class IdealFragment extends Fragment {
+public class IdleFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
 
-    public IdealFragment() {
+    public IdleFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment IdealFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static IdealFragment newInstance(String param1, String param2) {
-        IdealFragment fragment = new IdealFragment();
+    public static IdleFragment newInstance(String param1, String param2) {
+        IdleFragment fragment = new IdleFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -81,12 +64,11 @@ public class IdealFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
-    RecyclerView rly_shope;
-    LinearLayout nodata;
+    RecyclerView rv_shop;
+    LinearLayout lav_no_data;
     ProgressDialog dialog;
     SharedPreferences sp;
     SharedPreferences.Editor ed;
@@ -101,50 +83,38 @@ public class IdealFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View inflatedView = inflater.inflate(R.layout.fragment_idle, container, false);
-        activity = getActivity();
+        activity = requireActivity();
 //        return inflater.inflate(R.layout.fragment_ideal, container, false);
 
         swipeRefreshLayout = inflatedView.findViewById(R.id.swipeRefreshLayout);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                get_trip(mParam1, activity);
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> get_trip(mParam1, activity));
 
-        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
         ed = sp.edit();
 
 //        spinnerBranches = findViewById(R.id.spinnerBranches);
-        dialog = new ProgressDialog(getActivity());
+        dialog = new ProgressDialog(requireActivity());
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
 //        branchNames.clear();
 
-        rly_shope = inflatedView.findViewById(R.id.rv_shop);
-        nodata = inflatedView.findViewById(R.id.lav_no_data);
+        rv_shop = inflatedView.findViewById(R.id.rv_shop);
+        lav_no_data = inflatedView.findViewById(R.id.lav_no_data);
 
-        Log.e("branchname", "mParam1:-   " + mParam1);
+        Log.e("branch name", "mParam1:-   " + mParam1);
         get_trip(mParam1, activity);
         return inflatedView;
     }
 
-    public void updateContent(String selectedItem, Activity activity) {
-        get_trip(selectedItem, activity);
-//        if (textView != null) {
-//            textView.setText("Selected Item: " + selectedItem);
-//        }
-    }
-
     public void get_trip(String selectedBranch, Activity activity) {
-//        ProgressDialog  dialog = new ProgressDialog(activity);
+/*//        ProgressDialog  dialog = new ProgressDialog(activity);
 //        dialog.setMessage("Loading...");
-//        dialog.setCancelable(false);
+//        dialog.setCancelable(false);*/
         dialog.show();
-//
-//        sp = PreferenceManager.getDefaultSharedPreferences(activity);
-//        ed = sp.edit();
+
+        /*sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        ed = sp.edit();*/
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
@@ -164,51 +134,51 @@ public class IdealFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<TruckTypeModel> call = loginservice.get_vhiclelist(selectedBranch, "2");
-        call.enqueue(new Callback<TruckTypeModel>() {
+
+        Api loginService = retrofit.create(Api.class);
+
+        Call<TruckTypeModel> call = loginService.get_vhiclelist(selectedBranch, "2");
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<TruckTypeModel> call, Response<TruckTypeModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<TruckTypeModel> call,
+                                   @NonNull Response<TruckTypeModel> response) {
+                Log.e("response..", "" + response);
 
-                if (response.body().getCode().equalsIgnoreCase("200")) {
+                if (response.body() != null && response.body().getCode().equalsIgnoreCase("200")) {
 
-                    if (response.body().getData().size() == 0) {
-                        nodata.setVisibility(View.VISIBLE);
-                        rly_shope.setVisibility(View.GONE);
+                    if (response.body().getData().isEmpty()) {
+                        lav_no_data.setVisibility(View.VISIBLE);
+                        rv_shop.setVisibility(View.GONE);
                     } else {
-                        nodata.setVisibility(View.GONE);
-                        rly_shope.setVisibility(View.VISIBLE);
-                        Home_Today_list_Adapter home_today_list_adapter = new Home_Today_list_Adapter(getActivity(), response.body().getData());
-                        rly_shope.setAdapter(home_today_list_adapter);
-                        rly_shope.setItemAnimator(new DefaultItemAnimator());
-                        rly_shope.setHasFixedSize(true);
+                        lav_no_data.setVisibility(View.GONE);
+                        rv_shop.setVisibility(View.VISIBLE);
+                        HomeTodayListAdapter home_today_list_adapter = new HomeTodayListAdapter(response.body().getData());
+                        rv_shop.setAdapter(home_today_list_adapter);
+                        rv_shop.setItemAnimator(new DefaultItemAnimator());
+                        rv_shop.setHasFixedSize(true);
                     }
 
-                } else {
-                    Toast.makeText(getActivity(), "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
                 swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
-            public void onFailure(Call<TruckTypeModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<TruckTypeModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("TruckTypeModel", "" + t);
                 dialog.dismiss();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
 
-
-    public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
-        private Activity context;
+    public static class HomeTodayListAdapter extends
+            RecyclerView.Adapter<HomeTodayListAdapter.Holder> {
 
         ArrayList<TruckTypeModel> arrayListTopic;
 
-        public Home_Today_list_Adapter(Activity context, ArrayList<TruckTypeModel> arrayListTopic) {
-            this.context = context;
+        public HomeTodayListAdapter(ArrayList<TruckTypeModel> arrayListTopic) {
             this.arrayListTopic = arrayListTopic;
         }
 
@@ -219,23 +189,28 @@ public class IdealFragment extends Fragment {
 
         @NonNull
         @Override
-        public Home_Today_list_Adapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itam_ideal_vhical, parent, false);
-            return new Home_Today_list_Adapter.Holder(view);
+        public HomeTodayListAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                              int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itam_ideal_vhical,
+                    parent,
+                    false);
+            return new Holder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final Home_Today_list_Adapter.Holder holder, @SuppressLint("RecyclerView") final int position) {
-
-
-            holder.status.setText("Status:- " + arrayListTopic.get(position).getVehicle_status());
-            holder.v_number.setText("" + arrayListTopic.get(position).getReg_no());
-//            String lastTripDateStr = arrayListTopic.get(position).getTrip_date();
-//Log.e("branchname","lastTripDateStr:- " +lastTripDateStr );
+        public void onBindViewHolder(@NonNull final HomeTodayListAdapter.Holder holder,
+                                     @SuppressLint("RecyclerView") final int position) {
+            String status = "Status:- " + arrayListTopic.get(position).getVehicle_status();
+            holder.status.setText(status);
+            String v_number = arrayListTopic.get(position).getReg_no();
+            holder.v_number.setText(v_number);
+/*//            String lastTripDateStr = arrayListTopic.get(position).getTrip_date();
+//Log.e("branch name","lastTripDateStr:- " +lastTripDateStr );*/
 
             try {
-                if (arrayListTopic.get(position).getTrip_date().equals("")) {
-                    holder.tripdate.setText("-" + " / " + "0" + "days");
+                if (arrayListTopic.get(position).getTrip_date().isEmpty()) {
+                    String daysText = "-" + " / " + "0" + "days";
+                    holder.tripDate.setText(daysText);
 
                 } else {
 
@@ -243,33 +218,41 @@ public class IdealFragment extends Fragment {
                     try {
                         String givenDateString = arrayListTopic.get(position).getTrip_date();
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
                         // Parse the given date string
                         Date givenDate = sdf.parse(givenDateString);
 
                         SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                        String dateformate = outputDateFormat.format(givenDate);
+                        String dateFormate = null;
+                        if (givenDate != null) {
+                            dateFormate = outputDateFormat.format(givenDate);
+                        }
 
                         // Get the current date
                         Date currentDate = new Date();
 
                         // Calculate the difference in milliseconds
-                        long timeDifference = currentDate.getTime() - givenDate.getTime();
+                        long timeDifference = 0;
+                        if (givenDate != null) {
+                            timeDifference = currentDate.getTime() - givenDate.getTime();
+                        }
 
                         // Convert milliseconds to days
                         daysDifference = timeDifference / (24 * 60 * 60 * 1000);
 
-                        holder.tripdate.setText(dateformate + " / " + daysDifference + " days");
+                        String dateFormat = dateFormate + " / " + daysDifference + " days";
+                        holder.tripDate.setText(dateFormat);
 
                         System.out.println("Days difference between " + givenDateString + " and today: " + daysDifference + " days");
                     } catch (ParseException e) {
                         //                e.printStackTrace();
-                        holder.tripdate.setText(arrayListTopic.get(position).getTrip_date() + " / " + "0" + "days");
+                        String dateFormat = arrayListTopic.get(position).getTrip_date() + " / " + "0" + "days";
+                        holder.tripDate.setText(dateFormat);
 
                     }
-                    //            System.out.println("Last Trip Date: " + lastTripDateStr);
-                    //            System.out.println("New Date (" + daysBeforeLastTrip + " days before last trip): " + formattedNewDate);
+                    /*//            System.out.println("Last Trip Date: " + lastTripDateStr);
+                    //            System.out.println("New Date (" + daysBeforeLastTrip + " days before last trip): " + formattedNewDate);*/
 
                 }
             } catch (Exception e) {
@@ -279,9 +262,9 @@ public class IdealFragment extends Fragment {
 
         }
 
-        class Holder extends RecyclerView.ViewHolder {
+        static class Holder extends RecyclerView.ViewHolder {
 
-            TextView status, v_number, tripdate;
+            TextView status, v_number, tripDate;
 //            LinearLayout click;
 
             public Holder(@NonNull View itemView) {
@@ -290,13 +273,12 @@ public class IdealFragment extends Fragment {
 
                 status = itemView.findViewById(R.id.status);
                 v_number = itemView.findViewById(R.id.v_number);
-                tripdate = itemView.findViewById(R.id.tv_trip_date);
+                tripDate = itemView.findViewById(R.id.tv_trip_date);
 
             }
+
         }
 
-
     }
-
 
 }

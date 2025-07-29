@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.dfc.agsolutions.IdealFragment;
+import com.dfc.agsolutions.IdleFragment;
 import com.dfc.agsolutions.model.Branch;
 import com.dfc.agsolutions.model.OngoingTruckTypeModel;
 import com.dfc.agsolutions.model.ResponseArrayModel;
@@ -211,7 +211,7 @@ public class AdminTripActivity extends AppCompatActivity {
                 case 0:
                     return OnGoingTripFragment.newInstance(selectedBranchname, "0");
                 case 1:
-                    return IdealFragment.newInstance(selectedBranchname, "1");
+                    return IdleFragment.newInstance(selectedBranchname, "1");
 
                 default:
                     return null;

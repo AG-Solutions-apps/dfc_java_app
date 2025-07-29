@@ -27,7 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
-import com.dfc.agsolutions.IdealFragment;
+import com.dfc.agsolutions.IdleFragment;
 import com.dfc.agsolutions.model.Branch;
 import com.dfc.agsolutions.model.ResponseArrayModel;
 import com.dfc.agsolutions.model.TruckTypeModel;
@@ -156,7 +156,7 @@ public class TripActivity extends AppCompatActivity {
                 case 0:
                     return OnGoingTripFragment.newInstance(selectedBranchname, "0");
                 case 1:
-                    return IdealFragment.newInstance(selectedBranchname, "1");
+                    return IdleFragment.newInstance(selectedBranchname, "1");
             /* case 5:
 
                /* case 5:
