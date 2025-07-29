@@ -22,9 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dfc.agsolutions.Activity.Api;
-import com.dfc.agsolutions.Activity.UpdateTripActivity;
-import com.dfc.agsolutions.Model.OngoingTruckTypeModel;
+import com.dfc.agsolutions.activity.Api;
+import com.dfc.agsolutions.activity.UpdateTripActivity;
+import com.dfc.agsolutions.model.OngoingTruckTypeModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.Serializable;
@@ -135,8 +135,8 @@ public class OnGoingTripFragment extends Fragment {
         dialog.setCancelable(false);
 //        branchNames.clear();
 
-        rly_shope = inflatedView.findViewById(R.id.rly_shope);
-        nodata = inflatedView.findViewById(R.id.nodata);
+        rly_shope = inflatedView.findViewById(R.id.rv_shop);
+        nodata = inflatedView.findViewById(R.id.lav_no_data);
 
         Log.e("branchname", "mParam1:-   " + mParam1);
         get_trip(mParam1, activity);
@@ -231,7 +231,7 @@ public class OnGoingTripFragment extends Fragment {
         @NonNull
         @Override
         public Home_Today_list_Adapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itam_ongoingtrip, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_on_going_trip, parent, false);
             return new Home_Today_list_Adapter.Holder(view);
         }
 
@@ -347,11 +347,11 @@ public class OnGoingTripFragment extends Fragment {
                 tvADVValue = itemView.findViewById(R.id.tvADVValue);
 
                 status = itemView.findViewById(R.id.status);
-                loacation = itemView.findViewById(R.id.loacation);
+                loacation = itemView.findViewById(R.id.tv_location);
                 date = itemView.findViewById(R.id.date);
-                driver = itemView.findViewById(R.id.driver);
+                driver = itemView.findViewById(R.id.ll_drivers);
                 distance = itemView.findViewById(R.id.distance);
-                carname = itemView.findViewById(R.id.carname);
+                carname = itemView.findViewById(R.id.tv_car_name);
 
             }
         }

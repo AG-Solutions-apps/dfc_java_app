@@ -1,55 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical"
-  tools:context=".Activity.Comming_SoonActivity">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.Comming_SoonActivity">
 
     <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="55dp"
-      android:orientation="horizontal"
-      android:visibility="gone">
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
-          android:id="@+id/icback"
-          android:layout_width="@dimen/_48sdp"
-          android:layout_height="@dimen/_48sdp"
-          android:padding="@dimen/_16sdp"
-          android:layout_gravity="center"
-          android:layout_marginStart="@dimen/_10sdp"
-          android:layout_marginEnd="@dimen/_10sdp"
-          android:contentDescription="@string/back"
-          android:src="@drawable/ic_back_a"/>
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/_48sdp"
+            android:layout_height="@dimen/_48sdp"
+            android:padding="@dimen/_16sdp"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_back_a"/>
 
         <TextView
-          android:id="@+id/toptext"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="7dp"
-          android:fontFamily="@font/poppins_semibold"
-          android:maxLines="1"
-          android:singleLine="true"
-          android:layout_gravity="start|center"
-          android:text="@string/vehicle_list___"
-          android:textAlignment="textStart"
-          android:textColor="@color/black"
-          android:textSize="15sp" />
+            android:id="@+id/tv_top_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_gravity="start|center"
+            android:text="@string/vehicle_list___"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
     <com.airbnb.lottie.LottieAnimationView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
-      android:layout_gravity="center"
-      android:foregroundGravity="center"
-      android:paddingTop="5dp"
-      android:paddingBottom="5dp"
-      app:lottie_autoPlay="true"
-      app:lottie_loop="true"
-      app:lottie_rawRes="@raw/coming" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:foregroundGravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/coming" />
 
 </RelativeLayout>

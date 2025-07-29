@@ -1,110 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="#F5F5F5"
-  android:orientation="vertical"
-  tools:context=".Activity.CreatTrip">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:orientation="vertical"
+    tools:context=".activity.CreatTrip">
 
     <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="56dp"
-      android:background="@color/white"
-      android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
 
         <ImageView
-          android:id="@+id/icback"
-          android:layout_width="@dimen/_48sdp"
-          android:layout_height="@dimen/_48sdp"
-          android:padding="@dimen/_16sdp"
-          android:contentDescription="@string/back"
-          android:layout_gravity="center"
-          android:layout_marginStart="@dimen/_10sdp"
-          android:layout_marginEnd="@dimen/_10sdp"
-          android:src="@drawable/ic_back_a" />
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/_48sdp"
+            android:layout_height="@dimen/_48sdp"
+            android:padding="@dimen/_16sdp"
+            android:contentDescription="@string/back"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:src="@drawable/ic_back_a" />
 
         <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="20dp"
-          android:layout_gravity="start|center"
-          android:layout_marginStart="7dp"
-          android:fontFamily="@font/poppins_semibold"
-          android:maxLines="1"
-          android:singleLine="true"
-          android:text="@string/update_trip"
-          android:textAlignment="textStart"
-          android:textColor="@color/black"
-          android:textSize="15sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="start|center"
+            android:layout_marginStart="7dp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/update_trip"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
     <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="14dp"
-      android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:orientation="horizontal">
 
         <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="7dp"
-          android:fontFamily="@font/poppins_regular"
-          android:maxLines="1"
-          android:singleLine="true"
-          android:text="@string/loading_point"
-          android:textAlignment="textStart"
-          android:textColor="#333333"
-          android:textSize="16sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/loading_point"
+            android:textAlignment="textStart"
+            android:textColor="#333333"
+            android:textSize="16sp" />
 
         <TextView
-          android:id="@+id/brandname"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="7dp"
-          android:fontFamily="@font/poppins_semibold"
-          android:maxLines="1"
-          android:singleLine="true"
-          android:text="@string/login_account"
-          android:textAlignment="textStart"
-          android:textColor="@color/red"
-          android:textSize="16sp" />
+            android:id="@+id/tv_login_account_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/login_account"
+            android:textAlignment="textStart"
+            android:textColor="@color/red"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-      android:layout_width="match_parent"
-      android:layout_height="50dp"
-      android:layout_marginStart="10dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginEnd="10dp"
-      android:elevation="2dp"
-      app:cardBackgroundColor="@color/red"
-      app:cardCornerRadius="8dp">
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:elevation="2dp"
+        app:cardBackgroundColor="@color/red"
+        app:cardCornerRadius="8dp">
 
         <RelativeLayout
-          android:id="@+id/ebranchname"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
+            android:id="@+id/rl_e_branch_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-              android:id="@+id/ivBranch"
-              android:layout_width="25dp"
-              android:layout_height="match_parent"
-              android:layout_gravity="center_vertical"
-              android:layout_marginStart="10dp"
-              android:foregroundGravity="center"
-              android:contentDescription="@string/branch"
-              android:src="@drawable/ic_truck" />
+                android:id="@+id/ivBranch"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:foregroundGravity="center"
+                android:contentDescription="@string/branch"
+                android:src="@drawable/ic_truck" />
 
             <Spinner
-              android:id="@+id/spinnerBranches"
-              android:layout_width="match_parent"
-              android:layout_height="50dp"
-              android:layout_toEndOf="@+id/ivBranch"
-              android:layout_marginStart="8dp" />
+                android:id="@+id/spinnerBranches"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_toEndOf="@+id/ivBranch"
+                android:layout_marginStart="8dp" />
 
         </RelativeLayout>
 
@@ -112,225 +113,228 @@
 
 
     <androidx.cardview.widget.CardView
-      android:layout_width="match_parent"
-      android:layout_height="50dp"
-      android:layout_marginStart="10dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginEnd="10dp"
-      android:elevation="2dp"
-      app:cardBackgroundColor="@color/red"
-      app:cardCornerRadius="8dp">
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:elevation="2dp"
+        app:cardBackgroundColor="@color/red"
+        app:cardCornerRadius="8dp">
 
         <RelativeLayout
-          android:id="@+id/relative"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
+            android:id="@+id/relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-              android:id="@+id/ivSelectDriver"
-              android:layout_width="25dp"
-              android:layout_height="match_parent"
-              android:layout_gravity="center_vertical"
-              android:layout_marginStart="10dp"
-              android:foregroundGravity="center"
-              android:contentDescription="@string/driver"
-              android:src="@drawable/ic_select_driver" />
+                android:id="@+id/ivSelectDriver"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:foregroundGravity="center"
+                android:contentDescription="@string/driver"
+                android:src="@drawable/ic_select_driver" />
 
             <Spinner
-              android:id="@+id/spinnerdriver"
-              android:layout_width="match_parent"
-              android:layout_height="50dp"
-              android:layout_toEndOf="@+id/ivSelectDriver"
-              android:layout_marginStart="8dp" />
+                android:id="@+id/spinner_driver"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_toEndOf="@+id/ivSelectDriver"
+                android:layout_marginStart="8dp" />
 
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-      android:layout_width="match_parent"
-      android:layout_height="50dp"
-      android:layout_marginStart="10dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginEnd="10dp"
-      android:elevation="2dp"
-      app:cardBackgroundColor="@color/red"
-      app:cardCornerRadius="8dp">
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:elevation="2dp"
+        app:cardBackgroundColor="@color/red"
+        app:cardCornerRadius="8dp">
 
         <RelativeLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-              android:id="@+id/ivAgent"
-              android:layout_width="25dp"
-              android:layout_height="match_parent"
-              android:layout_gravity="center_vertical"
-              android:layout_marginStart="10dp"
-              android:foregroundGravity="center"
-              android:contentDescription="@string/agent"
-              android:src="@drawable/ic_agent" />
+                android:id="@+id/ivAgent"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:foregroundGravity="center"
+                android:contentDescription="@string/agent"
+                android:src="@drawable/ic_agent" />
 
             <Spinner
-              android:id="@+id/spinneragetnt"
-              android:layout_width="match_parent"
-              android:layout_height="50dp"
-              android:layout_toEndOf="@+id/ivAgent"
-              android:layout_marginStart="8dp" />
+                android:id="@+id/spinner_agent"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_toEndOf="@+id/ivAgent"
+                android:layout_marginStart="8dp" />
 
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
     <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="10dp"
-      android:layout_marginTop="15dp"
-      android:layout_marginEnd="10dp"
-      android:baselineAligned="false"
-      android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
         <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="7dp"
-              android:fontFamily="@font/poppins_semibold"
-              android:maxLines="1"
-              android:singleLine="true"
-              android:text="@string/km_collan"
-              android:textAlignment="textStart"
-              android:textColor="#333333"
-              android:textSize="16sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@string/km_colan"
+                android:textAlignment="textStart"
+                android:textColor="#333333"
+                android:textSize="16sp" />
 
             <TextView
-              android:id="@+id/kilom"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="7dp"
-              android:fontFamily="@font/poppinsmedium"
-              android:maxLines="1"
-              android:singleLine="true"
-              android:text=""
-              android:textAlignment="textStart"
-              android:textColor="@color/red"
-              android:textSize="14sp" />
+                android:id="@+id/tv_kilo_m"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:fontFamily="@font/poppins_medium"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text=""
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
         <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="7dp"
-              android:fontFamily="@font/poppins_regular"
-              android:maxLines="1"
-              android:singleLine="true"
-              android:text="@string/bhsd_"
-              android:textAlignment="textStart"
-              android:textColor="#333333"
-              android:textSize="16sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:fontFamily="@font/poppins_regular"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@string/bhsd_"
+                android:textAlignment="textStart"
+                android:textColor="#333333"
+                android:textSize="16sp" />
 
             <TextView
-              android:id="@+id/bhsd"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="7dp"
-              android:fontFamily="@font/poppinsmedium"
-              android:maxLines="1"
-              android:singleLine="true"
-              android:text=""
-              android:textAlignment="textStart"
-              android:textColor="@color/red"
-              android:textSize="14sp" />
+                android:id="@+id/bhsd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:fontFamily="@font/poppins_medium"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text=""
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="10dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginEnd="10dp"
-      android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal"
+        tools:ignore="DisableBaselineAlignment">
 
         <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:layout_weight="1"
-          android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="7dp"
-              android:fontFamily="@font/poppins_semibold"
-              android:maxLines="1"
-              android:singleLine="true"
-              android:text="@string/fhsd_"
-              android:textAlignment="textStart"
-              android:textColor="#333333"
-              android:textSize="16sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@string/fhsd_"
+                android:textAlignment="textStart"
+                android:textColor="#333333"
+                android:textSize="16sp" />
 
             <TextView
-              android:id="@+id/fhsd"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="7dp"
-              android:fontFamily="@font/poppinsmedium"
-              android:maxLines="1"
-              android:singleLine="true"
-              android:text=""
-              android:textAlignment="textStart"
-              android:textColor="@color/red"
-              android:textSize="14sp" />
+                android:id="@+id/fhsd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:fontFamily="@font/poppins_medium"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text=""
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
         <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginEnd="15dp"
-              android:background="@drawable/bg_view_red"
-              android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/bg_view_red"
+                android:orientation="horizontal"
+                tools:ignore="UselessParent">
 
                 <EditText
-                  android:id="@+id/edtshsd"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:background="@android:color/transparent"
-                  android:fontFamily="@font/poppins_regular"
-                  android:hint="@string/shsd_in_ltr"
-                  android:inputType="phone"
-                  android:maxLines="1"
-                  android:padding="10dp"
-                  android:singleLine="true"
-                  android:textAlignment="textStart"
-                  android:textColor="#9E9E9E"
-                  android:textColorHint="#9E9E9E"
-                  android:textSize="18sp" />
+                    android:id="@+id/et_shsd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/shsd_in_ltr"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:autofillHints="shsd"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textAlignment="textStart"
+                    android:textColor="#9E9E9E"
+                    android:textColorHint="#9E9E9E"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -339,113 +343,116 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-      android:layout_width="match_parent"
-      android:layout_height="50dp"
-      android:layout_marginStart="10dp"
-      android:layout_marginTop="15dp"
-      android:layout_marginEnd="10dp"
-      android:elevation="2dp"
-      app:cardBackgroundColor="@color/red"
-      app:cardCornerRadius="8dp">
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:elevation="2dp"
+        app:cardBackgroundColor="@color/red"
+        app:cardCornerRadius="8dp">
 
         <RelativeLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-              android:id="@+id/tvSupplier"
-              android:layout_width="25dp"
-              android:layout_height="match_parent"
-              android:layout_gravity="center_vertical"
-              android:layout_marginStart="10dp"
-              android:foregroundGravity="center"
-              android:contentDescription="@string/supplier"
-              android:src="@drawable/ic_supplayer" />
+                android:id="@+id/tvSupplier"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:foregroundGravity="center"
+                android:contentDescription="@string/supplier"
+                android:src="@drawable/ic_supplier" />
 
             <Spinner
-              android:id="@+id/spinnersupplayer"
-              android:layout_width="match_parent"
-              android:layout_height="50dp"
-              android:layout_toEndOf="@+id/tvSupplier"
-              android:layout_marginStart="8dp" />
+                android:id="@+id/spinner_supplier"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_toEndOf="@+id/tvSupplier"
+                android:layout_marginStart="8dp" />
 
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
     <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="10dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginEnd="10dp"
-      android:background="@drawable/bg_view_red"
-      android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_view_red"
+        android:orientation="horizontal">
 
         <EditText
-          android:id="@+id/edtadvance"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:fontFamily="@font/poppins_regular"
-          android:hint="@string/amount"
-          android:inputType="phone"
-          android:maxLines="1"
-          android:padding="10dp"
-          android:singleLine="true"
-          android:textAlignment="textStart"
-          android:textColor="#9E9E9E"
-          android:textColorHint="#9E9E9E"
-          android:textSize="18sp" />
+            android:id="@+id/et_advance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="@string/amount"
+            android:inputType="number"
+            android:maxLines="1"
+            android:autofillHints="advance"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:textColor="#9E9E9E"
+            android:textColorHint="#9E9E9E"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
     <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="90dp"
-      android:layout_marginStart="10dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginEnd="10dp"
-      android:background="@drawable/bg_view_red"
-      android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_view_red"
+        android:orientation="horizontal">
 
         <EditText
-          android:id="@+id/edtremark"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="@android:color/transparent"
-          android:fontFamily="@font/poppins_regular"
-          android:hint="@string/remarks"
-          android:maxLines="1"
-          android:padding="10dp"
-          android:singleLine="true"
-          android:textAlignment="textStart"
-          android:textColor="#9E9E9E"
-          android:textColorHint="#9E9E9E"
-          android:textSize="18sp" />
+            android:id="@+id/et_remark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="@string/remarks"
+            android:maxLines="1"
+            android:inputType="text"
+            android:autofillHints="remark"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:textColor="#9E9E9E"
+            android:textColorHint="#9E9E9E"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-      android:id="@+id/cvUpdate"
-      android:layout_width="match_parent"
-      android:layout_height="@dimen/_50sdp"
-      android:layout_margin="@dimen/_10sdp"
-      app:cardBackgroundColor="#39439D"
-      app:cardCornerRadius="@dimen/_15sdp"
-      app:cardUseCompatPadding="true">
+        android:id="@+id/cvUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_margin="@dimen/_10sdp"
+        app:cardBackgroundColor="#39439D"
+        app:cardCornerRadius="@dimen/_15sdp"
+        app:cardUseCompatPadding="true">
 
         <TextView
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:fontFamily="@font/poppins_semibold"
-          android:gravity="center"
-          android:maxLines="1"
-          android:singleLine="true"
-          android:text="@string/update"
-          android:textColor="@color/white"
-          android:textSize="@dimen/_12sdp" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/update"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
 
     </androidx.cardview.widget.CardView>
 

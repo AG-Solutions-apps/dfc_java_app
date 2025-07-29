@@ -10,7 +10,7 @@
 <!--    <uses-permission android:name="android.permission.CALL_PHONE" />-->
 
     <application
-        android:name=".AppUtils.Myapplication"
+        android:name=".app_utils.Myapplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -22,7 +22,7 @@
         tools:targetApi="31">
 
         <activity
-          android:name=".Activity.ActivitySplashScreen"
+          android:name=".activity.ActivitySplashScreen"
           android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,71 +32,71 @@
         </activity>
 
         <activity
-            android:name=".Activity.VhicletripHistoryActivity"
+            android:name=".activity.VhicletripHistoryActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.Allvhicale_list_activity"
+            android:name=".activity.Allvhicale_list_activity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.VehicleServiceAmountActivity"
+            android:name=".activity.VehicleServiceAmountActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.ExpensesActicity"
+            android:name=".activity.ExpensesActicity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.PaymentActivity"
+            android:name=".activity.PaymentActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.ToDoListActivity"
+            android:name=".activity.ToDoListActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.ServiceBookList"
+            android:name=".activity.ServiceBookList"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.HomeActivity"
+            android:name=".activity.HomeActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.DriverListActivity"
+            android:name=".activity.DriverListActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.VehicleServiceActivity"
+            android:name=".activity.VehicleServiceActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.ActivityIntroScreen"
+            android:name=".activity.ActivityIntroScreen"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.CreatTrip"
+            android:name=".activity.CreatTrip"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.UpdateTripActivity"
+            android:name=".activity.UpdateTripActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.TripActivity"
+            android:name=".activity.TripActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.AdminTripActivity"
+            android:name=".activity.AdminTripActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.ActivityCheckMobileNumber"
+            android:name=".activity.ActivityCheckMobileNumber"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="false" />
 
     </application>

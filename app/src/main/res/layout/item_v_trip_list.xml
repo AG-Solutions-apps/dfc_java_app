@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+  <androidx.cardview.widget.CardView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="10dp"
+      android:padding="5dp"
+      android:layout_gravity="center_horizontal"
+      app:cardBackgroundColor="@color/white"
+      app:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_gravity="center_horizontal"
+          android:gravity="center_horizontal"
+          android:layout_marginStart="13dp">
+
+        <TextView
+            android:id="@+id/tv_car_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_txt_yellow2"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:paddingStart="15dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="15dp"
+            android:text="@string/status_other_issue"
+            android:textColor="#333333"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_gravity="end">
+
+          <androidx.cardview.widget.CardView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:elevation="@dimen/_20sdp"
+              app:cardCornerRadius="@dimen/_10sdp"
+              android:layout_marginEnd="25dp"
+              android:paddingTop="4dp"
+              android:backgroundTint="#2d3791"
+              android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="#2d3791"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="end"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:text="@string/status_other_issue"
+                android:textColor="#f0c419"
+                android:textSize="14sp" />
+
+          </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="5dp"
+          android:layout_gravity="center_horizontal"
+          android:baselineAligned="false"
+          android:gravity="center_horizontal"
+          android:orientation="horizontal"
+          android:layout_marginStart="13dp">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            tools:ignore="UseCompoundDrawables">
+
+          <ImageView
+              android:layout_width="15dp"
+              android:layout_height="15dp"
+              android:layout_marginStart="10dp"
+              android:layout_gravity="center"
+              android:contentDescription="@string/location"
+              android:src="@drawable/ic_location"/>
+
+          <TextView
+              android:id="@+id/tv_location"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:layout_gravity="center"
+              android:layout_marginEnd="10dp"
+              android:fontFamily="@font/poppins_medium"
+              android:paddingStart="8dp"
+              android:paddingEnd="1dp"
+              android:text="@string/status_other_issue"
+              android:textColor="@color/black"
+              android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+          <ImageView
+              android:layout_width="15dp"
+              android:layout_height="15dp"
+              android:layout_marginStart="10dp"
+              android:layout_gravity="center"
+              android:contentDescription="@string/date"
+              android:src="@drawable/ic_date"/>
+
+          <TextView
+              android:id="@+id/date"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:layout_marginEnd="10dp"
+              android:fontFamily="@font/poppins_medium"
+              android:paddingStart="8dp"
+              android:paddingEnd="1dp"
+              android:paddingTop="4dp"
+              android:paddingBottom="4dp"
+              android:text="@string/status_other_issue"
+              android:textColor="@color/black"
+              android:textSize="11sp" />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="5dp"
+          android:baselineAligned="false"
+          android:orientation="horizontal"
+          android:layout_marginTop="5dp"
+          android:layout_gravity="center_horizontal"
+          android:gravity="center_horizontal"
+          android:layout_marginStart="13dp">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            tools:ignore="UseCompoundDrawables">
+
+          <ImageView
+              android:layout_width="15dp"
+              android:layout_height="15dp"
+              android:contentDescription="@string/driver"
+              android:layout_marginStart="10dp"
+              android:layout_gravity="center"
+              android:src="@drawable/ic_driver"/>
+
+          <TextView
+              android:id="@+id/ll_drivers"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:layout_marginEnd="10dp"
+              android:fontFamily="@font/poppins_medium"
+              android:paddingStart="8dp"
+              android:paddingEnd="1dp"
+              android:gravity="center"
+              android:paddingTop="4dp"
+              android:paddingBottom="4dp"
+              android:text="@string/status_other_issue"
+              android:textColor="@color/black"
+              android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+          <ImageView
+              android:layout_width="15dp"
+              android:layout_height="15dp"
+              android:layout_marginStart="10dp"
+              android:layout_gravity="center"
+              android:contentDescription="@string/distance"
+              android:src="@drawable/ic_distance"/>
+
+          <TextView
+              android:id="@+id/distance"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:layout_marginEnd="10dp"
+              android:fontFamily="@font/poppins_medium"
+              android:paddingStart="8dp"
+              android:paddingEnd="1dp"
+              android:paddingTop="4dp"
+              android:paddingBottom="4dp"
+              android:text="@string/status_other_issue"
+              android:textColor="@color/black"
+              android:textSize="11sp" />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="13dp"
+          android:visibility="gone"
+          android:baselineAligned="false"
+          android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+          <TextView
+              android:id="@+id/tv_bhsd"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="@font/poppins_semi_bold"
+              android:text="@string/bhsd"
+              android:gravity="end"
+              android:textColor="@color/black"
+              android:textSize="@dimen/_10sdp" />
+
+          <TextView
+              android:id="@+id/tvBHSDValue"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:fontFamily="@font/poppins_medium"
+              android:gravity="center_vertical"
+              android:text="@string/_3_ltr"
+              android:textColor="#FF4C43"
+              android:textSize="@dimen/_10sdp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+
+          <TextView
+              android:id="@+id/tvFHSD"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:fontFamily="@font/poppins_semi_bold"
+              android:text="@string/fhsd"
+              android:gravity="end"
+              android:textColor="@color/black"
+              android:textSize="@dimen/_10sdp" />
+
+          <TextView
+              android:id="@+id/tvFHSDValue"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:fontFamily="@font/poppins_medium"
+              android:gravity="center_vertical"
+              android:text="@string/_15_ltr"
+              android:textColor="#FF4C43"
+              android:textSize="@dimen/_10sdp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+          <TextView
+              android:id="@+id/tvSHSD"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:fontFamily="@font/poppins_semi_bold"
+              android:text="@string/shsd"
+              android:gravity="end"
+              android:textColor="@color/black"
+              android:textSize="@dimen/_10sdp" />
+
+          <TextView
+              android:id="@+id/tvSHSDValue"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:fontFamily="@font/poppins_medium"
+              android:gravity="center_vertical"
+              android:text="@string/_13_ltr"
+              android:textColor="#FF4C43"
+              android:textSize="@dimen/_10sdp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+          <TextView
+              android:id="@+id/tvADV"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:fontFamily="@font/poppins_semi_bold"
+              android:text="@string/adv"
+              android:gravity="end"
+              android:textColor="@color/black"
+              android:textSize="@dimen/_10sdp" />
+
+          <TextView
+              android:id="@+id/tvADVValue"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:fontFamily="@font/poppins_medium"
+              android:gravity="center_vertical"
+              android:text="@string/_13_ltr"
+              android:textColor="#FF4C43"
+              android:textSize="@dimen/_10sdp" />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+  </androidx.cardview.widget.CardView>
+
+</LinearLayout>

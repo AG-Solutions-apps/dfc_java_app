@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_bottom_sheet" >
+
+  <ImageView
+      android:id="@+id/ivYourAccountDeactivated"
+      android:layout_width="@dimen/_72sdp"
+      android:layout_height="@dimen/_72sdp"
+      android:layout_gravity="center"
+      android:layout_marginTop="@dimen/_72sdp"
+      android:contentDescription="@string/account_deactivated"
+      android:src="@drawable/deactivate"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.498"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+      android:id="@+id/tvYourAccountDeactivated"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginTop="@dimen/_36sdp"
+      android:fontFamily="@font/poppins_semi_bold"
+      android:paddingTop="5dp"
+      android:paddingBottom="5dp"
+      android:text="@string/your_account_is_deactivated"
+      android:textAlignment="center"
+      android:textColor="@color/black"
+      android:textSize="18sp"
+      app:layout_constraintEnd_toEndOf="@+id/ivYourAccountDeactivated"
+      app:layout_constraintStart_toStartOf="@+id/ivYourAccountDeactivated"
+      app:layout_constraintTop_toBottomOf="@+id/ivYourAccountDeactivated" />
+
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      android:layout_marginTop="@dimen/_36sdp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/tvYourAccountDeactivated">
+
+    <TextView
+        android:id="@+id/tvDeleteMyAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lines="2"
+        android:text="@string/delete_my_account"
+        android:textColor="#1E1E1E" />
+
+    <TextView
+        android:id="@+id/tvDeleteMyAccountAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:layout_toEndOf="@+id/tvDeleteMyAccount"
+        android:gravity="center"
+        android:lines="2"
+        android:text="@string/click_here"
+        android:textColor="#F63939"
+        android:textStyle="bold" />
+
+  </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

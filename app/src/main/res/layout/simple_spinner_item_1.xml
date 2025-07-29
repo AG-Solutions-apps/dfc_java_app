@@ -2,11 +2,11 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
     style="?android:attr/spinnerItemStyle"
-    android:singleLine="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
+    android:fontFamily="@font/poppins_semi_bold"
+    android:singleLine="true"
+    android:textAlignment="inherit"
     android:textColor="@color/black"
-    android:textSize="15sp"
-    android:fontFamily="@font/poppins_semibold"
-    android:textAlignment="inherit"/>
+    android:textSize="15sp" />

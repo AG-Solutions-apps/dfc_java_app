@@ -21,8 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dfc.agsolutions.Activity.Api;
-import com.dfc.agsolutions.Model.TruckTypeModel;
+import com.dfc.agsolutions.activity.Api;
+import com.dfc.agsolutions.model.TruckTypeModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -100,7 +100,7 @@ public class IdealFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View inflatedView = inflater.inflate(R.layout.fragment_ideal, container, false);
+        View inflatedView = inflater.inflate(R.layout.fragment_idle, container, false);
         activity = getActivity();
 //        return inflater.inflate(R.layout.fragment_ideal, container, false);
 
@@ -122,8 +122,8 @@ public class IdealFragment extends Fragment {
         dialog.setCancelable(false);
 //        branchNames.clear();
 
-        rly_shope = inflatedView.findViewById(R.id.rly_shope);
-        nodata = inflatedView.findViewById(R.id.nodata);
+        rly_shope = inflatedView.findViewById(R.id.rv_shop);
+        nodata = inflatedView.findViewById(R.id.lav_no_data);
 
         Log.e("branchname", "mParam1:-   " + mParam1);
         get_trip(mParam1, activity);
@@ -290,7 +290,7 @@ public class IdealFragment extends Fragment {
 
                 status = itemView.findViewById(R.id.status);
                 v_number = itemView.findViewById(R.id.v_number);
-                tripdate = itemView.findViewById(R.id.tripdate);
+                tripdate = itemView.findViewById(R.id.tv_trip_date);
 
             }
         }

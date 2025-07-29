@@ -1,278 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical"
-  android:background="#F5F5F5">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
 
     <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="56dp"
-      android:orientation="horizontal"
-      android:background="@color/white">
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:background="@color/white">
 
         <ImageView
-          android:id="@+id/back"
-          android:layout_width="@dimen/_48sdp"
-          android:layout_height="@dimen/_48sdp"
-          android:padding="@dimen/_16sdp"
-          android:contentDescription="@string/back"
-          android:layout_gravity="center"
-          android:layout_marginStart="@dimen/_10sdp"
-          android:layout_marginEnd="@dimen/_10sdp"
-          android:src="@drawable/ic_back_a"/>
+            android:id="@+id/back"
+            android:layout_width="@dimen/_48sdp"
+            android:layout_height="@dimen/_48sdp"
+            android:padding="@dimen/_16sdp"
+            android:contentDescription="@string/back"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:src="@drawable/ic_back_a"/>
 
         <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="20dp"
-          android:layout_marginStart="7dp"
-          android:fontFamily="@font/poppins_semibold"
-          android:maxLines="1"
-          android:singleLine="true"
-          android:layout_gravity="start|center"
-          android:text="@string/vehicle_service"
-          android:textAlignment="textStart"
-          android:textColor="@color/black"
-          android:textSize="15sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="7dp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_gravity="start|center"
+            android:text="@string/vehicle_service"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
     <ScrollView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
-              android:id="@+id/date_picker"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="15dp"
-              android:layout_marginTop="20sp"
-              android:layout_marginEnd="15dp"
-              android:layout_marginBottom="10dp"
-              android:background="@drawable/bg_editxtnew">
+                android:id="@+id/date_picker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20sp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_edit_text_new">
 
                 <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="5dp"
-                  android:layout_marginBottom="5dp"
-                  android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
 
                     <TextView
-                      android:id="@+id/date"
-                      android:layout_width="0dp"
-                      android:layout_height="40dp"
-                      android:layout_marginStart="15dp"
-                      android:layout_weight="1"
-                      android:gravity="center_vertical"
-                      android:text="@string/service_date"
-                      android:textColor="#9E9E9E"
-                      android:textSize="18sp" />
+                        android:id="@+id/date"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@string/service_date"
+                        android:textColor="#9E9E9E"
+                        android:textSize="18sp" />
 
                     <TextView
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_gravity="center"
-                      android:layout_marginStart="10dp"
-                      android:layout_marginEnd="15dp"
-                      android:background="@drawable/ic_date1"
-                      android:backgroundTint="#9E9E9E"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@drawable/ic_date1"
+                        android:backgroundTint="#9E9E9E"/>
 
                     <ImageView
-                      android:id="@+id/linee"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_marginStart="10dp"
-                      android:layout_marginEnd="12dp"
-                      android:contentDescription="@string/line"
-                      android:visibility="gone" />
+                        android:id="@+id/iv_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="12dp"
+                        android:contentDescription="@string/line"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="15dp"
-              android:layout_marginTop="10sp"
-              android:layout_marginEnd="15dp"
-              android:layout_marginBottom="10dp"
-              android:background="@drawable/bg_editxtnew">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10sp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_edit_text_new">
 
                 <ImageView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_gravity="center"
-                  android:layout_marginStart="5dp"
-                  android:paddingStart="5dp"
-                  android:paddingEnd="1dp"
-                  android:visibility="gone"
-                  app:tint="@color/white" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="1dp"
+                    android:visibility="gone"
+                    android:contentDescription="@null"
+                    app:tint="@color/white" />
 
                 <Spinner
-                  android:id="@+id/spinner"
-                  android:layout_width="match_parent"
-                  android:layout_height="45dp"
-                  android:layout_marginStart="5dp"
-                  android:backgroundTint="#9E9E9E"
-                  android:spinnerMode="dropdown" />
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="5dp"
+                    android:backgroundTint="#9E9E9E"
+                    android:spinnerMode="dropdown" />
 
             </LinearLayout>
 
             <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="15dp"
-              android:layout_marginTop="10sp"
-              android:layout_marginEnd="15dp"
-              android:layout_marginBottom="10dp"
-              android:background="@drawable/bg_editxtnew">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10sp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_edit_text_new">
 
                 <ImageView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_gravity="center"
-                  android:layout_marginStart="5dp"
-                  android:paddingStart="5dp"
-                  android:paddingEnd="1dp"
-                  android:visibility="gone"
-                  app:tint="@color/white" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="1dp"
+                    android:visibility="gone"
+                    android:contentDescription="@null"
+                    app:tint="@color/white" />
 
                 <Spinner
-                  android:id="@+id/spinner1"
-                  android:layout_width="match_parent"
-                  android:layout_height="45dp"
-                  android:layout_marginStart="5dp"
-                  android:backgroundTint="#9E9E9E" />
+                    android:id="@+id/spinner1"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="5dp"
+                    android:backgroundTint="#9E9E9E" />
 
             </LinearLayout>
 
             <RelativeLayout
-              android:layout_width="match_parent"
-              android:layout_height="55dp"
-              android:layout_marginStart="10dp"
-              android:layout_marginTop="12dp"
-              android:layout_marginEnd="10dp"
-              android:layout_marginBottom="4dp"
-              android:elevation="4dp"
-              android:orientation="vertical"
-              android:theme="@style/SearchEditTextviewStyle"
-              app:boxBackgroundMode="none"
-              app:errorEnabled="true"
-              app:hintEnabled="false">
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="4dp"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:theme="@style/SearchEditTextviewStyle"
+                app:boxBackgroundMode="none"
+                app:errorEnabled="true"
+                app:hintEnabled="false">
 
                 <EditText
-                  android:id="@+id/tamount"
-                  android:layout_width="match_parent"
-                  android:layout_height="55dp"
-                  android:layout_marginStart="10dp"
-                  android:layout_marginEnd="10dp"
-                  android:background="@drawable/bg_editxtnew"
-                  android:fontFamily="@font/poppins_regular"
-                  android:hint="@string/total_amount"
-                  android:inputType="phone"
-                  android:maxLines="1"
-                  android:maxLength="6"
-                  android:paddingStart="14dp"
-                  android:paddingEnd="10dp"
-                  android:singleLine="true"
-                  android:textColor="#9E9E9E"
-                  android:textColorHint="#9E9E9E"
-                  android:textSize="13sp" />
+                    android:id="@+id/et_total_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:autofillHints="amount"
+                    android:background="@drawable/bg_edit_text_new"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/total_amount"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:maxLength="6"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="true"
+                    android:textColor="#9E9E9E"
+                    android:textColorHint="#9E9E9E"
+                    android:textSize="13sp" />
 
             </RelativeLayout>
 
             <RelativeLayout
-              android:layout_width="match_parent"
-              android:layout_height="55dp"
-              android:layout_marginStart="10dp"
-              android:layout_marginTop="12dp"
-              android:layout_marginEnd="10dp"
-              android:layout_marginBottom="4dp"
-              android:elevation="4dp"
-              android:orientation="vertical"
-              android:theme="@style/SearchEditTextviewStyle"
-              app:boxBackgroundMode="none"
-              app:errorEnabled="true"
-              app:hintEnabled="false">
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="4dp"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:theme="@style/SearchEditTextviewStyle"
+                app:boxBackgroundMode="none"
+                app:errorEnabled="true"
+                app:hintEnabled="false">
 
                 <EditText
-                  android:id="@+id/km"
-                  android:layout_width="match_parent"
-                  android:layout_height="55dp"
-                  android:layout_marginStart="10dp"
-                  android:layout_marginEnd="10dp"
-                  android:background="@drawable/bg_editxtnew"
-                  android:focusable="true"
-                  android:fontFamily="@font/poppins_regular"
-                  android:hint="@string/km"
-                  android:inputType="phone"
-                  android:maxLines="1"
-                  android:textColor="#9E9E9E"
-                  android:textColorHint="#9E9E9E"
-                  android:paddingStart="14dp"
-                  android:paddingEnd="10dp"
-                  android:singleLine="true"
-                  android:textSize="13sp" />
+                    android:id="@+id/km"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_edit_text_new"
+                    android:focusable="true"
+                    android:autofillHints="postalAddress"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/km"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:textColor="#9E9E9E"
+                    android:textColorHint="#9E9E9E"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
 
             </RelativeLayout>
 
             <RelativeLayout
-              android:layout_width="match_parent"
-              android:layout_height="150dp"
-              android:layout_marginTop="12dp"
-              android:layout_marginStart="19dp"
-              android:layout_marginEnd="19dp"
-              android:layout_marginBottom="4dp"
-              android:background="@drawable/bg_editxtnew"
-              android:elevation="4dp"
-              android:orientation="vertical"
-              android:theme="@style/SearchEditTextviewStyle"
-              app:boxBackgroundMode="none"
-              app:errorEnabled="true"
-              app:hintEnabled="false">
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="19dp"
+                android:layout_marginEnd="19dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/bg_edit_text_new"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:theme="@style/SearchEditTextviewStyle"
+                app:boxBackgroundMode="none"
+                app:errorEnabled="true"
+                app:hintEnabled="false">
 
                 <EditText
-                  android:id="@+id/description"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:background="@drawable/bg_editxtnew1"
-                  android:focusable="true"
-                  android:fontFamily="@font/poppins_regular"
-                  android:hint="@string/description"
-                  android:padding="10dp"
-                  android:gravity="start|top"
-                  android:paddingStart="14dp"
-                  android:paddingEnd="10dp"
-                  android:textAlignment="textStart"
-                  android:textColor="#9E9E9E"
-                  android:textColorHint="#9E9E9E"
-                  android:textSize="13sp" />
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_edit_txt_new1"
+                    android:focusable="true"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/description"
+                    android:inputType="textMultiLine"
+                    android:autofillHints="name"
+                    android:padding="10dp"
+                    android:gravity="start|top"
+                    android:textColor="#9E9E9E"
+                    android:textColorHint="#9E9E9E"
+                    android:textSize="13sp" />
 
             </RelativeLayout>
 
             <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center"
-              android:layout_marginBottom="50dp"
-              android:gravity="center">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="50dp"
+                android:gravity="center">
 
                 <ImageView
-                  android:id="@+id/nextbtn"
-                  android:layout_width="match_parent"
-                  android:layout_height="60dp"
-                  android:layout_marginTop="15dp"
-                  android:layout_gravity="center"
-                  android:contentDescription="@string/next"
-                  android:src="@drawable/next_btn" />
+                    android:id="@+id/iv_next_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/next"
+                    android:src="@drawable/next_btn" />
 
             </LinearLayout>
 

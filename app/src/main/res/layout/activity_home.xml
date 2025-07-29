@@ -1,173 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="#F5F5F5"
-  tools:context=".Activity.HomeActivity">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".activity.HomeActivity">
 
     <FrameLayout
-      android:id="@+id/fragment_container"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginBottom="60dp"
-      android:background="#F5F5F5" />
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp"
+        android:background="#F5F5F5" />
 
     <androidx.cardview.widget.CardView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
-      app:cardBackgroundColor="@color/white"
-      app:cardElevation="5dp"
-      app:cardCornerRadius="0dp"
-      android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="0dp"
+        android:orientation="horizontal">
 
         <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="57dp"
-          android:elevation="10dp"
-          android:baselineAligned="false"
-          android:background="@color/white"
-          android:layout_gravity="center_vertical"
-          android:gravity="center_vertical">
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:elevation="10dp"
+            android:baselineAligned="false"
+            android:background="@color/white"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical">
 
             <RelativeLayout
-              android:id="@+id/home"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:orientation="vertical">
+                android:id="@+id/home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <ImageView
-                  android:id="@+id/s_home"
-                  android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:padding="7dp"
-                  android:contentDescription="@string/home"
-                  android:src="@drawable/se_home" />
+                    android:id="@+id/s_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="7dp"
+                    android:contentDescription="@string/home"
+                    android:src="@drawable/se_home" />
 
                 <ImageView
-                  android:id="@+id/u_home"
-                  android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:padding="7dp"
-                  android:contentDescription="@string/home"
-                  android:src="@drawable/un_home"
-                  android:visibility="gone"/>
+                    android:id="@+id/u_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="7dp"
+                    android:contentDescription="@string/home"
+                    android:src="@drawable/un_home"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 
             <RelativeLayout
-              android:id="@+id/his"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:orientation="vertical">
+                android:id="@+id/his"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <ImageView
-                  android:id="@+id/s_his"
-                  android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:padding="5dp"
-                  android:contentDescription="@string/history"
-                  android:src="@drawable/se_history"
-                  android:visibility="gone" />
+                    android:id="@+id/s_his"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="5dp"
+                    android:contentDescription="@string/history"
+                    android:src="@drawable/se_history"
+                    android:visibility="gone" />
 
                 <ImageView
-                  android:id="@+id/u_his"
-                  android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:padding="5dp"
-                  android:contentDescription="@string/history"
-                  android:src="@drawable/un_hestory"/>
+                    android:id="@+id/u_his"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="5dp"
+                    android:contentDescription="@string/history"
+                    android:src="@drawable/un_history"/>
 
             </RelativeLayout>
 
             <RelativeLayout
-              android:id="@+id/in"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:orientation="vertical">
+                android:id="@+id/in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <ImageView
-                  android:id="@+id/s_in"
-                  android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:padding="5dp"
-                  android:contentDescription="@string/incentive"
-                  android:src="@drawable/s_in"
-                  android:visibility="gone" />
+                    android:id="@+id/s_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="5dp"
+                    android:contentDescription="@string/incentive"
+                    android:src="@drawable/s_in"
+                    android:visibility="gone" />
 
                 <ImageView
-                  android:id="@+id/u_in"
-                  android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:padding="5dp"
-                  android:contentDescription="@string/incentive"
-                  android:src="@drawable/u_in"
-                  app:tint="#4A4949" />
+                    android:id="@+id/u_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="5dp"
+                    android:contentDescription="@string/incentive"
+                    android:src="@drawable/u_in"
+                    app:tint="#4A4949" />
 
             </RelativeLayout>
 
             <RelativeLayout
-              android:id="@+id/profile"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:orientation="vertical">
+                android:id="@+id/profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <ImageView
-                  android:id="@+id/s_profile"
-                  android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:padding="5dp"
-                  android:contentDescription="@string/profile"
-                  android:src="@drawable/se_profile"
-                  android:visibility="gone" />
+                    android:id="@+id/s_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="5dp"
+                    android:contentDescription="@string/profile"
+                    android:src="@drawable/se_profile"
+                    android:visibility="gone" />
 
                 <ImageView
-                  android:id="@+id/u_profile"
-                  android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:padding="5dp"
-                  android:contentDescription="@string/profile"
-                  android:src="@drawable/un_profile"
-                  />
+                    android:id="@+id/u_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="5dp"
+                    android:contentDescription="@string/profile"
+                    android:src="@drawable/un_profile"
+                    />
 
             </RelativeLayout>
 
             <RelativeLayout
-              android:id="@+id/logout"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:orientation="vertical">
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="50dp"
-                  android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="vertical"
+                    tools:ignore="UseCompoundDrawables,UselessParent">
 
                     <ImageView
-                      android:id="@+id/u_logout"
-                      android:layout_width="match_parent"
-                      android:layout_height="30dp"
-                      android:padding="3dp"
-                      android:contentDescription="@string/logout"
-                      android:layout_marginTop="2dp"
-                      android:src="@drawable/ic_logout_0" />
+                        android:id="@+id/u_logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:padding="3dp"
+                        android:contentDescription="@string/logout"
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/ic_logout_0" />
 
                     <TextView
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_gravity="center"
-                      android:layout_marginTop="-5dp"
-                      android:text="@string/logout"
-                      android:textAlignment="center"
-                      android:textColor="#333333"
-                      android:textSize="12sp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="-5dp"
+                        android:text="@string/logout"
+                        android:textAlignment="center"
+                        android:textColor="#333333"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
