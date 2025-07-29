@@ -1,171 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activity.ActivityLogin"
-    >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/white"
+  android:orientation="vertical"
+  tools:context=".Activity.LoginActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        >
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="15dp"
+          android:layout_marginTop="15dp"
+          android:fontFamily="@font/poppins_semibold"
+          android:maxLines="1"
+          android:singleLine="true"
+          android:text="@string/verification"
+          android:textAlignment="textStart"
+          android:textColor="@color/black"
+          android:textSize="16sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="15dp"
+          android:fontFamily="@font/poppins_regular"
+          android:maxLines="1"
+          android:singleLine="true"
+          android:text="@string/mobile_number_verification"
+          android:textAlignment="textStart"
+          android:textColor="@color/light_grey"
+          android:textSize="14sp" />
+
+        <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="200dp"
+          android:layout_marginTop="25dp"
+          android:src="@drawable/ic_otp"
+          android:contentDescription="@string/otp_verification"
+          />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="15dp"
+          android:fontFamily="@font/poppins_semibold"
+          android:maxLines="1"
+          android:singleLine="true"
+          android:text="@string/otp_verification"
+          android:textAlignment="center"
+          android:textColor="@color/black"
+          android:textSize="16sp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp">
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:gravity="center"
+          android:orientation="horizontal"
+>
 
-            <!-- Page Title -->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/verification"
-                android:textAlignment="viewStart"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:fontFamily="@font/poppins_regular"
+              android:maxLines="1"
+              android:singleLine="true"
+              android:text="@string/enter_otp_sent_to"
+              android:textAlignment="center"
+              android:textColor="@color/light_grey"
+              android:textSize="14sp" />
 
-            <!-- Subheading -->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/mobile_number_verification"
-                android:textAlignment="viewStart"
-                android:textColor="@color/light_grey"
-                android:textSize="14sp" />
-
-            <!-- OTP Illustration -->
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="25dp"
-                android:src="@drawable/ic_otp"
-                android:contentDescription="@string/app_name" />
-
-            <!-- OTP Heading -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/otp_verification"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <!-- OTP Explanation -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="@string/enter_otp_sent_to"
-                    android:textAlignment="center"
-                    android:textColor="@color/light_grey"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/mobileNo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="@string/one_time_password"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <!-- Optional secondary message (currently hidden) -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/on_this_mobile_number"
-                android:textAlignment="center"
-                android:textColor="@color/light_grey"
-                android:textSize="14sp"
-                android:visibility="gone" />
-
-            <!-- OTP Input Field -->
-            <in.aabhasjindal.otptextview.OtpTextView
-                android:id="@+id/otp_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center"
-                android:textColor="@color/black"
-                app:height="40dp"
-                app:width="40dp"
-                app:bar_enabled="false"
-                app:bar_height="2dp"
-                app:box_margin="0dp"
-                app:length="6"
-                app:otp_box_background="@drawable/bg_txt_box"
-                app:otp_text_size="24dp"/>
-
-            <!-- Resend OTP Message -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/don_t_receive_the_otp"
-                android:textAlignment="center"
-                android:textColor="@color/light_grey"
-                android:textSize="16sp" />
-
-            <!-- Resend OTP Link -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/resend_otp"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp" />
-
-            <!-- Verify Button -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cvVerifyOtp"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="45dp"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="8dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="@string/verify"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-            </androidx.cardview.widget.CardView>
+              android:id="@+id/mobailno"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="5dp"
+              android:fontFamily="@font/poppinsmedium"
+              android:maxLines="1"
+              android:singleLine="true"
+              android:text="@string/one_time_password"
+              android:textAlignment="center"
+              android:textColor="@color/black"
+              android:textSize="14sp" />
 
         </LinearLayout>
 
-    </ScrollView>
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/poppins_regular"
+          android:maxLines="1"
+          android:singleLine="true"
+          android:text="@string/on_this_mobile_number"
+          android:textAlignment="center"
+          android:textColor="@color/light_grey"
+          android:textSize="14sp"
+          android:visibility="gone" />
 
-    <include layout="@layout/progress_loading_overlay" />
+        <EditText
+          android:id="@+id/otp_view"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/_48sdp"
+          android:textColor="@color/black"
+          android:layout_marginStart="@dimen/_40sdp"
+          android:layout_marginEnd="@dimen/_40sdp"
+          android:layout_marginTop="20dp"
+          android:layout_gravity="center"
+          android:textSize="14sp"
+          android:maxLength="6"
+          android:gravity="start|center"
+          android:letterSpacing="2"
+          android:paddingStart="@dimen/_16sdp"
+          android:paddingEnd="@dimen/_16sdp"
+          android:background="@drawable/edittext_background"
+          android:fontFamily="@font/poppinsmedium"
+          android:autofillHints="smsOTPCode"
+          android:inputType="number"
+          android:labelFor="@+id/otp_view"
+          />
 
-</FrameLayout>
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:fontFamily="@font/poppins_regular"
+          android:maxLines="1"
+          android:singleLine="true"
+          android:text="@string/didn_t_receive_the_otp"
+          android:textAlignment="center"
+          android:textColor="@color/light_grey"
+          android:textSize="16sp" />
+
+        <TextView
+          android:id="@+id/tvResendOTP"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="5dp"
+          android:fontFamily="@font/poppins_semibold"
+          android:maxLines="1"
+          android:singleLine="true"
+          android:text="@string/resend_otp"
+          android:textAlignment="center"
+          android:textColor="@color/colorPrimary"
+          android:textSize="16sp" />
+
+        <androidx.cardview.widget.CardView
+          android:id="@+id/continues"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:layout_marginStart="15dp"
+          android:layout_marginTop="45dp"
+          android:layout_marginEnd="15dp"
+          app:cardBackgroundColor="@color/colorPrimary">
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:fontFamily="@font/poppinsmedium"
+              android:maxLines="1"
+              android:singleLine="true"
+              android:text="@string/verify"
+              android:textAlignment="center"
+              android:textColor="@color/white"
+              android:textSize="16sp" />
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,9 +96,7 @@ public class VehicleServiceAmountActivity extends AppCompatActivity {
 //        tamount = findViewById(R.id.tamount);
         save = findViewById(R.id.save);
 
-        back.setOnClickListener(v -> {
-            onBackPressed();
-        });
+        back.setOnClickListener(v -> finish());
 
         tamount.setText(TotalAmount);
 
@@ -131,7 +129,7 @@ public class VehicleServiceAmountActivity extends AppCompatActivity {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -219,7 +217,7 @@ public class VehicleServiceAmountActivity extends AppCompatActivity {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -280,7 +278,7 @@ String size = String.valueOf(serviceSubDataList.size());
 ////
 ////                    }
 
-                    startActivity(new Intent(VehicleServiceAmountActivity.this, ActivityHome.class));
+                    startActivity(new Intent(VehicleServiceAmountActivity.this, HomeActivity.class));
 
 //                    DriverListActivity.Home_Today_list_Adapter adapter = new DriverListActivity.Home_Today_list_Adapter(DriverListActivity.this,response.body().getData());
 //                    driverlist.setAdapter(adapter);

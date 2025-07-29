@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_centerInParent="true"
+  android:gravity="center"
+  android:background="#90000000"
+  android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginStart="10dp"
+      android:layout_marginEnd="10dp"
+      android:layout_marginTop="@dimen/_40sdp"
+      android:layout_marginBottom="@dimen/_40sdp"
+      android:background="@drawable/gal_ic_box"
+      android:elevation="@dimen/_3sdp"
+      android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/tvPrivacyPolicyText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="@dimen/_15sdp"
+          android:text="@string/privacy_policy"
+          android:textAlignment="center"
+          android:textColor="@color/black"
+          android:textSize="@dimen/_12sdp"
+          app:layout_constraintTop_toTopOf="parent"
+          android:textStyle="bold" />
+
+        <View
+          android:id="@+id/viewDividerTop"
+          android:layout_width="match_parent"
+          android:background="#D6D6D6"
+          android:layout_marginTop="8dp"
+          android:layout_height="@dimen/_1sdp"
+          app:layout_constraintBottom_toBottomOf="@+id/tvPrivacyPolicyText"
+          />
+
+        <WebView
+          android:id="@+id/webwiew"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          app:layout_constraintBottom_toTopOf="@+id/tv_privacy_policy_ok"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/viewDividerTop"
+          android:layout_marginBottom="@dimen/_10sdp"
+          />
+
+        <View
+          android:id="@+id/viewDividerBottom"
+          android:layout_width="match_parent"
+          android:background="#D6D6D6"
+          android:layout_marginTop="8dp"
+          android:layout_height="@dimen/_1sdp"
+          app:layout_constraintBottom_toBottomOf="@+id/webwiew"
+          />
+
+        <TextView
+          android:id="@+id/tv_privacy_policy_ok"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/_36sdp"
+          android:text="@string/okay"
+          android:background="@drawable/bg_btn_exit"
+          android:fontFamily="@font/poppins_semibold"
+          android:textColor="@color/white"
+          android:gravity="center"
+          android:textSize="18sp"
+          android:layout_marginBottom="@dimen/_10sdp"
+          android:layout_marginEnd="@dimen/_10sdp"
+          android:layout_marginStart="@dimen/_10sdp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

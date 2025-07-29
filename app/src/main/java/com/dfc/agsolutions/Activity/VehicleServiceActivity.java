@@ -9,7 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dfc.agsolutions.Model.CheckNomberModel;
 import com.dfc.agsolutions.Model.GarageDataModel;
 import com.dfc.agsolutions.Model.ServiceFatchVhicalDataModel;
 import com.dfc.agsolutions.Model.ServiceStatusDataModel;
@@ -167,7 +168,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.back).setOnClickListener(v -> {
-            onBackPressed();
+            finish();
         });
 
         get_vehicle();
@@ -236,7 +237,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -263,11 +264,8 @@ public class VehicleServiceActivity extends AppCompatActivity {
                         String amount = userData.getService_amount();
                         String service_ref = userData.getService_ref();
 
-
-
                         startActivity(new Intent(VehicleServiceActivity.this, ServiceBookList.class)
                                 .putExtra("amount",amount).putExtra("service_ref",service_ref));
-
 
 
                     }
@@ -313,7 +311,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -376,7 +374,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

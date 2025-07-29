@@ -1,6 +1,5 @@
 package com.dfc.agsolutions.Activity;
 
-
 import com.dfc.agsolutions.Model.CheckNomberModel;
 import com.dfc.agsolutions.Model.CreatServicaeListDataModel;
 import com.dfc.agsolutions.Model.CreatTripModel;
@@ -9,9 +8,11 @@ import com.dfc.agsolutions.Model.CurrantHistoryModel;
 import com.dfc.agsolutions.Model.CurrantTripDataModel;
 import com.dfc.agsolutions.Model.DebitTypeDataModel;
 import com.dfc.agsolutions.Model.DeletModel;
+import com.dfc.agsolutions.Model.DeleteModel;
 import com.dfc.agsolutions.Model.DriverListDataModel;
 import com.dfc.agsolutions.Model.ExpensesListDataModel;
 import com.dfc.agsolutions.Model.FatchAggencyDataModel;
+import com.dfc.agsolutions.Model.FatchAllVhicalDataModel;
 import com.dfc.agsolutions.Model.FatchBHSDDataModel;
 import com.dfc.agsolutions.Model.FatchDriverDataModel;
 import com.dfc.agsolutions.Model.FatchVendorDataModel;
@@ -27,12 +28,13 @@ import com.dfc.agsolutions.Model.ResponseTodoCount;
 import com.dfc.agsolutions.Model.ServiceFatchVhicalDataModel;
 import com.dfc.agsolutions.Model.ServiceStatusDataModel;
 import com.dfc.agsolutions.Model.ServiceTypeDataModel;
+import com.dfc.agsolutions.Model.ServicesubFinalModel;
 import com.dfc.agsolutions.Model.TodoListDataModel;
 import com.dfc.agsolutions.Model.TripCurrantDataModel;
 import com.dfc.agsolutions.Model.TruckTypeModel;
+import com.dfc.agsolutions.Model.UpdateTripModel;
+import com.dfc.agsolutions.Model.VhicaledetailsModel;
 import com.dfc.agsolutions.Model.VoucherTypeDataModel;
-
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -162,10 +164,13 @@ public interface Api {
     @POST("fetch-vehicle-list")
     Call<OngoingTruckTypeModel> get_vhiclelistongoing(@Query("branch_name") String branch_name, @Query("truck_type") String truck_type);
 
+    @POST("fetch-all-vehicle-list")
+    Call<FatchAllVhicalDataModel> get_allvhicleList(@Query("branch_name") String branch_name);
+
 
     @POST("create-trip")
     Call<CreatTripModel> get_createtip(@Query("trip_year") String trip_year
-                                      ,@Query("trip_branch") String trip_branch,
+            ,@Query("trip_branch") String trip_branch,
                                        @Query("trip_date") String trip_date,
                                        @Query("trip_vehicle") String trip_vehicle,
                                        @Query("trip_driver") String trip_driver,
@@ -177,5 +182,43 @@ public interface Api {
                                        @Query("trip_remarks") String trip_remarks,
                                        @Query("trip_bhsd") String trip_bhsd);
 
+    @POST("get_update_trip")
+    Call<UpdateTripModel> get_update_trip(@Query("trip_id") String trip_id,
+                                          @Query("trip_advance") String trip_advance,
+                                          @Query("trip_bhsd") String trip_bhsd,
+                                          @Query("trip_remarks") String trip_remarks);
+
+    @POST("fetch-vehicle-details")
+    Call<VhicaledetailsModel>
+    get_v_details(@Query("reg_no") String reg_no);
+
+
+    @POST("fetch-service-final")
+    Call<ServicesubFinalModel> Service_final(@Query("service_type") String service_type);
+
+    @POST("delete-service-type")
+    Call<DeleteModel> delete_ServiceType(@Query("service_type") String service_type,
+                                         @Query("branch_name") String branch_name);
+
+    @POST("edit-service-type")
+    Call<CreatServicaeListDataModel> Edit_ServiceType(
+            @Query("service_type") String service_type,
+            @Query("branch_name") String branch_name,
+            @Query("service_type_name") String service_type_name,
+            @Query("service_type_remarks") String service_type_remarks
+    );
+
+    @POST("fetch-vehicle-status")
+    Call<OngoingTruckTypeModel> get_vhiclestatus(
+            @Query("reg_no") String reg_no,
+            @Query("branch_name") String branch_name,
+            @Query("trip_status") String trip_status
+    );
+
+    @POST("fetch-vehicle-details")
+    Call<PreviousHistoryDataModel> get_vhicleHistory(
+            @Query("trip_type") String trip_type,
+            @Query("trip_vehicle") String trip_vehicle
+    );
 
 }

@@ -2,14 +2,13 @@ package com.dfc.agsolutions.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.method.DigitsKeyListener;
@@ -24,17 +23,14 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.dfc.agsolutions.AppUtils.Myapplication;
 import com.dfc.agsolutions.Model.CreatePaymentDataModel;
 import com.dfc.agsolutions.Model.DebitTypeDataModel;
 import com.dfc.agsolutions.Model.VoucherTypeDataModel;
 import com.dfc.agsolutions.R;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -44,6 +40,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PaymentActivity extends AppCompatActivity {
+
     ImageView icback;
     SharedPreferences sp;
     SharedPreferences.Editor ed;
@@ -81,15 +78,13 @@ public class PaymentActivity extends AppCompatActivity {
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();
 
-
         if (Myapplication.isNetworkAvailable()) {
             get_voucher();
         } else {
             Myapplication.noInternet(PaymentActivity.this);
         }
 
-
-        icback = findViewById(R.id.icBack);
+        icback = findViewById(R.id.icback);
         spinnervoucher = findViewById(R.id.spinnervoucher);
         spinnerdebit = findViewById(R.id.spinnerdebit);
         spinnerpayment = findViewById(R.id.spinnerpayment);
@@ -101,11 +96,11 @@ public class PaymentActivity extends AppCompatActivity {
         creattrip = findViewById(R.id.creattrip);
         transation1 = findViewById(R.id.transation1);
         nr = findViewById(R.id.nr);
+
         icback.setOnClickListener(v -> {
-
-            onBackPressed();
-
+            finish();
         });
+
         edtadvance.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
 
         // Set InputFilter to allow only numbers
@@ -114,67 +109,64 @@ public class PaymentActivity extends AppCompatActivity {
         payment_debit = "Select Debit";
         debitspinner();
 
-        date_cd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        date_cd.setOnClickListener(v -> {
 
-                date = findViewById(R.id.date);
-                tamount = findViewById(R.id.tamount);
-                km = findViewById(R.id.km);
-                description = findViewById(R.id.description);
+            date = findViewById(R.id.date);
+            tamount = findViewById(R.id.tamount);
+            km = findViewById(R.id.km);
+            description = findViewById(R.id.description);
 
-                final Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-                // Create DatePickerDialog and show it
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PaymentActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                                Calendar currentDate = Calendar.getInstance();
-                                int currentYear = currentDate.get(Calendar.YEAR);
-                                int currentMonth = currentDate.get(Calendar.MONTH);
-                                int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
+            // Create DatePickerDialog and show it
+            DatePickerDialog datePickerDialog = new DatePickerDialog(PaymentActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            Calendar currentDate = Calendar.getInstance();
+                            int currentYear = currentDate.get(Calendar.YEAR);
+                            int currentMonth = currentDate.get(Calendar.MONTH);
+                            int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
 
-                                // Create a Calendar object for the selected date
-                                Calendar selectedDate = Calendar.getInstance();
+                            // Create a Calendar object for the selected date
+                            Calendar selectedDate = Calendar.getInstance();
 //                                selectedDate.set(selectedDay, selectedMonth, selectedYear);
 
-                                selectedDate.set(selectedYear, selectedMonth, selectedDay);
+                            selectedDate.set(selectedYear, selectedMonth, selectedDay);
 
-                                // Calculate the difference in days
-                                long differenceInMillis = currentDate.getTimeInMillis() - selectedDate.getTimeInMillis();
-                                long differenceInDays = TimeUnit.MILLISECONDS.toDays(differenceInMillis);
+                            // Calculate the difference in days
+                            long differenceInMillis = currentDate.getTimeInMillis() - selectedDate.getTimeInMillis();
+                            long differenceInDays = TimeUnit.MILLISECONDS.toDays(differenceInMillis);
 
-                                if (selectedYear > currentYear || (selectedYear == currentYear && selectedMonth > currentMonth) || (selectedYear == currentYear && selectedMonth == currentMonth && selectedDay > currentDay)) {
-                                    Toast.makeText(PaymentActivity.this, "Please select a past date", Toast.LENGTH_SHORT).show();
+                            if (selectedYear > currentYear || (selectedYear == currentYear && selectedMonth > currentMonth) || (selectedYear == currentYear && selectedMonth == currentMonth && selectedDay > currentDay)) {
+                                Toast.makeText(PaymentActivity.this, "Please select a past date", Toast.LENGTH_SHORT).show();
 
+                            } else {
+                                if (differenceInDays > 10) {
+                                    Toast.makeText(PaymentActivity.this, "Please select a date within the past 10 days", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    if (differenceInDays > 10) {
-                                        Toast.makeText(PaymentActivity.this, "Please select a date within the past 10 days", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        selectdate1 = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
-                                        String setselectdate1 = selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+                                    selectdate1 = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
+                                    String setselectdate1 = selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
 //                                     String  setselectdate1 = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
-                                        date.setText(setselectdate1);
-                                    }
+                                    date.setText(setselectdate1);
                                 }
-
                             }
-                        }, year, month, day);
 
-                Calendar minDateCalendar = Calendar.getInstance();
-                minDateCalendar.add(Calendar.DAY_OF_MONTH, -10);
-                long minDateMillis = minDateCalendar.getTimeInMillis();
+                        }
+                    }, year, month, day);
 
-                // Set the minimum date
-                datePickerDialog.getDatePicker().setMinDate(minDateMillis);
+            Calendar minDateCalendar = Calendar.getInstance();
+            minDateCalendar.add(Calendar.DAY_OF_MONTH, -10);
+            long minDateMillis = minDateCalendar.getTimeInMillis();
 
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-                datePickerDialog.show();
-            }
+            // Set the minimum date
+            datePickerDialog.getDatePicker().setMinDate(minDateMillis);
+
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            datePickerDialog.show();
         });
 
         vhicalarray.add("Select Voucher Type");
@@ -336,7 +328,7 @@ public class PaymentActivity extends AppCompatActivity {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -426,7 +418,7 @@ public class PaymentActivity extends AppCompatActivity {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -513,7 +505,7 @@ public class PaymentActivity extends AppCompatActivity {
         Log.e("TAG", "Creat_Payment-------------------------------------------: " + selectdate1 + payment_mode + payment_voucher + payment_debit + Advance + Transation + narration);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -538,7 +530,7 @@ public class PaymentActivity extends AppCompatActivity {
 ////
 ////                    }
 
-                    startActivity(new Intent(PaymentActivity.this, ActivityHome.class));
+                    startActivity(new Intent(PaymentActivity.this, HomeActivity.class));
 
 //                    DriverListActivity.Home_Today_list_Adapter adapter = new DriverListActivity.Home_Today_list_Adapter(DriverListActivity.this,response.body().getData());
 //                    driverlist.setAdapter(adapter);

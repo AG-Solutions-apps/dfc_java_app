@@ -1,16 +1,18 @@
 package com.dfc.agsolutions.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.dfc.agsolutions.Model.DriverListDataModel;
+import com.dfc.agsolutions.Model.OngoingTruckTypeModel;
 import com.dfc.agsolutions.Model.PreviousHistoryDataModel;
+import com.dfc.agsolutions.OnGoingTripFragment;
 import com.dfc.agsolutions.R;
 
 import java.text.ParseException;
@@ -102,7 +107,7 @@ public class PreviousHistory extends Fragment {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

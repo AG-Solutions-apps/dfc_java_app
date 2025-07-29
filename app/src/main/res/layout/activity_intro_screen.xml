@@ -1,74 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    tools:context=".Activity.ActivityIntroScreen">
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/colorPrimary"
+  tools:context=".Activity.ActivityIntroScreen">
 
-    <!-- DFC Logo -->
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/dfc_logo"
-        android:contentDescription="@string/app_logo" />
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/_72sdp"
+      android:layout_gravity="center"
+      android:contentDescription="@string/dfc_logo"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="@dimen/_80sdp"
+      android:src="@drawable/dfc_logo" />
 
-    <!-- Truck Image -->
     <ImageView
-        android:id="@+id/truck"
-        android:layout_width="320dp"
-        android:layout_height="200dp"
-        android:layout_above="@+id/bottom"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_truck_home"
-        android:contentDescription="@string/truck_image" />
+      android:id="@+id/truck"
+      android:layout_width="@dimen/_320sdp"
+      android:layout_height="@dimen/_200sdp"
+      android:layout_gravity="start"
+      android:contentDescription="@string/truck"
+      android:layout_above="@+id/bottom"
+      android:src="@drawable/ic_truck_home" />
 
-    <!-- Bottom Section -->
     <LinearLayout
-        android:id="@+id/bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:background="@drawable/bg_intro_top"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp">
+      android:id="@+id/bottom"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:background="@drawable/bg_intro_top"
+      android:paddingBottom="@dimen/_20sdp"
+      android:orientation="vertical">
 
-        <!-- Welcome Heading -->
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:gravity="center"
-            android:text="@string/welcome_to_dfc"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp" />
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="10dp"
+          android:layout_marginTop="35dp"
+          android:layout_marginEnd="10dp"
+          android:fontFamily="@font/poppins_semibold"
+          android:gravity="center_horizontal"
+          android:text="@string/welcome_to_dfc_group"
+          android:textAlignment="center"
+          android:textColor="@color/colorPrimary"
+          android:textSize="18sp" />
 
-        <!-- Description Text -->
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="20dp"
-            android:fontFamily="@font/poppins_regular"
-            android:gravity="center"
-            android:text="@string/intro_description"
-            android:textAlignment="center"
-            android:textColor="#4E4B4B"
-            android:textSize="14sp" />
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/_40sdp"
+          android:layout_marginTop="@dimen/_15sdp"
+          android:layout_marginEnd="@dimen/_40sdp"
+          android:layout_marginBottom="@dimen/_20sdp"
+          android:fontFamily="@font/poppinsmedium"
+          android:gravity="center_horizontal"
+          android:text="@string/this_app_provides_features_designed_to_streamline_your_workflow_foster_collaboration_and_boost_overall_productivity_we_re_dedicated_to_supporting_you_at_every_stage_of_your_journey"
+          android:textAlignment="center"
+          android:textColor="#545151"
+          android:letterSpacing="0.1"
+          android:textSize="14sp" />
 
-        <!-- Get Started Button (Image) -->
         <ImageView
-            android:id="@+id/getStart"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/ic_get_start"
-            android:contentDescription="@string/get_started_button" />
+          android:id="@+id/getStart"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/_48sdp"
+          android:contentDescription="@string/get_started"
+          android:src="@drawable/ic_get_start" />
 
     </LinearLayout>
 

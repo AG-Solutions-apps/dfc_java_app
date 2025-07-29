@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.dfc.agsolutions.Model.PreviousHistoryDataModel;
 import com.dfc.agsolutions.Model.TodoListDataModel;
 import com.dfc.agsolutions.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -43,6 +45,7 @@ public class PendingTask extends Fragment {
     LottieAnimationView nodata;
     CardView cd;
     SharedPreferences.Editor ed;
+
     public static Fragment newInstance(int i) {
         PendingTask fragment = new PendingTask();
         Bundle args = new Bundle();
@@ -84,6 +87,8 @@ public class PendingTask extends Fragment {
 
     }
     String id;
+    List<String> pend = new ArrayList<>();
+    int count = 0;
     public void previousHistory() {
 
         dialog.show();
@@ -108,7 +113,7 @@ public class PendingTask extends Fragment {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -125,16 +130,14 @@ public class PendingTask extends Fragment {
 
                     Log.e("Respone---------", "onResponse: "+response.body().getData().size());
 
-//                    for (DriverListDataModel branch : branches) {
-//
-//                        fullname.add(branch.getFull_name());
-//                        mobile.add(branch.getMobile());
-//                        dl_expiry.add(branch.getDl_expiry());
-//                        user_status.add(branch.getUser_status());
-//                        user_image.add(branch.getUser_image());
-//
-//                    }
+                    for (TodoListDataModel branch : branches) {
 
+                        pend.add(branch.getTodo_date());
+                        count+=1;
+                    }
+
+                    ed.putInt("pt",count);
+                    ed.commit();
 
                     if(response.body().getData().size() == 0)
                     {
@@ -211,7 +214,7 @@ public class PendingTask extends Fragment {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -313,7 +316,8 @@ public class PendingTask extends Fragment {
 
         @NonNull
         @Override
-        public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public Holder onCreateViewHolder(@NonNull ViewGroup parent,
+            int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_todo_pending, parent, false);
             return new Holder(view);
         }
@@ -321,20 +325,17 @@ public class PendingTask extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull final Holder holder, @SuppressLint("RecyclerView") final int position) {
 
-            holder.description.setText(data.get(position).getTodo_description());
+            holder.checkbox.setText(data.get(position).getTodo_description());
 //            id = ;
 
 
-            holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        Update_Todolist(data.get(position).getId());
-                        notifyDataSetChanged();
-                        Toast.makeText(activity, "Task Complete", Toast.LENGTH_SHORT).show();
-                    } else {
+            holder.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    Update_Todolist(data.get(position).getId());
+                    notifyDataSetChanged();
+                    Toast.makeText(activity, "Task Complete", Toast.LENGTH_SHORT).show();
+                } else {
 
-                    }
                 }
             });
 
@@ -344,13 +345,13 @@ public class PendingTask extends Fragment {
         }
 
         class Holder extends RecyclerView.ViewHolder {
-            TextView description,loacation,date,driver,distance,carname;
+//            TextView description,loacation,date,driver,distance,carname;
 //            LinearLayout click;
             CheckBox checkbox;
             public Holder(@NonNull View itemView) {
                 super(itemView);
 
-                description = itemView.findViewById(R.id.description);
+//                description = itemView.findViewById(R.id.description);
                 checkbox = itemView.findViewById(R.id.checkbox);
 //                loacation = itemView.findViewById(R.id.loacation);
 //                date = itemView.findViewById(R.id.date);

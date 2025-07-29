@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@android:color/transparent"
+  android:orientation="vertical">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@drawable/bg_bottom_sheet"
+      android:orientation="vertical">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="60dp"
+          android:orientation="vertical">
+
+            <TextView
+              android:id="@+id/carname"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:layout_marginStart="10dp"
+              android:layout_marginTop="5dp"
+              android:layout_marginEnd="5dp"
+              android:layout_marginBottom="5dp"
+              android:background="@drawable/bg_txt_yellow2"
+              android:fontFamily="@font/poppins_semibold"
+              android:gravity="center"
+              android:paddingStart="15dp"
+              android:paddingTop="4dp"
+              android:paddingEnd="15dp"
+              android:text="@string/status_other_issue"
+              android:textColor="#333333"
+              android:textSize="14sp" />
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="20dp"
+              android:layout_marginEnd="20dp"
+              android:orientation="vertical">
+
+                <LinearLayout
+                  android:id="@+id/fname"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="5dp"
+                  android:orientation="horizontal"
+                  android:paddingTop="@dimen/_3sdp"
+                  android:paddingStart="1dp"
+                  android:paddingEnd="10dp"
+                  android:weightSum="3">
+
+                    <TextView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1.9"
+                      android:fontFamily="@font/poppins_semibold"
+                      android:text="@string/branch"
+                      android:textColor="@color/black"
+                      android:textSize="@dimen/_13sdp" />
+
+                    <TextView
+                      android:id="@+id/Firm_Name"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1.1"
+                      android:fontFamily="@font/poppinsmedium"
+                      android:gravity="center_vertical"
+                      android:text="@string/_collon"
+                      android:textColor="#1F272E"
+                      android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="5dp"
+                  android:orientation="horizontal"
+                  android:paddingTop="@dimen/_3sdp"
+                  android:paddingEnd="10dp"
+                  android:paddingStart="1dp"
+                  android:weightSum="3">
+
+                    <TextView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1.9"
+                      android:fontFamily="@font/poppins_semibold"
+                      android:text="@string/company"
+                      android:textColor="@color/black"
+                      android:textSize="@dimen/_13sdp" />
+
+                    <TextView
+                      android:id="@+id/Mobile"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1.1"
+                      android:fontFamily="@font/poppinsmedium"
+                      android:gravity="center_vertical"
+                      android:text="@string/_collon"
+                      android:textColor="#1F272E"
+                      android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="5dp"
+                  android:orientation="horizontal"
+                  android:paddingTop="@dimen/_3sdp"
+                  android:paddingEnd="10dp"
+                  android:paddingStart="1dp"
+                  android:weightSum="3">
+
+                    <TextView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1.9"
+                      android:fontFamily="@font/poppins_semibold"
+                      android:text="@string/vehicle_type"
+                      android:textColor="@color/black"
+                      android:textSize="@dimen/_13sdp" />
+
+                    <TextView
+                      android:id="@+id/Email"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1.1"
+                      android:fontFamily="@font/poppinsmedium"
+                      android:gravity="center_vertical"
+                      android:text="@string/_collon"
+                      android:textColor="#1F272E"
+                      android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                  android:id="@+id/moreview"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+
+                    <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginBottom="5dp"
+                      android:orientation="horizontal"
+                      android:paddingTop="@dimen/_3sdp"
+                      android:paddingEnd="10dp"
+                      android:paddingStart="1dp"
+                      android:weightSum="3">
+
+                        <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1.9"
+                          android:fontFamily="@font/poppins_semibold"
+                          android:text="@string/model_year"
+                          android:textColor="@color/black"
+                          android:textSize="@dimen/_13sdp" />
+
+                        <TextView
+                          android:id="@+id/DOB"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1.1"
+                          android:fontFamily="@font/poppinsmedium"
+                          android:gravity="center_vertical"
+                          android:text="@string/_collon"
+                          android:textColor="#1F272E"
+                          android:textSize="@dimen/_13sdp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginBottom="5dp"
+                      android:orientation="horizontal"
+                      android:paddingTop="@dimen/_3sdp"
+                      android:paddingEnd="10dp"
+                      android:paddingStart="1dp"
+                      android:weightSum="3">
+
+                        <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1.9"
+                          android:fontFamily="@font/poppins_semibold"
+                          android:text="@string/insurance_due"
+                          android:textColor="@color/black"
+                          android:textSize="@dimen/_13sdp" />
+
+                        <TextView
+                          android:id="@+id/Anniversary"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1.1"
+                          android:fontFamily="@font/poppinsmedium"
+                          android:gravity="center_vertical"
+                          android:text="@string/_collon"
+                          android:textColor="#1F272E"
+                          android:textSize="@dimen/_13sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginBottom="5dp"
+                      android:orientation="horizontal"
+                      android:paddingTop="@dimen/_3sdp"
+                      android:paddingEnd="10dp"
+                      android:paddingStart="1dp"
+                      android:weightSum="3">
+
+                        <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1.9"
+                          android:fontFamily="@font/poppins_semibold"
+                          android:text="@string/permit_due"
+                          android:textColor="@color/black"
+                          android:textSize="@dimen/_13sdp" />
+
+                        <TextView
+                          android:id="@+id/Category"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1.1"
+                          android:fontFamily="@font/poppinsmedium"
+                          android:gravity="center_vertical"
+                          android:text="@string/_collon"
+                          android:textColor="#1F272E"
+                          android:textSize="@dimen/_13sdp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginBottom="5dp"
+                      android:orientation="horizontal"
+                      android:paddingTop="@dimen/_3sdp"
+                      android:paddingEnd="10dp"
+                      android:paddingStart="1dp"
+                      android:weightSum="3">
+
+                        <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1.9"
+                          android:fontFamily="@font/poppins_semibold"
+                          android:text="@string/fc_due"
+                          android:textColor="@color/black"
+                          android:textSize="@dimen/_13sdp" />
+
+                        <TextView
+                          android:id="@+id/Product"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1.1"
+                          android:fontFamily="@font/poppinsmedium"
+                          android:gravity="center_vertical"
+                          android:text="@string/_collon"
+                          android:textColor="#1F272E"
+                          android:textSize="@dimen/_13sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginBottom="15dp"
+                      android:orientation="horizontal"
+                      android:paddingTop="@dimen/_3sdp"
+                      android:paddingEnd="10dp"
+                      android:paddingStart="1dp"
+                      android:weightSum="3">
+
+                        <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1.9"
+                          android:fontFamily="@font/poppins_semibold"
+                          android:text="@string/mileage"
+                          android:textColor="@color/black"
+                          android:textSize="@dimen/_13sdp" />
+
+                        <TextView
+                          android:id="@+id/Address"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1.1"
+                          android:fontFamily="@font/poppinsmedium"
+                          android:gravity="center_vertical"
+                          android:text="@string/_collon"
+                          android:textColor="#1F272E"
+                          android:textSize="@dimen/_13sdp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -9,15 +9,26 @@
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
+
+        <!-- ... other theme attributes ... -->
+        <item name="colorPrimaryContainer">@color/my_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/my_on_primary_container</item>
+        <item name="colorSecondaryContainer">@color/my_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/my_on_secondary_container</item>
+        <item name="colorSurfaceContainerHigh">@color/my_surface_container_high</item>
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:navigationBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
     </style>
+
     <style name="SheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:colorBackground">     @android:color/transparent</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.3</item>
         <item name="android:windowFrame">@null</item>
@@ -29,8 +40,43 @@
         <item name="android:textColorHint">@color/grey2</item>
         <item name="android:elevation">5dp</item>
         <item name="android:layout_marginBottom">5dp</item>
-        <item name="android:layout_marginLeft">5dp</item>
-        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
 
     </style>
+
+    <style name="DatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:colorAccent">@color/red</item> <!-- Customize the color accent -->
+        <item name="android:colorPrimary">@color/red</item> <!-- Customize the color accent -->
+        <item name="android:colorPrimaryDark">@color/red</item> <!-- Customize the color accent -->
+        <item name="android:colorButtonNormal">@color/red
+        </item> <!-- Customize the color of buttons -->
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryVariant">@color/red</item>
+        <item name="colorOnPrimary">@color/red</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/red</item>
+        <item name="colorSecondaryVariant">@color/red</item>
+        <item name="colorOnSecondary">@color/red</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/red</item>
+        <!-- Customize your theme here. -->
+        <!-- Add more customizations here if needed -->
+    </style>
+
+
+    <!--    <style name="CustomSearchView" parent="Widget.AppCompat.SearchView">-->
+    <!--        &lt;!&ndash; Set the search icon color &ndash;&gt;-->
+    <!--        <item name="searchIcon">@drawable/ic_search_white</item>-->
+    <!--        &lt;!&ndash; Set the close icon color &ndash;&gt;-->
+    <!--        <item name="closeIcon">@drawable/ic_close_white</item>-->
+    <!--        &lt;!&ndash; Set the voice icon color &ndash;&gt;-->
+    <!--        <item name="goIcon">@drawable/ic_voice_white</item>-->
+    <!--        &lt;!&ndash; Set the search text hint color &ndash;&gt;-->
+    <!--        <item name="queryHintTextColor">@android:color/white</item>-->
+    <!--        &lt;!&ndash; Set the search text color &ndash;&gt;-->
+    <!--        <item name="queryTextColor">@android:color/white</item>-->
+    <!--    </style>-->
+
 </resources>

@@ -18,7 +18,7 @@ public  static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
-//        FirebaseApp.initializeApp(this);
+        FirebaseApp.initializeApp(this);
 
         context = getApplicationContext();
     }
@@ -45,13 +45,11 @@ public  static Context context;
 
         AlertDialog.Builder  builder = new AlertDialog.Builder(activity);
         //Setting message manually and performing action on button click
-        builder.setMessage("Please Cheq Your Internet Connection")
+        builder.setMessage("Please Check Your Internet Connection")
                 .setCancelable(false)
                 .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                         dialog.cancel();
-
                     }
                 });
         //Creating dialog box

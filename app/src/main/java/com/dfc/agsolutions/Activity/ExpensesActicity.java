@@ -2,14 +2,17 @@ package com.dfc.agsolutions.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.dfc.agsolutions.Model.DriverListDataModel;
 import com.dfc.agsolutions.Model.ExpensesListDataModel;
 import com.dfc.agsolutions.R;
 
@@ -64,23 +68,19 @@ public class ExpensesActicity extends AppCompatActivity {
         nodata = findViewById(R.id.nodata);
         rv = findViewById(R.id.rv);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                nodata.setVisibility(View.VISIBLE);
-                rv.setVisibility(View.GONE);
-                Expenses_List();
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            nodata.setVisibility(View.VISIBLE);
+            rv.setVisibility(View.GONE);
+            Expenses_List();
         });
+
         dialog = new ProgressDialog(ExpensesActicity.this);
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
-        icback = findViewById(R.id.icBack);
+        icback = findViewById(R.id.icback);
         totalamount = findViewById(R.id.totalamount);
         icback.setOnClickListener(v -> {
-            onBackPressed();
-
-
+            finish();
         });
         Expenses_List();
     }
@@ -109,7 +109,7 @@ public class ExpensesActicity extends AppCompatActivity {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

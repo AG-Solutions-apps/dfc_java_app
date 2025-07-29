@@ -46,7 +46,7 @@ public class HistoryFragment extends Fragment {
         int[] navLabels = {R.string.currant, R.string.previous
         };
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            RelativeLayout tab2 = (RelativeLayout) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tablayout, (ViewGroup) null);
+            RelativeLayout tab2 = (RelativeLayout) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tablayout1, (ViewGroup) null);
             tab_label = (TextView) tab2.findViewById(R.id.text1);
             tab_label.setText(navLabels[i]);
             tabLayout.getTabAt(i).setCustomView(tab2);

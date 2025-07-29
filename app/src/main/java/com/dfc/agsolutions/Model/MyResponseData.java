@@ -28,8 +28,6 @@ public class MyResponseData {
         @SerializedName("token")
         private String token;
 
-
-
         @SerializedName("user")
         private User user;
 

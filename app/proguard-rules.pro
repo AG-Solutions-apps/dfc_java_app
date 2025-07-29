@@ -257,7 +257,7 @@ public static ** valueOf(java.lang.String);
 
 
 
--keep class  com.gbpro.gbversion.gbtool.savertool.RecoveryDeleted.model.** { *; }
+-keep class  com.dfc.agsolutions.Model.** { *; }
 #-keep class  com.highsip.webrtc2sip.model.** { *; }
 #-keep class  com.highsip.webrtc2sip.common.** { *; }
 #-keep class  io.agora.rtc.RtcEngine.** { *; }

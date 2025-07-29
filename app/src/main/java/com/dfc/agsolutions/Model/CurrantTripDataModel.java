@@ -36,6 +36,8 @@ public class CurrantTripDataModel {
         String trip_hsd;
         String trip_bhsd;
         String trip_hsd_supplied;
+        String trip_advance;
+
 
         public String getTrip_hsd() {
             return trip_hsd;
@@ -116,6 +118,15 @@ public class CurrantTripDataModel {
         public void setTrip_km(String trip_km) {
             this.trip_km = trip_km;
         }
+
+        public String getTrip_advance() {
+            return trip_advance;
+        }
+
+        public void setTrip_advance(String trip_advance) {
+            this.trip_advance = trip_advance;
+        }
+
     }
 
 }

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,12 +53,16 @@ public class CompleteTask extends Fragment {
     RecyclerView rv;
     SwipeRefreshLayout swipeRefreshLayout;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+        ViewGroup container,
+        Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.activity_previous_history, container, false);
 
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         ed = sp.edit();
         nodata = view.findViewById(R.id.nodata);
+
 //        cd = view.findViewById(R.id.cd);
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Loading...");
@@ -102,18 +106,18 @@ public class CompleteTask extends Fragment {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
-                    .header("Authorization", "Bearer " + sp.getString("token", ""))
-                    .method(original.method(), original.body());
+                .header("Authorization", "Bearer " + sp.getString("token", ""))
+                .method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
+            .baseUrl(getString(R.string.commn_url))
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient.build())
+            .build();
         Api loginservice = retrofit.create(Api.class);
         Call<TodoListDataModel> call = loginservice.get_TodoList(sp.getString("userBranch", ""),String.valueOf(2));
         call.enqueue(new Callback<TodoListDataModel>() {
@@ -205,18 +209,18 @@ public class CompleteTask extends Fragment {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
-                    .header("Authorization", "Bearer " + sp.getString("token", ""))
-                    .method(original.method(), original.body());
+                .header("Authorization", "Bearer " + sp.getString("token", ""))
+                .method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
+            .baseUrl(getString(R.string.commn_url))
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient.build())
+            .build();
         Api loginservice = retrofit.create(Api.class);
         Call<TodoListDataModel> call = loginservice.get_CompleteUpdateList(idd,sp.getString("userBranch", ""));
         call.enqueue(new Callback<TodoListDataModel>() {
@@ -340,7 +344,7 @@ public class CompleteTask extends Fragment {
 
         class Holder extends RecyclerView.ViewHolder {
             TextView description,loacation,date,driver,distance,carname;
-//            LinearLayout click;
+            //            LinearLayout click;
             ImageView btn;
             public Holder(@NonNull View itemView) {
                 super(itemView);
@@ -362,4 +366,5 @@ public class CompleteTask extends Fragment {
         super.onResume();
         previousHistory();
     }
+
 }

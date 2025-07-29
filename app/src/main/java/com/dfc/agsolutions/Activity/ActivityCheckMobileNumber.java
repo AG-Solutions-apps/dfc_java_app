@@ -3,29 +3,28 @@ package com.dfc.agsolutions.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
+import androidx.preference.PreferenceManager;
+
+import android.text.TextUtils;
 import android.view.WindowManager;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.dfc.agsolutions.AppUtils.Myapplication;
 import com.dfc.agsolutions.Model.CheckNomberModel;
 import com.dfc.agsolutions.R;
 import com.google.android.material.checkbox.MaterialCheckBox;
-
+import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,174 +32,207 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ActivityCheckMobileNumber extends
-        AppCompatActivity {
+    AppCompatActivity {
 
-    EditText edtMobile;
-    ProgressDialog dialog;
+    EditText edtMobile, edtPassword;
+    MaterialCheckBox checkBox;
+    TextView tvCountryCode;
+
+    Dialog dialog;
     SharedPreferences sp;
     SharedPreferences.Editor ed;
 
-    MaterialCheckBox checkBox;
 
-    //    TextView privacy;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_mobile_number);
+        setContentView(R.layout.activity_check_mobail_number);
 
-        edtMobile = findViewById(R.id.edtMobile);
+//        getPhoneNumberHint();
+
+        edtMobile = findViewById(R.id.edtmobail);
+        edtPassword = findViewById(R.id.edtpassword);
         checkBox = findViewById(R.id.checkBox);
+        tvCountryCode = findViewById(R.id.tvCountryCode);
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();
 
-        dialog = new ProgressDialog(ActivityCheckMobileNumber.this);
-        dialog.setMessage("Loading...");
+        dialog = new Dialog(ActivityCheckMobileNumber.this);
+        dialog.setContentView(R.layout.dialog_progress);
         dialog.setCancelable(false);
 
-        findViewById(R.id.cvVerifyOtp).setOnClickListener(v -> {
+        findViewById(R.id.continues).setOnClickListener(v -> {
+            try {
 
-            if (checkBox.isChecked()) {
-
-                if (edtMobile.getText().toString().isEmpty()) {
-                    Toast.makeText(ActivityCheckMobileNumber.this,
-                            R.string.please_enter_mobile_number,
-                            Toast.LENGTH_SHORT).show();
-                } else if (edtMobile.getText().toString().trim().length() < 10) {
-                    Toast.makeText(ActivityCheckMobileNumber.this,
-                            R.string.valid_mobile_number_required,
-                            Toast.LENGTH_SHORT).show();
-                } else {
-
-                    if (Myapplication.isNetworkAvailable()) {
-                        getCheckMobile();
-                    } else {
-                        Myapplication.noInternet(ActivityCheckMobileNumber.this);
+                if (checkBox.isChecked()) {
+                    String mobileNumber = edtMobile.getText().toString();
+//                    String password = edtPassword.getText().toString();
+//                    if (TextUtils.isEmpty(password)) {
+//                        password = getString(R.string._123456);
+//                    }
+                    if (mobileNumber.isEmpty()) {
+                        Toast.makeText(ActivityCheckMobileNumber.this, "Please Enter Mobile Number!!", Toast.LENGTH_SHORT).show();
+                    } else if (mobileNumber.trim().length() < 10) {
+                        Toast.makeText(ActivityCheckMobileNumber.this, "Valid Mobile Number required!", Toast.LENGTH_SHORT).show();
+                    } else /*if (edtPassword.getText().toString().isEmpty()) {
+                        Toast.makeText(ActivityCheckMobileNumber.this, "Please Enter Password!!", Toast.LENGTH_SHORT).show();
+                    } else if (edtPassword.getText().toString().trim().length() < 6) {
+                        Toast.makeText(ActivityCheckMobileNumber.this, "Valid Password required!!", Toast.LENGTH_SHORT).show();
+                    } else*/ {
+                        if (Myapplication.isNetworkAvailable()) {
+                            getCheckMobile();
+                        } else {
+                            Myapplication.noInternet(ActivityCheckMobileNumber.this);
+                        }
                     }
-
+                } else {
+                    Toast.makeText(ActivityCheckMobileNumber.this, "Check Privacy policy first", Toast.LENGTH_SHORT).show();
                 }
-
-            } else {
-                Toast.makeText(ActivityCheckMobileNumber.this, R.string.chack_privacy,
-                        Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(ActivityCheckMobileNumber.this, e.toString(), Toast.LENGTH_SHORT).show();
             }
-
         });
 
-        // privacy policy click
-        findViewById(R.id.privacy).setOnClickListener(this::onClick);
+        findViewById(R.id.privacy2).setOnClickListener(v -> showUpdateAppDialog());
 
     }
 
+//    private void getPhoneNumberHint() {
+//        GetPhoneNumberHintIntentRequest request = GetPhoneNumberHintIntentRequest.builder().build();
+//        Identity.getSignInClient(this)
+//            .getPhoneNumberHintIntent(request)
+//            .addOnSuccessListener(result -> {
+//                try {
+//                    phoneNumberLauncher.launch(new IntentSenderRequest.Builder(result).build());
+//                } catch (Exception e) {
+//                    Toast.makeText(this, "Launching the PendingIntent failed", Toast.LENGTH_SHORT).show();
+//                }
+//            })
+//            .addOnFailureListener(e ->    Toast.makeText(this, "Phone Number Hint failed", Toast.LENGTH_SHORT).show());
+//    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 1) {
+//            if (resultCode == RESULT_OK) {
+//                try {
+//                    String phoneNumber = Identity.getSignInClient(this)
+//                        .getPhoneNumberFromIntent(data);
+//                    edtMobile.setText(phoneNumber);
+//                } catch (Exception e) {
+//                    Toast.makeText(this, "Failed to extract phone number" + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+//            } else {
+//                // Handle user cancellation or error
+//                Toast.makeText(this, "Phone number hint canceled", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
     @SuppressLint("SetJavaScriptEnabled")
     private void showUpdateAppDialog() {
 
         Dialog dialog = new Dialog(this);
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        Window window = dialog.getWindow();
-
-        if (window == null) return;
-        layoutParams.copyFrom(window.getAttributes());
+        layoutParams.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
         layoutParams.width = -1;
         layoutParams.height = -2;
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this,
-                android.R.color.transparent)));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, android.R.color.transparent)));
         dialog.requestWindowFeature(1);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.dialog_update_app);
+        dialog.setContentView(R.layout.dialog_show_privacy_policy);
         dialog.show();
         dialog.getWindow().setAttributes(layoutParams);
-        WebView webView = dialog.findViewById(R.id.webwiew);
 
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        // Load a URL
+        WebView webView = dialog.findViewById(R.id.webwiew);
+        webView.getSettings().setJavaScriptEnabled(true);
+
+        // Open links within WebView instead of the browser
+        webView.setWebViewClient(new WebViewClient());
+
+        // Load your URL
         webView.loadUrl("https://dfcgroup.in/crmapi/privacypolicy.html");
 
-        dialog.findViewById(R.id.ln_try_again).setOnClickListener(view -> {
+        dialog.findViewById(R.id.tv_privacy_policy_ok).setOnClickListener(view -> {
             try {
                 dialog.dismiss();
             } catch (Exception e) {
-                Log.e("Error: ", e.toString());
+                Toast.makeText(ActivityCheckMobileNumber.this, e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     public void getCheckMobile() {
+        try {
+            dialog.show();
 
-        dialog.show();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+            Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+            Api loginService = retrofit.create(Api.class);
+            String userMobileNumber = edtMobile.getText().toString();
+            Call<CheckNomberModel> call = loginService.get_check_mobail(userMobileNumber);
+            call.enqueue(new Callback<CheckNomberModel>() {
+                @Override
+                public void onResponse(@NonNull Call<CheckNomberModel> call,
+                    @NonNull Response<CheckNomberModel> response) {
 
-        Api loginService = retrofit.create(Api.class);
-        Call<CheckNomberModel> call = loginService.get_check_mobail(edtMobile.getText().toString());
+                    CheckNomberModel apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getCode() == 200) {
 
-        call.enqueue(new Callback<CheckNomberModel>() {
-            @Override
-            public void onResponse(@NonNull Call<CheckNomberModel> call,
-                                   @NonNull Response<CheckNomberModel> response) {
+                        CheckNomberModel.UserData userData = apiResponse.getData();
+                        if (userData != null) {
+                            String mobileNumber = userData.getMobile();
+                            String userBranch = userData.getUser_branch();
+                            String cPassword = userData.getCpassword();
+                            String fullName = userData.getFull_name();
+                            String user_type_id = userData.getUser_type_id();
 
-                Log.e("response..", "" + response);
+                            ed.putString("mobile", mobileNumber);
+                            ed.putString("userBranch", userBranch);
+                            ed.putString("password", cPassword);
+                            ed.putString("fullName", fullName);
+                            ed.putString("userType", user_type_id);
 
-                CheckNomberModel apiResponse = response.body();
+                            ed.commit();
 
-                if (apiResponse != null && apiResponse.getCode() == 200) {
+                            Intent intent = new Intent(ActivityCheckMobileNumber.this, LoginActivity.class);
+                            intent.putExtra("password", edtPassword.getText().toString());
+                            startActivity(intent);
 
-                    CheckNomberModel.UserData userData = apiResponse.getData();
+                        }
 
-                    if (userData != null) {
-
-                        String mobileNumber = userData.getMobile();
-                        String userBranch = userData.getUser_branch();
-                        String cPassword = userData.getCpassword();
-                        String fullName = userData.getFull_name();
-                        String user_type_id = userData.getUser_type_id();
-
-                        ed.putString("mobile", mobileNumber);
-                        ed.putString("userBranch", userBranch);
-                        ed.putString("password", cPassword);
-                        ed.putString("fullName", fullName);
-                        ed.putString("user_type", user_type_id);
-
-                        ed.commit();
-
-                        // Handle the data as needed
-                        Log.e("mobileCheck", "getMobileNumber:-  " + mobileNumber);
-                        Toast.makeText(ActivityCheckMobileNumber.this,
-                                R.string.mobile_number_is_active,
-                                Toast.LENGTH_SHORT).show();
-
-                        startActivity(new Intent(ActivityCheckMobileNumber.this,
-                                ActivityLogin.class));
-
+                    } else {
+                        Toast.makeText(ActivityCheckMobileNumber.this, "Mobile Number is Not Registered", Toast.LENGTH_SHORT).show();
                     }
-
-                } else {
-                    Toast.makeText(ActivityCheckMobileNumber.this,
-                            R.string.mobile_number_is_not_registered,
-                            Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
 
-            }
+                @Override
+                public void onFailure(@NonNull Call<CheckNomberModel> call,
+                    @NonNull Throwable t) {
+                    dialog.dismiss();
+                    Toast.makeText(ActivityCheckMobileNumber.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(ActivityCheckMobileNumber.this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
 
-            @Override
-            public void onFailure(@NonNull Call<CheckNomberModel> call,
-                                  @NonNull Throwable t) {
-                Log.e("Error: ", "" + t);
-                dialog.dismiss();
-            }
-
-        });
     }
 
-    private void onClick(View v) {
-        showUpdateAppDialog();
-    }
+//    private final ActivityResultLauncher<IntentSenderRequest> phoneNumberLauncher = registerForActivityResult(
+//        new ActivityResultContracts.StartIntentSenderForResult(), result -> {
+//            try {
+//                String phoneNumber = Identity.getSignInClient(this).getPhoneNumberFromIntent(result.getData());
+//                String strNew = phoneNumber.replaceAll("\\+91|\\(|\\)|-|\\s", "");
+//                edtMobile.setText(strNew);
+//            } catch (Exception e) {
+//                Toast.makeText(this, "Failed to extract phone number" + e.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 }

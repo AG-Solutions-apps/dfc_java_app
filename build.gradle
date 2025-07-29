@@ -4,25 +4,17 @@ buildscript {
         google()
         mavenCentral()
         jcenter()
-        maven {
-            url 'https://jitpack.io'
-            name 'Google'
-        }
+        maven { url 'https://jitpack.io'; name 'Google' }
         maven { url "https://jitpack.io" }
         maven { url 'https://plugins.gradle.org/m2/' }
-
-        maven {
-            url 'https://maven.google.com'
-        }
+        maven { url 'https://maven.google.com' }
         mavenLocal()
-
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.1'
+        classpath 'com.android.tools.build:gradle:8.11.1'
 //        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.14.0'
-
-        classpath 'com.google.gms:google-services:4.3.15'
-
+        classpath 'com.google.gms:google-services:4.4.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

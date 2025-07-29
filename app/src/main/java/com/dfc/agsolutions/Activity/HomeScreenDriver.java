@@ -6,7 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +46,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@SuppressWarnings("all")
 public class HomeScreenDriver extends Fragment {
 
     TextView branchname, branchnameadmin;
@@ -56,7 +57,7 @@ public class HomeScreenDriver extends Fragment {
     ImageView logout;
 
     TextView loacation, carname;
-    TextView date, status, username,bhsd,fhsd,shsd;
+    TextView date, status, username, bhsd, fhsd, shsd, advance_money;
     TextView distance, textaccept, reached, ereturn, finish;
     LottieAnimationView nodata;
     CardView cd;
@@ -66,6 +67,7 @@ public class HomeScreenDriver extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
 
     TextView nodata1;
+    ImageView rs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +90,8 @@ public class HomeScreenDriver extends Fragment {
         bhsd = view.findViewById(R.id.bhsd);
         fhsd = view.findViewById(R.id.fhsd);
         shsd = view.findViewById(R.id.shsd);
+        advance_money = view.findViewById(R.id.advance_money);
+        rs = view.findViewById(R.id.rs);
         branchnameadmin = view.findViewById(R.id.branchnameadmin);
         branchname.setText("" + sp.getString("userBranch", ""));
         branchnameadmin.setText("" + sp.getString("userBranch", ""));
@@ -106,7 +110,7 @@ public class HomeScreenDriver extends Fragment {
         cd = view.findViewById(R.id.cd);
         Log.e("TAG", "get_branch: +++ " + sp.getString("token", ""));
 
-        user_type = sp.getString("user_type", "");
+        user_type = sp.getString("userType", "");
 
         Log.e("user_types", "user_type:-- " + user_type);
 
@@ -167,7 +171,7 @@ public class HomeScreenDriver extends Fragment {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -223,7 +227,7 @@ public class HomeScreenDriver extends Fragment {
 
     private void countryDialoglogout() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.SheetDialog);
-        bottomSheetDialog.setContentView(R.layout.logout_bottom_sheet_dialog);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
         bottomSheetDialog.show();
 
 
@@ -242,7 +246,7 @@ public class HomeScreenDriver extends Fragment {
         });
 
 
-        TextView delete = bottomSheetDialog.findViewById(R.id.delete);
+        TextView delete = bottomSheetDialog.findViewById(R.id.tvDeleteMyAccountAction);
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,7 +283,7 @@ public class HomeScreenDriver extends Fragment {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -335,7 +339,7 @@ public class HomeScreenDriver extends Fragment {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -421,7 +425,7 @@ public class HomeScreenDriver extends Fragment {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -487,6 +491,13 @@ public class HomeScreenDriver extends Fragment {
                         bhsd.setText(userData.getTrip_bhsd() + " Ltr");
                         fhsd.setText(userData.getTrip_hsd() + " Ltr");
                         shsd.setText(userData.getTrip_hsd_supplied() + " Ltr");
+                        if (advance_money!=null){
+                            rs.setVisibility(View.GONE);
+                        }
+                        rs.setVisibility(View.GONE);
+
+                        advance_money.setText("Advance: " + "  \u20B9 "+ userData.getTrip_advance() );
+                        Log.d("advance_money", "advance_money: " + advance_money);
                         if (estatus.equals("Pending")) {
                             textaccept.setText("Accept");
                         } else if (estatus.equals("Accept")) {
@@ -552,7 +563,7 @@ public class HomeScreenDriver extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    ed.putString("userbranch", arrayListTopic.get(position).getBranchName());
+                    ed.putString("userBranch", arrayListTopic.get(position).getBranchName());
                     ed.commit();
                     branchnameadmin.setText("" + sp.getString("userBranch", ""));
                     bottomSheetDialog.dismiss();

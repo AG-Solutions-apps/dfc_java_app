@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ExpensesListDataModel {
 
     private ArrayList<ExpensesListDataModel> data;
-//    String totalAmount;
+    //    String totalAmount;
     String totalReceived;
 
     public String getTotalExpensive() {

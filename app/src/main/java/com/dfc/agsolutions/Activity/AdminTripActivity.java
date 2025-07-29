@@ -3,15 +3,18 @@ package com.dfc.agsolutions.Activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.os.Handler;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -29,7 +32,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.dfc.agsolutions.IdealFragment;
 import com.dfc.agsolutions.Model.Branch;
+import com.dfc.agsolutions.Model.OngoingTruckTypeModel;
 import com.dfc.agsolutions.Model.ResponseArrayModel;
+import com.dfc.agsolutions.Model.TodoListDataModel;
 import com.dfc.agsolutions.Model.TruckTypeModel;
 import com.dfc.agsolutions.OnGoingTripFragment;
 import com.dfc.agsolutions.R;
@@ -71,6 +76,8 @@ public class AdminTripActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_admin);
+
+
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();
 
@@ -83,32 +90,37 @@ public class AdminTripActivity extends AppCompatActivity {
         rly_shope = findViewById(R.id.rly_shope);
         nodata = findViewById(R.id.nodata);
         header = findViewById(R.id.header);
-        String headerText = getString(R.string.vehicle_list) + " - " + sp.getString("userBranch", "");
-        header.setText(headerText/*"Vehicle list - "+ sp.getString("userBranch","")*/);
+        header.setText("Vehicle list - " + sp.getString("userBranch", ""));
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
 
-        findViewById(R.id.icBack).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.icback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
 
+//                Intent intent = new Intent(AdminTripActivity.this,HomeActivity.class);
+//                startActivity(intent);
 
-                onBackPressed();
+                finish();
 
             }
         });
 
 //        get_branch();
 
-        selectedBranchname = sp.getString("userBranch","");
+        ongoingcount();
+        idelcount();
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        tabLayout.setupWithViewPager(mViewPager);
+        dialog.show();
 
-
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setData();
+            }
+        }, 1000);
 
         spinnerBranches.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -143,17 +155,15 @@ public class AdminTripActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
 
-    public  void updatetabdata(String Counts){
+    public void updatetabdata(String Counts) {
 
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             RelativeLayout tab2 = (RelativeLayout) LayoutInflater.from(AdminTripActivity.this).inflate(R.layout.custom_tablayout, (ViewGroup) null);
-           TextView tab_label = (TextView) tab2.findViewById(R.id.text1);
-           TextView count = (TextView) tab2.findViewById(R.id.count);
+            TextView tab_label = (TextView) tab2.findViewById(R.id.text1);
+            TextView count = (TextView) tab2.findViewById(R.id.count);
             count.setText("" + Counts);
 //            ImageView tab_icon = (ImageView) tab2.findViewById(R.id.nav_icon);
 //            tab_label.setText(navLabels[i]);
@@ -162,6 +172,33 @@ public class AdminTripActivity extends AppCompatActivity {
 
         }
     }
+
+    private void setData() {
+
+        selectedBranchname = sp.getString("userBranch", "");
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        tabLayout.setupWithViewPager(mViewPager);
+        TextView tab_label = null;
+        TextView totaltodo = null;
+        int[] navLabels = {R.string.ongoing, R.string.ideal};
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            RelativeLayout tab2 = (RelativeLayout) LayoutInflater.from(AdminTripActivity.this).inflate(R.layout.custom_tablayout, (ViewGroup) null);
+            tab_label = (TextView) tab2.findViewById(R.id.text1);
+            totaltodo = (TextView) tab2.findViewById(R.id.totaltodo);
+            if (i == 0) {
+                tab_label.setText(navLabels[i]);
+                totaltodo.setText(String.valueOf(ongoingcount));
+            } else {
+                tab_label.setText(navLabels[i]);
+                totaltodo.setText(String.valueOf(idelcount));
+            }
+
+            tabLayout.getTabAt(i).setCustomView(tab2);
+            dialog.dismiss();
+        }
+    }
+
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -193,11 +230,10 @@ public class AdminTripActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
-                    return getString(R.string.ongoing);
-                case 1:
-                    return getString(R.string.ideal);
-
+//                case 0:
+//                    return getString(R.string.ongoing);
+//                case 1:
+//                    return getString(R.string.ideal);
             }
             return null;
         }
@@ -205,6 +241,157 @@ public class AdminTripActivity extends AppCompatActivity {
         public int getItemPosition(Object item) {
             return POSITION_NONE;
         }
+    }
+
+    int ongoingcount;
+    int idelcount;
+
+    public void ongoingcount() {
+//        ProgressDialog  dialog = new ProgressDialog(activity);
+//        dialog.setMessage("Loading...");
+//        dialog.setCancelable(false);
+        dialog.show();
+//
+//        sp = PreferenceManager.getDefaultSharedPreferences(activity);
+//        ed = sp.edit();
+        try {
+
+
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+//        if (token != null) {
+            httpClient.addInterceptor(chain -> {
+                Request original = chain.request();
+                Request.Builder requestBuilder = original.newBuilder()
+                        .header("Authorization", "Bearer " + sp.getString("token", ""))
+                        .method(original.method(), original.body());
+                Request request = requestBuilder.build();
+                return chain.proceed(request);
+            });
+//        }
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(AdminTripActivity.this.getString(R.string.commn_url))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(httpClient.build())
+                    .build();
+            Api loginservice = retrofit.create(Api.class);
+            Call<OngoingTruckTypeModel> call = loginservice.get_vhiclelistongoing(sp.getString("userBranch", ""), "1");
+            call.enqueue(new Callback<OngoingTruckTypeModel>() {
+                @Override
+                public void onResponse(Call<OngoingTruckTypeModel> call, Response<OngoingTruckTypeModel> response) {
+                    Log.e("responce..", "" + response.toString());
+
+                    if (response.body().getCode().equalsIgnoreCase("200")) {
+
+
+                        ArrayList<OngoingTruckTypeModel> branches = response.body().getData();
+
+                        Log.e("Respone---------", "onResponse: " + response.body().getData().size());
+
+                        ongoingcount = branches.size();
+
+//                    if (response.body().getData().size() == 0) {
+//                        nodata.setVisibility(View.VISIBLE);
+//                        rly_shope.setVisibility(View.GONE);
+//                    } else {
+//                        nodata.setVisibility(View.GONE);
+//                        rly_shope.setVisibility(View.VISIBLE);
+//                        OnGoingTripFragment.Home_Today_list_Adapter home_today_list_adapter = new OnGoingTripFragment.Home_Today_list_Adapter(AdminTripActivity.this, response.body().getData());
+//                        rly_shope.setAdapter(home_today_list_adapter);
+//                        rly_shope.setItemAnimator(new DefaultItemAnimator());
+//                        rly_shope.setHasFixedSize(true);
+//                    }
+
+                    } else {
+                        Toast.makeText(AdminTripActivity.this, "Network Error!!", Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+//                swipeRefreshLayout.setRefreshing(false);
+                }
+
+                @Override
+                public void onFailure(Call<OngoingTruckTypeModel> call, Throwable t) {
+                    Log.e("sdfsd", "" + t.toString());
+                    dialog.dismiss();
+//                swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+        } catch (Exception e) {
+            Log.e("TAG", "trip: " + e);
+        }
+
+    }
+
+    public void idelcount() {
+        dialog.show();
+        try {
+
+
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+//        if (token != null) {
+            httpClient.addInterceptor(chain -> {
+                Request original = chain.request();
+                Request.Builder requestBuilder = original.newBuilder()
+                        .header("Authorization", "Bearer " + sp.getString("token", ""))
+                        .method(original.method(), original.body());
+                Request request = requestBuilder.build();
+                return chain.proceed(request);
+            });
+//        }
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(AdminTripActivity.this.getString(R.string.commn_url))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(httpClient.build())
+                    .build();
+            Api loginservice = retrofit.create(Api.class);
+            Call<OngoingTruckTypeModel> call = loginservice.get_vhiclelistongoing(sp.getString("userBranch", ""), "2");
+            call.enqueue(new Callback<OngoingTruckTypeModel>() {
+                @Override
+                public void onResponse(Call<OngoingTruckTypeModel> call, Response<OngoingTruckTypeModel> response) {
+                    Log.e("responce..", "" + response.toString());
+
+                    if (response.body().getCode().equalsIgnoreCase("200")) {
+
+
+                        ArrayList<OngoingTruckTypeModel> branches = response.body().getData();
+
+                        Log.e("Respone---------", "onResponse: " + response.body().getData().size());
+
+                        idelcount = branches.size();
+
+//                    if (response.body().getData().size() == 0) {
+//                        nodata.setVisibility(View.VISIBLE);
+//                        rly_shope.setVisibility(View.GONE);
+//                    } else {
+//                        nodata.setVisibility(View.GONE);
+//                        rly_shope.setVisibility(View.VISIBLE);
+//                        OnGoingTripFragment.Home_Today_list_Adapter home_today_list_adapter = new OnGoingTripFragment.Home_Today_list_Adapter(AdminTripActivity.this, response.body().getData());
+//                        rly_shope.setAdapter(home_today_list_adapter);
+//                        rly_shope.setItemAnimator(new DefaultItemAnimator());
+//                        rly_shope.setHasFixedSize(true);
+//                    }
+
+                    } else {
+                        Toast.makeText(AdminTripActivity.this, "Network Error!!", Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+//                swipeRefreshLayout.setRefreshing(false);
+                }
+
+                @Override
+                public void onFailure(Call<OngoingTruckTypeModel> call, Throwable t) {
+                    Log.e("sdfsd", "" + t.toString());
+                    dialog.dismiss();
+//                swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+        } catch (Exception e) {
+            Log.e("TAG", "trip: " + e);
+        }
+
     }
 
     public void get_branch() {
@@ -224,7 +411,7 @@ public class AdminTripActivity extends AppCompatActivity {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -264,7 +451,6 @@ public class AdminTripActivity extends AppCompatActivity {
         });
     }
 
-
     public void get_trip(String selectedBranch) {
         dialog.show();
 
@@ -282,7 +468,7 @@ public class AdminTripActivity extends AppCompatActivity {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -321,7 +507,6 @@ public class AdminTripActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
         private Activity context;
@@ -377,7 +562,6 @@ public class AdminTripActivity extends AppCompatActivity {
                     // Convert milliseconds to days
                     daysDifference = timeDifference / (24 * 60 * 60 * 1000);
                     holder.tripdate.setText(arrayListTopic.get(position).getTrip_date() + " / " + daysDifference + " days");
-
 
 
                     System.out.println("Days difference between " + givenDateString + " and today: " + daysDifference + " days");

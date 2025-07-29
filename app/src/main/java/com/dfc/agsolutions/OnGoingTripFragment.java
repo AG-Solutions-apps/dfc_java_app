@@ -3,6 +3,7 @@ package com.dfc.agsolutions;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfc.agsolutions.Activity.Api;
+import com.dfc.agsolutions.Activity.UpdateTripActivity;
 import com.dfc.agsolutions.Model.OngoingTruckTypeModel;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,12 +61,14 @@ public class OnGoingTripFragment extends Fragment {
     public OnGoingTripFragment() {
         // Required empty public constructor
     }
+
     RecyclerView rly_shope;
     LinearLayout nodata;
     ProgressDialog dialog;
     SharedPreferences sp;
     SharedPreferences.Editor ed;
     Activity activity;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -89,6 +95,7 @@ public class OnGoingTripFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     public void updateContent(String selectedItem) {
 //        get_trip(selectedItem);
 //        if (textView != null) {
@@ -100,8 +107,7 @@ public class OnGoingTripFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View inflatedView = inflater.inflate(R.layout.fragment_on_going_trip, container, false);
 
         // Inflate the layout for this fragment
@@ -113,7 +119,7 @@ public class OnGoingTripFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                get_trip(mParam1,activity);
+                get_trip(mParam1, activity);
             }
         });
 
@@ -130,12 +136,13 @@ public class OnGoingTripFragment extends Fragment {
 //        branchNames.clear();
 
         rly_shope = inflatedView.findViewById(R.id.rly_shope);
-        nodata =inflatedView. findViewById(R.id.nodata);
+        nodata = inflatedView.findViewById(R.id.nodata);
 
-        Log.e("branchname","mParam1:-   " +mParam1 );
-        get_trip(mParam1,activity);
+        Log.e("branchname", "mParam1:-   " + mParam1);
+        get_trip(mParam1, activity);
         return inflatedView;
     }
+
     public void get_trip(String selectedBranch, Activity activity) {
 //        ProgressDialog  dialog = new ProgressDialog(activity);
 //        dialog.setMessage("Loading...");
@@ -144,60 +151,66 @@ public class OnGoingTripFragment extends Fragment {
 //
 //        sp = PreferenceManager.getDefaultSharedPreferences(activity);
 //        ed = sp.edit();
+        try {
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
 //        if (token != null) {
-        httpClient.addInterceptor(chain -> {
-            Request original = chain.request();
-            Request.Builder requestBuilder = original.newBuilder()
-                    .header("Authorization", "Bearer " + sp.getString("token",""))
-                    .method(original.method(), original.body());
-            Request request = requestBuilder.build();
-            return chain.proceed(request);
-        });
+            httpClient.addInterceptor(chain -> {
+                Request original = chain.request();
+                Request.Builder requestBuilder = original.newBuilder()
+                        .header("Authorization", "Bearer " + sp.getString("token", ""))
+                        .method(original.method(), original.body());
+                Request request = requestBuilder.build();
+                return chain.proceed(request);
+            });
 //        }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(activity.getString(R.string.base_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<OngoingTruckTypeModel> call = loginservice.get_vhiclelistongoing(selectedBranch,"1");
-        call.enqueue(new Callback<OngoingTruckTypeModel>() {
-            @Override
-            public void onResponse(Call<OngoingTruckTypeModel> call, Response<OngoingTruckTypeModel> response) {
-                Log.e("responce..", "" + response.toString());
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(activity.getString(R.string.commn_url))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(httpClient.build())
+                    .build();
+            Api loginservice = retrofit.create(Api.class);
+            Call<OngoingTruckTypeModel> call = loginservice.get_vhiclelistongoing(selectedBranch, "1");
+            call.enqueue(new Callback<OngoingTruckTypeModel>() {
+                @Override
+                public void onResponse(Call<OngoingTruckTypeModel> call, Response<OngoingTruckTypeModel> response) {
+                    Log.e("responce..", "" + response.toString());
 
-                if (response.body().getCode().equalsIgnoreCase("200")) {
+                    if (response.body().getCode().equalsIgnoreCase("200")) {
 
-                    if (response.body().getData().size() == 0) {
-                        nodata.setVisibility(View.VISIBLE);
-                        rly_shope.setVisibility(View.GONE);
+                        if (response.body().getData().size() == 0) {
+                            nodata.setVisibility(View.VISIBLE);
+                            rly_shope.setVisibility(View.GONE);
+                        } else {
+                            nodata.setVisibility(View.GONE);
+                            rly_shope.setVisibility(View.VISIBLE);
+                            Home_Today_list_Adapter home_today_list_adapter = new Home_Today_list_Adapter(getActivity(), response.body().getData());
+                            rly_shope.setAdapter(home_today_list_adapter);
+                            rly_shope.setItemAnimator(new DefaultItemAnimator());
+                            rly_shope.setHasFixedSize(true);
+                        }
+
                     } else {
-                        nodata.setVisibility(View.GONE);
-                        rly_shope.setVisibility(View.VISIBLE);
-                        Home_Today_list_Adapter home_today_list_adapter = new Home_Today_list_Adapter(getActivity(), response.body().getData());
-                        rly_shope.setAdapter(home_today_list_adapter);
-                        rly_shope.setItemAnimator(new DefaultItemAnimator());
-                        rly_shope.setHasFixedSize(true);
+                        Toast.makeText(getActivity(), "Network Error!!", Toast.LENGTH_SHORT).show();
                     }
-
-                } else {
-                    Toast.makeText(getActivity(), "Network Error!!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
-                dialog.dismiss();
-                swipeRefreshLayout.setRefreshing(false);
-            }
 
-            @Override
-            public void onFailure(Call<OngoingTruckTypeModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
-                dialog.dismiss();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+                @Override
+                public void onFailure(Call<OngoingTruckTypeModel> call, Throwable t) {
+                    Log.e("sdfsd", "" + t.toString());
+                    dialog.dismiss();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("TAG", "trip: " + e);
+        }
     }
 
     public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
@@ -225,13 +238,24 @@ public class OnGoingTripFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull final Home_Today_list_Adapter.Holder holder, @SuppressLint("RecyclerView") final int position) {
 
+            OngoingTruckTypeModel ongoingTruckTypeModel = arrayListTopic.get(position);
 
+            holder.llEdit.setOnClickListener(v -> {
+                Intent intent=new Intent(context, UpdateTripActivity.class);
+                intent.putExtra("passdata", (Serializable) ongoingTruckTypeModel);
+                context.startActivity(intent);
+            });
             holder.status.setText("Status:- " + arrayListTopic.get(position).getTrip_status());
             holder.carname.setText("" + arrayListTopic.get(position).getTrip_vehicle());
-            holder.loacation.setText("Destination : " + arrayListTopic.get(position).getTrip_agency());
+            holder.loacation.setText("" + arrayListTopic.get(position).getTrip_agency());
 //            holder.date.setText("Date : " + arrayListTopic.get(position).getTrip_date());
-            holder.driver.setText("Driver : " + arrayListTopic.get(position).getTrip_driver());
-            holder.distance.setText("Distance : " + arrayListTopic.get(position).getTrip_km() + " Km");
+            holder.driver.setText("" + arrayListTopic.get(position).getTrip_driver());
+            holder.distance.setText(" " + arrayListTopic.get(position).getTrip_km() + " Km");
+
+            holder.tvBHSDValue.setText(" : " + ongoingTruckTypeModel.getTrip_bhsd() + " Ltr");
+            holder.tvFHSDValue.setText(" : " + ongoingTruckTypeModel.getTrip_hsd() + " Ltr");
+            holder.tvSHSDValue.setText(" : " + ongoingTruckTypeModel.getTrip_hsd_supplied() + " Ltr");
+            holder.tvADVValue.setText(" : " + ongoingTruckTypeModel.getTrip_advance());
 
             try {
                 String date = arrayListTopic.get(position).getTrip_date();
@@ -253,18 +277,74 @@ public class OnGoingTripFragment extends Fragment {
 //            System.out.println("Last Trip Date: " + lastTripDateStr);
 //            System.out.println("New Date (" + daysBeforeLastTrip + " days before last trip): " + formattedNewDate);
 
+            holder.status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+//                    Dialog dialog = new Dialog(getActivity());
+//                    dialog.setContentView(R.layout.logout_bottom_sheet_dialog_going_trip);
+//                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                    dialog.setCancelable(true);
+
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.SheetDialog);
+                    bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_going_trip);
+                    bottomSheetDialog.show();
+
+                    TextView pending = bottomSheetDialog.findViewById(R.id.pending);
+                    TextView cancel = bottomSheetDialog.findViewById(R.id.cancel);
+                    TextView finish = bottomSheetDialog.findViewById(R.id.finish);
+
+                    pending.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//                            arrayListTopic.get(position).setTrip_status(pending.getText().toString());
+//                            Log.d("arrayListTopic", "pending: "+arrayListTopic.get(position).getTrip_status());
+                            ongoingcount("Pending", arrayListTopic.get(position).getId());
+                            bottomSheetDialog.dismiss();
+                        }
+                    });
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//                            arrayListTopic.get(position).setTrip_status(cancel.getText().toString());
+//                            Log.d("arrayListTopic", "cancel: "+arrayListTopic.get(position).getTrip_status());
+                            ongoingcount(cancel.getText().toString(), arrayListTopic.get(position).getId());
+                            bottomSheetDialog.dismiss();
+                        }
+                    });
+
+                    finish.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//                            arrayListTopic.get(position).setTrip_status(finish.getText().toString());
+//                            Log.d("arrayListTopic", "finish: "+arrayListTopic.get(position).getTrip_status());
+                            ongoingcount(finish.getText().toString(), arrayListTopic.get(position).getId());
+                            bottomSheetDialog.dismiss();
+                        }
+                    });
+
+                    bottomSheetDialog.show();
+
+                }
+            });
 
         }
 
         class Holder extends RecyclerView.ViewHolder {
-
-            TextView status,loacation,date,driver,distance,carname;
+            LinearLayout llEdit;
+            TextView status, loacation, date, driver, distance, carname;
+            TextView tvBHSDValue, tvFHSDValue, tvSHSDValue, tvADVValue;
 //            LinearLayout click;
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
 
+                llEdit = itemView.findViewById(R.id.llEdit);
+                tvBHSDValue = itemView.findViewById(R.id.tvBHSDValue);
+                tvFHSDValue = itemView.findViewById(R.id.tvFHSDValue);
+                tvSHSDValue = itemView.findViewById(R.id.tvSHSDValue);
+                tvADVValue = itemView.findViewById(R.id.tvADVValue);
 
                 status = itemView.findViewById(R.id.status);
                 loacation = itemView.findViewById(R.id.loacation);
@@ -278,5 +358,67 @@ public class OnGoingTripFragment extends Fragment {
 
 
     }
+
+
+    public void ongoingcount(String status, String id) {
+//        ProgressDialog  dialog = new ProgressDialog(activity);
+//        dialog.setMessage("Loading...");
+//        dialog.setCancelable(false);
+        dialog.show();
+//
+//        sp = PreferenceManager.getDefaultSharedPreferences(activity);
+//        ed = sp.edit();
+        try {
+
+
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+//        if (token != null) {
+            httpClient.addInterceptor(chain -> {
+                Request original = chain.request();
+                Request.Builder requestBuilder = original.newBuilder()
+                        .header("Authorization", "Bearer " + sp.getString("token", ""))
+                        .method(original.method(), original.body());
+                Request request = requestBuilder.build();
+                return chain.proceed(request);
+            });
+//        }
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(getActivity().getString(R.string.commn_url))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(httpClient.build())
+                    .build();
+            Api loginservice = retrofit.create(Api.class);
+            Call<OngoingTruckTypeModel> call = loginservice.get_vhiclestatus(sp.getString("userBranch", ""), status, id);
+            call.enqueue(new Callback<OngoingTruckTypeModel>() {
+                @Override
+                public void onResponse(Call<OngoingTruckTypeModel> call, Response<OngoingTruckTypeModel> response) {
+                    Log.e("responce..", "" + response.toString());
+
+                    if (response.body().getCode().equalsIgnoreCase("200")) {
+
+                        get_trip(mParam1, activity);
+
+
+                    } else {
+                        Toast.makeText(getActivity(), "Network Error!!", Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+//                swipeRefreshLayout.setRefreshing(false);
+                }
+
+                @Override
+                public void onFailure(Call<OngoingTruckTypeModel> call, Throwable t) {
+                    Log.e("sdfsd", "" + t.toString());
+                    dialog.dismiss();
+//                swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+        } catch (Exception e) {
+            Log.e("TAG", "trip: " + e);
+        }
+    }
+
 
 }

@@ -5,6 +5,14 @@ import java.util.ArrayList;
 public class OngoingTruckTypeModel {
     private ArrayList<OngoingTruckTypeModel> data;
 
+    String id;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;
@@ -70,6 +78,51 @@ public class OngoingTruckTypeModel {
     String trip_date;
     String trip_driver;
     String trip_km;
+    String trip_bhsd;
+    String trip_hsd;
+    String trip_advance;
+    String trip_hsd_supplied;
+    String trip_remarks;
+
+    public String getTrip_bhsd() {
+        return trip_bhsd;
+    }
+
+    public void setTrip_bhsd(String trip_bhsd) {
+        this.trip_bhsd = trip_bhsd;
+    }
+
+    public String getTrip_hsd() {
+        return trip_hsd;
+    }
+
+    public void setTrip_hsd(String trip_hsd) {
+        this.trip_hsd = trip_hsd;
+    }
+
+    public String getTrip_advance() {
+        return trip_advance;
+    }
+
+    public void setTrip_advance(String trip_advance) {
+        this.trip_advance = trip_advance;
+    }
+
+    public String getTrip_hsd_supplied() {
+        return trip_hsd_supplied;
+    }
+
+    public void setTrip_hsd_supplied(String trip_hsd_supplied) {
+        this.trip_hsd_supplied = trip_hsd_supplied;
+    }
+
+    public String getTrip_remarks() {
+        return trip_remarks;
+    }
+
+    public void setTrip_remarks(String trip_remarks) {
+        this.trip_remarks = trip_remarks;
+    }
 
 
 

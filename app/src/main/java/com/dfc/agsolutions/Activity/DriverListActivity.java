@@ -1,6 +1,7 @@
 package com.dfc.agsolutions.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -10,9 +11,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +24,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.dfc.agsolutions.Model.DriverListDataModel;
+import com.dfc.agsolutions.Model.TruckTypeModel;
 import com.dfc.agsolutions.R;
-import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,7 +84,7 @@ public class DriverListActivity extends AppCompatActivity {
         driverlist = findViewById(R.id.driverlist);
 
         findViewById(R.id.back).setOnClickListener(v -> {
-            onBackPressed();
+            finish();
         });
         driver_list();
 
@@ -114,7 +121,7 @@ public class DriverListActivity extends AppCompatActivity {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
+                .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -238,22 +245,9 @@ public class DriverListActivity extends AppCompatActivity {
             }
 
             if (arrayListTopic.get(position).getUser_image() == null) {
-//                holder.profile.setImageURI(Uri.parse("https://test.dfclogistics.online/storage/app/public/profiles/no_profile.png"));
-//                Glide.with(context)
-//                        .load(Uri.parse("https://test.dfclogistics.online/storage/app/public/profiles/no_profile.png"))
-//                        .error(R.drawable.no_profile)
-//                        .into(holder.profile);
-
-                Picasso.get().load(Uri.parse("https://test.dfclogistics.online/storage/app/public/profiles/no_profile.png")).error(R.drawable.no_profile).into(holder.profile);
-
+                Glide.with(DriverListActivity.this).load(Uri.parse("https://dfcgroup.in/crmapi/storage/app/public/profiles/no_profile.png")).error(R.drawable.no_profile).into(holder.profile);
             } else {
-//                Glide.with(context)
-//                        .load(Uri.parse("https://test.dfclogistics.online/storage/app/public/profiles/" + arrayListTopic.get(position).getUser_image()))
-//                        .error(R.drawable.no_profile)
-//                        .into(holder.profile);
-
-                Picasso.get().load(Uri.parse("https://test.dfclogistics.online/storage/app/public/profiles/" + arrayListTopic.get(position).getUser_image())).error(R.drawable.no_profile).into(holder.profile);
-
+                Glide.with(DriverListActivity.this).load(Uri.parse("https://dfcgroup.in/crmapi/storage/app/public/profiles/" + arrayListTopic.get(position).getUser_image())).error(R.drawable.no_profile).into(holder.profile);
             }
 
             Log.e("TAG", "onBindViewHolder: " + arrayListTopic.get(position).getUser_image());

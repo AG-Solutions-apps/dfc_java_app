@@ -4,14 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.dfc.agsolutions.Model.Branch;
 import com.dfc.agsolutions.Model.DeletModel;
@@ -28,9 +26,7 @@ import com.dfc.agsolutions.Model.ResponseArrayModel;
 import com.dfc.agsolutions.Model.ResponseTodoCount;
 import com.dfc.agsolutions.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import java.util.List;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -41,7 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeScreen extends Fragment {
 
-    TextView branchname, branchnameadmin,username;
+    TextView branchname, branchnameadmin, username;
     SharedPreferences sp;
     SharedPreferences.Editor ed;
     BottomSheetDialog bottomSheetDialog;
@@ -51,6 +47,9 @@ public class HomeScreen extends Fragment {
     LottieAnimationView comingsun;
     ImageView logout;
     TextView totaltodo;
+    LinearLayout vhivlelivk;
+
+    ProgressDialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,24 +59,30 @@ public class HomeScreen extends Fragment {
         username = view.findViewById(R.id.username);
         totaltodo = view.findViewById(R.id.totaltodo);
 
+        vhivlelivk = view.findViewById(R.id.vhivlelivk);
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_home_screen);
-        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ed = sp.edit();
         branchname = view.findViewById(R.id.branchname);
         branchnameadmin = view.findViewById(R.id.branchnameadmin);
         creattrip = view.findViewById(R.id.creattrip);
         mainview = view.findViewById(R.id.mainview);
         comingsun = view.findViewById(R.id.comingsun);
-        branchname.setText("" + sp.getString("userBranch", ""));
-        branchnameadmin.setText("" + sp.getString("userBranch", ""));
+
+        String branchName = sp.getString("userBranch", "");
+        branchname.setText(branchName);
+
+        String branchAdmin = sp.getString("userBranch", "");
+        branchnameadmin.setText(branchAdmin);
+
         logout = view.findViewById(R.id.logout);
         Log.e("TAG", "get_branch: +++ " + sp.getString("token", ""));
-        username.setText(sp.getString("fullName",""));
-        user_type = sp.getString("user_type", "");
+        username.setText(sp.getString("fullName", ""));
+        user_type = sp.getString("userType", "");
 
         Log.e("user_types", "user_type:-- " + user_type);
 
@@ -87,10 +92,8 @@ public class HomeScreen extends Fragment {
             branchnameadmin.setVisibility(View.GONE);
             creattrip.setVisibility(View.GONE);
             branchname.setVisibility(View.VISIBLE);
-
         } else if (user_type.equals("2")) {
             mainview.setVisibility(View.VISIBLE);
-
             branchnameadmin.setVisibility(View.VISIBLE);
             branchname.setVisibility(View.GONE);
             creattrip.setVisibility(View.GONE);
@@ -99,156 +102,97 @@ public class HomeScreen extends Fragment {
         } else {
             mainview.setVisibility(View.VISIBLE);
             comingsun.setVisibility(View.GONE);
-
             branchnameadmin.setVisibility(View.GONE);
             branchname.setVisibility(View.VISIBLE);
             creattrip.setVisibility(View.VISIBLE);
-
         }
 
         get_todotask();
 
+        branchnameadmin.setOnClickListener(v -> bottomSheetDialog.show());
 
-        branchnameadmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                bottomSheetDialog.show();
-
-            }
-        });
-
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                countryDialoglogout();
-
-            }
-        });
+        logout.setOnClickListener(v -> logOutUser());
 //        branchname.setText("" + sp.getString("user_type",""));
 
+        view.findViewById(R.id.vhivlelivk).setOnClickListener(v -> {
 
-        view.findViewById(R.id.vhivlelivk).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            if (user_type.equals("1")) {
+                startActivity(new Intent(getActivity(), TripActivity.class));
 
+            } else if (user_type.equals("2")) {
+                startActivity(new Intent(getActivity(), AdminTripActivity.class));
 
-                if (user_type.equals("1")) {
-                    startActivity(new Intent(getActivity(), TripActivity.class));
+            } else {
 
-                } else if (user_type.equals("2")) {
-                    startActivity(new Intent(getActivity(), AdminTripActivity.class));
-
-                } else {
-
-                    startActivity(new Intent(getActivity(), AdminTripActivity.class));
-
-                }
-            }
-        });
-
-        view.findViewById(R.id.payment).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(getActivity(), PaymentActivity.class).putExtra("header", "Payment"));
-
+                startActivity(new Intent(getActivity(), AdminTripActivity.class));
 
             }
         });
 
-        view.findViewById(R.id.expence).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        view.findViewById(R.id.payment).setOnClickListener(v ->
+            startActivity(new Intent(getActivity(), PaymentActivity.class).putExtra("header", "Payment")));
 
-                startActivity(new Intent(getActivity(), ExpensesActicity.class).putExtra("header", "Expenses"));
+        view.findViewById(R.id.allvhicle).setOnClickListener(v ->
+            startActivity(new Intent(getActivity(), Allvhicale_list_activity.class).putExtra("header", "Payment")));
 
+        view.findViewById(R.id.expence).setOnClickListener(v ->
+            startActivity(new Intent(getActivity(), ExpensesActicity.class).putExtra("header", "Expenses")));
 
-            }
-        });
+        view.findViewById(R.id.driver).setOnClickListener(v ->
+            startActivity(new Intent(getActivity(), DriverListActivity.class).putExtra("header", "Driver")));
 
-        view.findViewById(R.id.driver).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        view.findViewById(R.id.service).setOnClickListener(v ->
+            startActivity(new Intent(getActivity(), VehicleServiceActivity.class).putExtra("header", "Service")));
 
-                startActivity(new Intent(getActivity(), DriverListActivity.class).putExtra("header", "Driver"));
+        view.findViewById(R.id.todolis).setOnClickListener(v ->
+            startActivity(new Intent(getActivity(), ToDoListActivity.class).putExtra("header", "To Do list")));
 
-
-            }
-        });
-
-        view.findViewById(R.id.service).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(getActivity(), VehicleServiceActivity.class).putExtra("header", "Service"));
-
-            }
-        });
-
-        view.findViewById(R.id.todolis).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(getActivity(), ToDoListActivity.class).putExtra("header", "To Do list"));
-
-
-            }
-        });
-
-
-        view.findViewById(R.id.creattrip).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(getActivity(), CreatTrip.class).putExtra("header", "To Do list"));
-
-            }
-        });
+        view.findViewById(R.id.creattrip).setOnClickListener(v ->
+            startActivity(new Intent(getActivity(), CreatTrip.class).putExtra("header", "To Do list")));
 
         return view;
     }
-
-    ProgressDialog dialog;
-
 
     public void get_branch() {
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
-        dialog.show();
+//        dialog.show();
+
+        Log.e("dialog", "dialog1: ");
+
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
 //        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
-                    .header("Authorization", "Bearer " + sp.getString("token", ""))
-                    .method(original.method(), original.body());
+                .header("Authorization", "Bearer " + sp.getString("token", ""))
+                .method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
 
-
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
+            .baseUrl(getString(R.string.commn_url))
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient.build())
+            .build();
         Api loginservice = retrofit.create(Api.class);
         Call<ResponseArrayModel> call = loginservice.get_branch();
         call.enqueue(new Callback<ResponseArrayModel>() {
             @Override
-            public void onResponse(Call<ResponseArrayModel> call, Response<ResponseArrayModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<ResponseArrayModel> call,
+                @NonNull Response<ResponseArrayModel> response) {
 
-                if (response.body().getCode().equalsIgnoreCase("200")) {
+//                Log.e("responce..", "" + response.toString());
 
-                    List<Branch> branches = response.body().getData();
+                ResponseArrayModel responseArrayModel = response.body();
+                if (responseArrayModel != null && responseArrayModel.getCode().equalsIgnoreCase("200")) {
+
+                    List<Branch> branches = responseArrayModel.getData();
                     countryDialog(branches);
 
 
@@ -259,29 +203,36 @@ public class HomeScreen extends Fragment {
                     Toast.makeText(getActivity(), "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
+                Log.e("dismiss", "dismiss3: ");
+
 
             }
 
             @Override
-            public void onFailure(Call<ResponseArrayModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<ResponseArrayModel> call,
+                @NonNull Throwable t) {
+//                Log.e("sdfsd", "" + t.toString());
                 dialog.dismiss();
+                Log.e("dismiss", "dismiss3: ");
             }
         });
     }
+
     public void get_todotask() {
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
         dialog.show();
+        Log.e("dialog", "dialog2: ");
+
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
 //        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
-                    .header("Authorization", "Bearer " + sp.getString("token", ""))
-                    .method(original.method(), original.body());
+                .header("Authorization", "Bearer " + sp.getString("token", ""))
+                .method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
@@ -290,21 +241,23 @@ public class HomeScreen extends Fragment {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
+            .baseUrl(getString(R.string.commn_url))
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient.build())
+            .build();
         Api loginservice = retrofit.create(Api.class);
         Call<ResponseTodoCount> call = loginservice.get_gettodocount(sp.getString("userBranch", ""));
         call.enqueue(new Callback<ResponseTodoCount>() {
             @Override
-            public void onResponse(Call<ResponseTodoCount> call, Response<ResponseTodoCount> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<ResponseTodoCount> call,
+                @NonNull Response<ResponseTodoCount> response) {
+//                Log.e("responce..", "" + response.toString());
 
-                if (response.body().getCode().equalsIgnoreCase("200")) {
+                ResponseTodoCount responseTodoCount = response.body();
+                if (responseTodoCount != null && responseTodoCount.getCode().equalsIgnoreCase("200")) {
 
 
-                    totaltodo.setText("" + response.body().getData());
+                    totaltodo.setText(responseTodoCount.getData());
 //
 //                    List<Branch> branches = response.body().getData();
 //                    countryDialog(branches);
@@ -317,78 +270,101 @@ public class HomeScreen extends Fragment {
                     Toast.makeText(getActivity(), "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
+                Log.e("dismiss", "dismiss1: ");
 
             }
 
             @Override
-            public void onFailure(Call<ResponseTodoCount> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<ResponseTodoCount> call,
+                @NonNull Throwable t) {
+//                Log.e("sdfsd", "" + t.toString());
                 dialog.dismiss();
+                Log.e("dismiss", "dismiss11: ");
             }
         });
     }
 
     private void countryDialog(List<Branch> branches) {
-        bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.SheetDialog);
-        bottomSheetDialog.setContentView(R.layout.branch_bottom_sheet_dialog);
+//        vhivlelivk.
+        try {
+            if (isAdded()) { // Check if the fragment is added to the activity
+                bottomSheetDialog = new BottomSheetDialog(requireActivity(), R.style.SheetDialog);
+                bottomSheetDialog.setContentView(R.layout.branch_bottom_sheet_dialog);
 
-        RecyclerView rvCountry = bottomSheetDialog.findViewById(R.id.rvCountry);
+                RecyclerView rvCountry = bottomSheetDialog.findViewById(R.id.rvCountry);
 
+                if (getActivity() != null & rvCountry != null) { // Check if getActivity() returns a non-null value
+                    rvCountry.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    rvCountry.setHasFixedSize(true);
 
-        rvCountry.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvCountry.setHasFixedSize(true);
+                    Home_Today_list_Adapter home_today_list_adapter = new Home_Today_list_Adapter(getActivity(), branches);
+                    rvCountry.setAdapter(home_today_list_adapter);
+                }
+            } else {
+                // Handle the case when the fragment is not attached to the activity
+                // You might want to log an error or handle it in another way
+            }
+        } catch (java.lang.IllegalStateException e) {
+            e.printStackTrace();
+            Log.e("TAG", "countryDialog: "+e.getMessage() );
+        }
 
+//        try {
+//            bottomSheetDialog = new BottomSheetDialog(requireActivity(), R.style.SheetDialog);
+//            bottomSheetDialog.setContentView(R.layout.branch_bottom_sheet_dialog);
+//
+//            RecyclerView rvCountry = bottomSheetDialog.findViewById(R.id.rvCountry);
+//
+//
+//            rvCountry.setLayoutManager(new LinearLayoutManager(getActivity()));
+//            rvCountry.setHasFixedSize(true);
+//            Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
+//
+//
+//            Home_Today_list_Adapter home_today_list_adapter = new Home_Today_list_Adapter(getActivity(), branches);
+//            rvCountry.setAdapter(home_today_list_adapter);
+//        }
+//        catch (java.lang.IllegalStateException e) {
+//            Toast.makeText(requireActivity(), "e", Toast.LENGTH_LONG).show();
+//            e.printStackTrace();
+//        }
 
-        Home_Today_list_Adapter home_today_list_adapter = new Home_Today_list_Adapter(getActivity(), branches);
-        rvCountry.setAdapter(home_today_list_adapter);
-
+    }
 
 //        LinearLayout copy = bottomSheetDialog.findViewById(R.id.copyLinearLayout);
 
-    }
 
 
-    private void countryDialoglogout() {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.SheetDialog);
-        bottomSheetDialog.setContentView(R.layout.logout_bottom_sheet_dialog);
-        bottomSheetDialog.show();
 
+    private void logOutUser() {
 
-        TextView logout = bottomSheetDialog.findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity(), R.style.SheetDialog);
+//        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
+//        bottomSheetDialog.show();
 
+//        TextView logout = bottomSheetDialog.findViewById(R.id.logout);
+//        if (logout != null) {
+//            logout.setOnClickListener(v -> {
                 ed.clear();
                 ed.commit();
-
                 startActivity(new Intent(getActivity(), ActivityCheckMobileNumber.class));
-                getActivity().finish();
+                requireActivity().finish();
+//            });
+//        }
 
-            }
-        });
-
-
-        TextView delete = bottomSheetDialog.findViewById(R.id.delete);
-
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                get_logout();
-
-
-            }
-        });
-
+//        TextView delete = bottomSheetDialog.findViewById(R.id.tvDeleteMyAccountAction);
+//        if (delete != null) {
+//            delete.setOnClickListener(v -> deleteUserAccount());
+//        }
 
     }
 
-
-    public void get_logout() {
+    public void deleteUserAccount() {
 //        ProgressDialog  dialog = new ProgressDialog(activity);
 //        dialog.setMessage("Loading...");
 //        dialog.setCancelable(false);
         dialog.show();
+        Log.e("dialog", "dialog2: " );
 //
 //        sp = PreferenceManager.getDefaultSharedPreferences(activity);
 //        ed = sp.edit();
@@ -399,44 +375,50 @@ public class HomeScreen extends Fragment {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
-                    .header("Authorization", "Bearer " + sp.getString("token", ""))
-                    .method(original.method(), original.body());
+                .header("Authorization", "Bearer " + sp.getString("token", ""))
+                .method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.base_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
+            .baseUrl(getString(R.string.commn_url))
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient.build())
+            .build();
         Api loginservice = retrofit.create(Api.class);
         Call<DeletModel> call = loginservice.get_deleteaccount();
         call.enqueue(new Callback<DeletModel>() {
             @Override
-            public void onResponse(Call<DeletModel> call, Response<DeletModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<DeletModel> call,
+                @NonNull Response<DeletModel> response) {
+//                Log.e("responce..", "" + response.toString());
 
-                if (response.body().getCode().equalsIgnoreCase("200")) {
+                DeletModel deletModel = response.body();
+                if (deletModel != null && deletModel.getCode().equalsIgnoreCase("200")) {
                     ed.clear();
                     ed.commit();
                     Toast.makeText(getActivity(), "Your Account is Deleted!!", Toast.LENGTH_SHORT).show();
 
                     startActivity(new Intent(getActivity(), ActivityIntroScreen.class));
-                    getActivity().finish();
+                    requireActivity().finish();
 
                 } else {
                     Toast.makeText(getActivity(), "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
+                Log.e("dismiss", "dismiss2: " );
+
 
             }
 
             @Override
-            public void onFailure(Call<DeletModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<DeletModel> call, @NonNull Throwable t) {
                 Log.e("sdfsd", "" + t.toString());
                 dialog.dismiss();
+                Log.e("dismiss", "dismiss22: " );
+
             }
         });
     }
@@ -489,18 +471,15 @@ public class HomeScreen extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull final Home_Today_list_Adapter.Holder holder, @SuppressLint("RecyclerView") final int position) {
 
+            String branchName = arrayListTopic.get(position).getBranchName();
+            holder.status.setText(branchName);
 
-            holder.status.setText("" + arrayListTopic.get(position).getBranchName());
-
-            holder.click.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    ed.putString("userBranch", arrayListTopic.get(position).getBranchName());
-                    ed.commit();
-                    branchnameadmin.setText("" + sp.getString("userBranch", ""));
-                    bottomSheetDialog.dismiss();
-                }
+            holder.click.setOnClickListener(v -> {
+                ed.putString("userBranch", arrayListTopic.get(position).getBranchName());
+                ed.commit();
+                String branchUserName = sp.getString("userBranch", "");
+                branchnameadmin.setText(branchUserName);
+                bottomSheetDialog.dismiss();
             });
 
         }
@@ -512,16 +491,12 @@ public class HomeScreen extends Fragment {
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
-
-
                 status = itemView.findViewById(R.id.status);
                 click = itemView.findViewById(R.id.click);
 
             }
         }
 
-
     }
-
 
 }

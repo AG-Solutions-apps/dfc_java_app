@@ -6,4 +6,5 @@ public class Data {
     public String getToken() {
         return token;
     }
+
 }

@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rele"
-    android:layout_width="200dp"
-    android:layout_height="40dp"
-    android:layout_margin="@dimen/_1sdp"
-    android:gravity="center">
-
+  android:id="@+id/rele"
+  android:layout_width="200dp"
+  android:layout_height="40dp"
+  android:layout_margin="@dimen/_1sdp"
+  android:gravity="center">
 
     <TextView
-        android:id="@+id/text1"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:maxLines="1"
-        android:textColor="@drawable/tab_text_color_selector1"
-        android:layout_marginLeft="@dimen/_3sdp"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:paddingLeft="@dimen/_2sdp"
-        android:layout_marginRight="@dimen/_5sdp"
-        android:text="Teaching / Academician"
-        android:textSize="16dp" />
+      android:id="@+id/text1"
+      android:layout_width="200dp"
+      android:layout_height="40dp"
+      android:maxLines="1"
+      android:textColor="@drawable/tab_text_color_selector1"
+      android:layout_marginStart="@dimen/_3sdp"
+      android:layout_centerVertical="true"
+      android:gravity="center"
+      android:paddingStart="@dimen/_2sdp"
+      android:paddingEnd="1dp"
+      android:layout_marginEnd="@dimen/_5sdp"
+      android:text="@string/teaching_academician"
+      android:textSize="16sp" />
+
+    <TextView
+      android:id="@+id/totaltodo"
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:layout_alignEnd="@+id/text1"
+      android:gravity="center"
+      android:textStyle="bold"
+      android:layout_centerInParent="true"
+      android:background="@drawable/acceptbtn2"
+      android:textColor="@color/white"
+      android:textSize="12sp" />
+
 </RelativeLayout>
