@@ -151,7 +151,7 @@
                     app:tint="@color/white" />
 
                 <Spinner
-                    android:id="@+id/spinner1"
+                    android:id="@+id/spinner_amount"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginStart="5dp"

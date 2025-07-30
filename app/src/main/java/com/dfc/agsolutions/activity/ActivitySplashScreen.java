@@ -55,9 +55,9 @@ public class ActivitySplashScreen extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Api loginService = retrofit.create(Api.class);
-        Call<MyResponseData> call = loginService.get_login(sp.getString("mobile", ""),
+        Call<MyResponseData> call = loginService.getLogin(sp.getString("mobile", ""),
             sp.getString("password", ""));
-        call.enqueue(new Callback<MyResponseData>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<MyResponseData> call,
                 @NonNull Response<MyResponseData> response) {

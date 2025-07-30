@@ -148,7 +148,7 @@ public class OnGoingTripFragment extends Fragment {
 
             Api loginService = retrofit.create(Api.class);
 
-            Call<OngoingTruckTypeModel> call = loginService.get_vhiclelistongoing(selectedBranch, "1");
+            Call<OngoingTruckTypeModel> call = loginService.getVehicleListOngoing(selectedBranch, "1");
             call.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(@NonNull Call<OngoingTruckTypeModel> call,
@@ -394,7 +394,7 @@ public class OnGoingTripFragment extends Fragment {
             Api loginService = retrofit.create(Api.class);
 
             Call<OngoingTruckTypeModel> call =
-                    loginService.get_vhiclestatus(sp.getString("userBranch", ""),
+                    loginService.getVehicleStatus(sp.getString("userBranch", ""),
                             status, id);
             call.enqueue(new Callback<>() {
                 @Override

@@ -36,7 +36,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".activity.Allvhicale_list_activity"
+            android:name=".activity.AllVehicleListActivity"
             android:exported="false" />
 
         <activity

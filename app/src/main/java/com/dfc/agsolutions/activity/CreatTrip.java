@@ -1,5 +1,6 @@
 package com.dfc.agsolutions.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -7,9 +8,10 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,8 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.cvaghela.spinner.searchablespinner.SearchableSpinner;
-//import com.cvaghela.spinner.searchablespinner.interfaces.OnItemSelectedListener;
 import com.dfc.agsolutions.model.CreatTripModel;
 import com.dfc.agsolutions.model.FetchAgencyDataModel;
 import com.dfc.agsolutions.model.FetchBHSDDataModel;
@@ -44,38 +44,40 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CreatTrip extends AppCompatActivity {
-    TextView brandname;
-    TextView bhsd;
-    TextView kilom;
-    TextView fhsd;
+public class CreatTrip extends
+        AppCompatActivity {
+
+    TextView tv_brand_name;
+    TextView tv_bhsd;
+    TextView tv_kilo_m;
+    TextView tv_fhsd;
+
     SharedPreferences sp;
     SharedPreferences.Editor ed;
+
     private Spinner spinnerBranches;
-    private Spinner spinnerdriver;
-//    private Spinner spinneragetnt;
-    Spinner spinneragetnt;
-//    SearchView searchView;
-    private Spinner spinnersupplayer;
+    private Spinner spinnerDriver;
+    Spinner spinnerAgent;
+
+    private Spinner spinnerSupplier;
     ProgressDialog dialog;
 
     int km = 0;
-    int fhsds = 0;
+    int fhsd = 0;
     Double mil = 0.0;
-    String currentdDate;
+    String currentDate;
     String trip_vehicle = null;
     String trip_driver = null;
     String trip_agency = "Select Agent";
 
-    EditText edtadvance, edtshsd, edtremark;
+    EditText edt_advance, edt_shsd, edt_remark;
     String trip_advance;
     String trip_SHSD, strDate = null;
     String trip_supplier;
     String trip_remarks;
     String trip_bhsd;
 
-    List<String> branchList = new ArrayList<>();
-    List<String> milageaaray = new ArrayList<>();
+    List<String> mileage_array = new ArrayList<>();
     RelativeLayout relative;
 
     boolean driver = false;
@@ -87,11 +89,10 @@ public class CreatTrip extends AppCompatActivity {
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();
+
         dialog = new ProgressDialog(CreatTrip.this);
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
-
-//        milageaaray.add("Select Vehicle");
 
         Date currentDate = new Date();
 
@@ -99,92 +100,82 @@ public class CreatTrip extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         // Format the date
-        currentdDate = dateFormat.format(currentDate);
+        this.currentDate = dateFormat.format(currentDate);
 
-        brandname = findViewById(R.id.tv_login_account_txt);
-        bhsd = findViewById(R.id.bhsd);
-        kilom = findViewById(R.id.tv_kilo_m);
-        fhsd = findViewById(R.id.fhsd);
-        edtadvance = findViewById(R.id.et_advance);
-        edtshsd = findViewById(R.id.et_shsd);
-        edtremark = findViewById(R.id.et_remark);
+        tv_brand_name = findViewById(R.id.tv_login_account_txt);
+        tv_bhsd = findViewById(R.id.bhsd);
+        tv_kilo_m = findViewById(R.id.tv_kilo_m);
+        tv_fhsd = findViewById(R.id.fhsd);
+        edt_advance = findViewById(R.id.et_advance);
+        edt_shsd = findViewById(R.id.et_shsd);
+        edt_remark = findViewById(R.id.et_remark);
         relative = findViewById(R.id.relative);
-        brandname.setText("" + sp.getString("userBranch", ""));
+
+        String branchName = " " + sp.getString("userBranch", "");
+        tv_brand_name.setText(branchName);
 
         findViewById(R.id.iv_back).setOnClickListener(v -> finish());
 
         spinnerBranches = findViewById(R.id.spinnerBranches);
-        spinnerdriver = findViewById(R.id.spinner_driver);
-        spinneragetnt = findViewById(R.id.spinner_agent);
-//        searchView = findViewById(R.id.searchView);
-//          searchableSpinner = findViewById(R.id.searchableSpinner);
-//        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-//        searchEditText.setHintTextColor(Color.WHITE);
-//        searchEditText.setTextColor(Color.WHITE);
+        spinnerDriver = findViewById(R.id.spinner_driver);
+        spinnerAgent = findViewById(R.id.spinner_agent);
 
+        spinnerSupplier = findViewById(R.id.spinner_supplier);
+        spinnerBranches.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.white),
+                PorterDuff.Mode.SRC_ATOP);
+        spinnerDriver.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.white),
+                PorterDuff.Mode.SRC_ATOP);
+        spinnerAgent.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.white),
+                PorterDuff.Mode.SRC_ATOP);
+        spinnerSupplier.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.white),
+                PorterDuff.Mode.SRC_ATOP);
 
-        spinnersupplayer = findViewById(R.id.spinner_supplier);
-        spinnerBranches.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-        spinnerdriver.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-        spinneragetnt.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-        spinnersupplayer.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-//        spinnerBranches.setVisibility(View.GONE);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, milageaaray);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//
-//        spinnerBranches.setAdapter(adapter);
-        vhicaldraiverarray.add("Select Driver");
+        vehicleDriverArray.add("Select Driver");
 
-        ArrayAdapter<String> adapterdriver = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicaldraiverarray);
-        adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerdriver.setAdapter(adapterdriver);
+        ArrayAdapter<String> adapterDriver = new ArrayAdapter<>(CreatTrip.this,
+                R.layout.simple_spinner_item,
+                vehicleDriverArray);
 
+        adapterDriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDriver.setAdapter(adapterDriver);
 
         spinnerBranches.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String selectedBranch1 = (String) parentView.getItemAtPosition(position);
-                trip_vehicle = selectedBranch1;
+            public void onItemSelected(AdapterView<?> parentView,
+                                       View selectedItemView,
+                                       int position,
+                                       long id) {
+                trip_vehicle = parentView.getItemAtPosition(position).toString();
 
                 if (position > 0) {
-//                    vhicaldraiverarray.remove(0);
+
                     String selectedBranch = (String) parentView.getItemAtPosition(position);
                     trip_vehicle = selectedBranch;
-//                    vhicaldraiverarray.remove(0);
+
                     try {
-                        get_BHSD(selectedBranch);
+                        getBHSD(selectedBranch);
 
-
-                        mil = Double.parseDouble(milageaaray.get(position));
-                        Log.e("dsaadasd", "mile:-  " + milageaaray.get(position));
-                        Log.e("dsaadasd", "mileSS:-  " + mil);
-
-
-//                        fhsds = km / mil;
-//
-//
-//                        reloafhsd();
-
+                        mil = Double.parseDouble(mileage_array.get(position));
+                        Log.e("mileage_array: ", "mile:-  " + mileage_array.get(position));
+                        Log.e("mil: ", "mileSS:-  " + mil);
 
                     } catch (Exception e) {
-                        throw new RuntimeException(e);
-
-
+                        Log.e("mileage_array: ", "mile:-  " + e);
                     }
                     if (trip_vehicle != null) {
-//                        get_driver();
 
-                        vhicaldraiverarray.remove(0);
-                        vhicaldraiverarray.addAll(demovhicaldraiverarray);
+                        vehicleDriverArray.remove(0);
+                        vehicleDriverArray.addAll(demoVehicleDriverArray);
 
                         driver = true;
-                        ArrayAdapter<String> adapterdriver = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicaldraiverarray);
-                        adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerdriver.setAdapter(adapterdriver);
+                        ArrayAdapter<String> adapterDriver = new ArrayAdapter<>(CreatTrip.this,
+                                R.layout.simple_spinner_item,
+                                vehicleDriverArray);
+                        adapterDriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinnerDriver.setAdapter(adapterDriver);
                     }
 
                 }
-
 
             }
 
@@ -194,15 +185,16 @@ public class CreatTrip extends AppCompatActivity {
             }
         });
 
-        spinnerdriver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerDriver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String selectedBranch1 = (String) parentView.getItemAtPosition(position);
-                trip_driver = selectedBranch1;
+            public void onItemSelected(AdapterView<?> parentView,
+                                       View selectedItemView,
+                                       int position,
+                                       long id) {
+                trip_driver = parentView.getItemAtPosition(position).toString();
 
                 if (!trip_driver.equals("Select Driver")) {
-
-                    get_driver();
+                    getDriver();
                 }
 
             }
@@ -212,28 +204,30 @@ public class CreatTrip extends AppCompatActivity {
                 // Do nothing here
             }
         });
-        spinneragetnt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerAgent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String selectedBranch1 =  adapterAgent.getItem(position);
-//                String selectedBranch1 = (String) parentView.getItemAtPosition(position);
-                trip_agency = selectedBranch1;
+            public void onItemSelected(AdapterView<?> parentView,
+                                       View selectedItemView,
+                                       int position,
+                                       long id) {
+
+                trip_agency = adapterAgent.getItem(position);
                 if (position > 0) {
-                    String selectedBranch =  adapterAgent.getItem(position);
-//                    String selectedBranch = (String) parentView.getItemAtPosition(position);
-                    trip_agency = selectedBranch;
+
+                    trip_agency = adapterAgent.getItem(position);
 
                     try {
-                        String name = kmarray.get(position - 1);
+                        String name = kmArray.get(position - 1);
                         km = (int) Double.parseDouble(name);
-                        Log.e("asdadasada", "pos:-   " + position);
-                        kilom.setText("" + name + " Km");
-                        fhsds = (int) (km / mil);
-                        reloafhsd();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+                        Log.e("position", "pos:-   " + position);
 
+                        String kms = " " + name + " Km";
+                        tv_kilo_m.setText(kms);
+                        fhsd = (int) (km / mil);
+                        reloadFHSD();
+                    } catch (Exception e) {
+                        Log.e("mileage_array: ", "mile:-  " + e);
+                    }
 
                 }
 
@@ -244,152 +238,98 @@ public class CreatTrip extends AppCompatActivity {
 
             }
         });
-//        spinneragetnt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-//
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parentView) {
-//                // Do nothing here
-//            }
-//        });
 
-        spinnersupplayer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerSupplier.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String selectedBranch1 = (String) parentView.getItemAtPosition(position);
-                trip_supplier = selectedBranch1;
+            public void onItemSelected(AdapterView<?> parentView,
+                                       View selectedItemView,
+                                       int position,
+                                       long id) {
+                trip_supplier = parentView.getItemAtPosition(position).toString();
 
                 if (position > 0) {
-                    String selectedBranch = (String) parentView.getItemAtPosition(position);
-                    trip_supplier = selectedBranch;
-
+                    trip_supplier = parentView.getItemAtPosition(position).toString();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 // Do nothing here
-
-            }
-        });
-        findViewById(R.id.ic_creat_trip).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.e("trip_bhsd", "trip_bhsd:-  " + trip_bhsd);
-                if (tvDate.getText().toString().length() == 0) {
-                    strDate = null;
-                }else if (tvDate.getText().toString().contains("Select Date")) {
-                    strDate = null;
-                } else {
-//                    strDate = tvDate.getText().toString().replaceAll("/","");
-                }
-
-
-                if (edtadvance.getText().toString().length() == 0) {
-                    trip_advance = "0";
-                } else {
-                    trip_advance = edtadvance.getText().toString();
-                }
-
-
-                if (trip_supplier.equals("Select Supplier")) {
-                    trip_supplier = "";
-
-                } else {
-
-//                    trip_advance = edtadvance.getText().toString();
-                }
-
-
-                if (edtshsd.getText().toString().length() == 0) {
-                    trip_SHSD = "0";
-                } else {
-                    trip_SHSD = edtshsd.getText().toString();
-                }
-
-
-                try {
-                    trip_remarks = edtremark.getText().toString();
-                } catch (Exception e) {
-                }
-
-                if (strDate == null) {
-//                    Toast.makeText(CreatTrip.this, "Please Select Vehicle", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(CreatTrip.this, "Please select a date", Toast.LENGTH_SHORT).show();
-
-                } else if (trip_vehicle.equals("Select Vehicle")) {
-                    Toast.makeText(CreatTrip.this, "Please Select Vehicle", Toast.LENGTH_SHORT).show();
-                } else if (trip_driver.equals("Select Driver")) {
-                    Toast.makeText(CreatTrip.this, "Please Select Driver", Toast.LENGTH_SHORT).show();
-                } else if (trip_agency.equals("Select Agent")) {
-                    Toast.makeText(CreatTrip.this, "Please Select Agent", Toast.LENGTH_SHORT).show();
-                } else {
-                    get_updatedata();
-                }
-
             }
         });
 
-//        spinnerdriver.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//                get_driver();
-//
-//                return false;
-//            }
-//        });
+        findViewById(R.id.ic_creat_trip).setOnClickListener(v -> {
 
-
-        spinnerdriver.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-//                     Dropdown was clicked, perform your action here
-
-//                    if (!trip_driver.equals("Select Driver")) {
-//
-//                        get_driver();
-//                    }
-//                    Toast.makeText(CreatTrip.this, "Dropdown clicked", Toast.LENGTH_SHORT).show();
-                }
-                return false;
+            Log.e("trip_bhsd", "trip_bhsd:-  " + trip_bhsd);
+            if (tvDate.getText().toString().isEmpty()) {
+                strDate = null;
+            } else if (tvDate.getText().toString().contains("Select Date")) {
+                strDate = null;
             }
+
+            if (edt_advance.getText().toString().isEmpty()) {
+                trip_advance = "0";
+            } else {
+                trip_advance = edt_advance.getText().toString();
+            }
+
+
+            if (trip_supplier.equals("Select Supplier")) {
+                trip_supplier = "";
+            }
+
+
+            if (edt_shsd.getText().toString().isEmpty()) {
+                trip_SHSD = "0";
+            } else {
+                trip_SHSD = edt_shsd.getText().toString();
+            }
+
+            try {
+                trip_remarks = edt_remark.getText().toString();
+            } catch (Exception e) {
+                Log.e("trip_remarks", "trip_remarks:-  " + e);
+            }
+
+            if (strDate == null) {
+                Toast.makeText(CreatTrip.this, "Please select a date", Toast.LENGTH_SHORT).show();
+            } else if (trip_vehicle.equals("Select Vehicle")) {
+                Toast.makeText(CreatTrip.this, "Please Select Vehicle", Toast.LENGTH_SHORT).show();
+            } else if (trip_driver.equals("Select Driver")) {
+                Toast.makeText(CreatTrip.this, "Please Select Driver", Toast.LENGTH_SHORT).show();
+            } else if (trip_agency.equals("Select Agent")) {
+                Toast.makeText(CreatTrip.this, "Please Select Agent", Toast.LENGTH_SHORT).show();
+            } else {
+                getUpdatedData();
+            }
+
         });
 
-        get_branch();
-        get_Aggetnt();
-        get_vendor();
+        getBranch();
+        getAgent();
+        getVendor();
 
-        findViewById(R.id.rlSelectDate).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                datepick();
-            }
-        });
+        findViewById(R.id.rlSelectDate).setOnClickListener(v -> datePick());
         tvDate = findViewById(R.id.tvDate);
-
     }
 
     TextView tvDate;
     int year,month,dayOfMonth;
 
-    void datepick() {
+    void datePick() {
         // Get current date
-            Calendar calendar = Calendar.getInstance();
-         year = calendar.get(Calendar.YEAR);
-         month = calendar.get(Calendar.MONTH);
-         dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        Calendar calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
         Calendar selectedDate = Calendar.getInstance();
         // Create DatePickerDialog with current date as default
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, R.style.DatePickerDialogTheme, (view, selectedYear, selectedMonth, selectedDay) -> {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                R.style.DatePickerDialogTheme, (view,
+                                                selectedYear,
+                                                selectedMonth,
+                                                selectedDay) -> {
             // Validate selected date
-
             selectedDate.set(selectedYear, selectedMonth, selectedDay);
 
             Calendar minDate = Calendar.getInstance();
@@ -399,11 +339,10 @@ public class CreatTrip extends AppCompatActivity {
                 // Invalid date selected
                 Toast.makeText(CreatTrip.this, "Please select a date within the last 4 days or today.", Toast.LENGTH_SHORT).show();
             } else {
-                tvDate.setText((selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear).toString());
-                strDate = (selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay).toString();
-                // Valid date selected
-                // Do something with the selected date
-//                Toast.makeText(CreatTrip.this, "Selected Date: " + selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear, Toast.LENGTH_SHORT).show();
+                String date_ = selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+                tvDate.setText(date_);
+
+                strDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
             }
         }, year, month, dayOfMonth);
 
@@ -414,147 +353,72 @@ public class CreatTrip extends AppCompatActivity {
         calendar.add(Calendar.DAY_OF_MONTH, -3);
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         datePickerDialog.setTitle("Date");
-//        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Done", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                datePickerDialog.dismiss();
-////                tvDate.setText(calendar.getTime().toString());
-//
-//            }
-//        });
-//        datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                datePickerDialog.dismiss();
-//            }
-//        });
         // Show DatePickerDialog
         datePickerDialog.show();
     }
 
+    List<String> vehicleArray = new ArrayList<>();
+    List<String> vehicleDriverArray = new ArrayList<>();
+    List<String> demoVehicleDriverArray = new ArrayList<>();
+    List<String> agentArray = new ArrayList<>();
+    List<String> vendorArray = new ArrayList<>();
+    List<String> kmArray = new ArrayList<>();
 
-/*
-    public class CustomAdapter extends ArrayAdapter<String> implements Filterable {
-
-        private List<String> dataList;
-        private List<String> filteredList;
-
-        public CustomAdapter(Context context, List<String> dataList) {
-            super(context, android.R.layout.simple_spinner_item, dataList);
-            this.dataList = dataList;
-            this.filteredList = new ArrayList<>(dataList);
-        }
-
-        @Override
-        public int getCount() {
-            return filteredList.size();
-        }
-
-        @Override
-        public String getItem(int position) {
-            return filteredList.get(position);
-        }
-
-        @Override
-        public Filter getFilter() {
-            return new Filter() {
-                @Override
-                protected FilterResults performFiltering(CharSequence constraint) {
-                    FilterResults filterResults = new FilterResults();
-                    List<String> results = new ArrayList<>();
-
-                    if (constraint == null || constraint.length() == 0) {
-                        results.addAll(dataList);
-                    } else {
-                        String filterPattern = constraint.toString().toLowerCase().trim();
-                        for (String item : dataList) {
-                            if (item.toLowerCase().contains(filterPattern)) {
-                                results.add(item);
-                            }
-                        }
-                    }
-
-                    filterResults.values = results;
-                    filterResults.count = results.size();
-                    return filterResults;
-                }
-
-                @Override
-                protected void publishResults(CharSequence constraint, FilterResults results) {
-                    filteredList.clear();
-                    if (results != null && results.count > 0) {
-                        filteredList.addAll((List<String>) results.values);
-                        notifyDataSetChanged();
-                    }
-                }
-            };
-        }
-    }
-*/
-
-    List<String> vhicalarray = new ArrayList<>();
-    List<String> vhicaldraiverarray = new ArrayList<>();
-    List<String> demovhicaldraiverarray = new ArrayList<>();
-    List<String> aggentrarray = new ArrayList<>();
-    List<String> vendorrarray = new ArrayList<>();
-    List<String> kmarray = new ArrayList<>();
-
-    public void reloafhsd() {
-
-        fhsd.setText("" + fhsds + " Ltr");
-
+    public void reloadFHSD() {
+        String fhsd_ = " " + fhsd + " Ltr";
+        tv_fhsd.setText(fhsd_);
     }
 
-    public void get_branch() {
+    public void getBranch() {
         dialog.show();
-        vhicalarray.clear();
-        milageaaray.clear();
-//        vhicaldraiverarray.clear();
-//        branchList.clear();
-        vhicalarray.add("Select Vehicle");
-        milageaaray.add("0");
+        vehicleArray.clear();
+        mileage_array.clear();
+
+        vehicleArray.add("Select Vehicle");
+        mileage_array.add("0");
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder().header("Authorization", "Bearer " + sp.getString("token", "")).method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<FetchVehicleDataModel> call = loginservice.get_fatchvhiclelist(sp.getString("userBranch", ""));
-        call.enqueue(new Callback<FetchVehicleDataModel>() {
-            @Override
-            public void onResponse(Call<FetchVehicleDataModel> call, Response<FetchVehicleDataModel> response) {
-                Log.e("responce..", "" + response.toString());
+        Api loginService = retrofit.create(Api.class);
 
+        Call<FetchVehicleDataModel> call = loginService.fetchVehicleList(sp.getString("userBranch", ""));
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<FetchVehicleDataModel> call,
+                                   @NonNull Response<FetchVehicleDataModel> response) {
+                Log.e("response..", "" + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 
                     ArrayList<FetchVehicleDataModel> branches = response.body().getData();
 
                     for (FetchVehicleDataModel branch : branches) {
-                        vhicalarray.add(branch.getReg_no());
-                        demovhicaldraiverarray.add(branch.getVehicle_driver());
-                        milageaaray.add(branch.getVehicle_mileage());
+                        vehicleArray.add(branch.getReg_no());
+                        demoVehicleDriverArray.add(branch.getVehicle_driver());
+                        mileage_array.add(branch.getVehicle_mileage());
 
-                        Log.e("vhicalarrayv", "vhicalarray: " + vhicalarray);
-                        Log.e("vhicaldraiverarray", "vhicaldraiverarray: " + branch.getVehicle_driver());
-                        Log.e("milageaaray", "milageaaray: " + milageaaray);
+                        Log.e("vehicleArray", "vehicleArray: " + vehicleArray);
+                        Log.e("vehicleDriverArray", "vehicleDriverArray: " + branch.getVehicle_driver());
+                        Log.e("mileageArray", "mileageArray: " + mileage_array);
 
                     }
 
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicalarray);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(CreatTrip.this,
+                            R.layout.simple_spinner_item,
+                            vehicleArray);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerBranches.setAdapter(adapter);
 
-
-//                    setupSpinner(branchNames);
-                    Log.e("responce..", "branches:-  " + branches.size());
+                    Log.e("response..", "branches:-  " + branches.size());
 
                 } else {
                     Toast.makeText(CreatTrip.this, "Network Error!!", Toast.LENGTH_SHORT).show();
@@ -564,60 +428,49 @@ public class CreatTrip extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<FetchVehicleDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<FetchVehicleDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("FetchVehicleDataModel", "" + t);
                 dialog.dismiss();
             }
         });
     }
 
-    ArrayList<FetchDriverDataModel> branchesdriver = new ArrayList<>();
+    ArrayList<FetchDriverDataModel> branchesDriver = new ArrayList<>();
 
-    public void get_driver() {
+    public void getDriver() {
         dialog.show();
-//        vhicaldraiverarray.clear();
-//        vhicaldraiverarray.add("Select Driver");
-//        vhicaldraiverarray.add("Select Driver");
+
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
+
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder().header("Authorization", "Bearer " + sp.getString("token", "")).method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<FetchDriverDataModel> call = loginservice.get_fatchdriver(sp.getString("userBranch", ""));
-        call.enqueue(new Callback<FetchDriverDataModel>() {
-            @Override
-            public void onResponse(Call<FetchDriverDataModel> call, Response<FetchDriverDataModel> response) {
-                Log.e("responce..", "" + response.toString());
+        Api loginService = retrofit.create(Api.class);
 
+        Call<FetchDriverDataModel> call = loginService.fetchDriver(sp.getString("userBranch", ""));
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<FetchDriverDataModel> call,
+                                   @NonNull Response<FetchDriverDataModel> response) {
+                Log.e("response..", "" + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 
-                    branchesdriver = response.body().getData();
-                    vhicaldraiverarray.clear();
+                    branchesDriver = response.body().getData();
+                    vehicleDriverArray.clear();
 
-                    for (FetchDriverDataModel branch : branchesdriver) {
-                        vhicaldraiverarray.add(branch.getFull_name());
+                    for (FetchDriverDataModel branch : branchesDriver) {
+                        vehicleDriverArray.add(branch.getFull_name());
                     }
-//
-//                    ArrayAdapter<String> adapter = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicalarray);
-//                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinnerBranches.setAdapter(adapter);
-
-
-//                    ArrayAdapter<String> adapterdriver = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicaldraiverarray);
-//                    adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinnerdriver.setAdapter(adapterdriver);
-//
-
-//                    setupSpinner(branchNames);
-                    Log.e("responce..", "branches:-  " + branchesdriver.size());
+                    Log.e("response..", "branches:-  " + branchesDriver.size());
 
                 } else {
                     Toast.makeText(CreatTrip.this, "Network Error!!", Toast.LENGTH_SHORT).show();
@@ -627,84 +480,55 @@ public class CreatTrip extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<FetchDriverDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<FetchDriverDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("FetchDriverDataModel", "" + t);
                 dialog.dismiss();
             }
         });
     }
 
     ArrayAdapter<String> adapterAgent = null;
-    public void get_Aggetnt() {
+    public void getAgent() {
         dialog.show();
-        aggentrarray.clear();
-        kmarray.clear();
-        aggentrarray.add("Select Agent");
+        agentArray.clear();
+        kmArray.clear();
+        agentArray.add("Select Agent");
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder().header("Authorization", "Bearer " + sp.getString("token", "")).method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<FetchAgencyDataModel> call = loginservice.get_fetch_agency(sp.getString("userBranch", ""));
-        call.enqueue(new Callback<FetchAgencyDataModel>() {
-            @Override
-            public void onResponse(Call<FetchAgencyDataModel> call, Response<FetchAgencyDataModel> response) {
-                Log.e("responce..", "" + response.toString());
 
+        Api loginService = retrofit.create(Api.class);
+
+        Call<FetchAgencyDataModel> call = loginService.fetchAgency(sp.getString("userBranch", ""));
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<FetchAgencyDataModel> call,
+                                   @NonNull Response<FetchAgencyDataModel> response) {
+                Log.e("response..", "" + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 
                     ArrayList<FetchAgencyDataModel> branches = response.body().getData();
 
                     for (FetchAgencyDataModel branch : branches) {
-                        aggentrarray.add(branch.getAgency_name());
-                        kmarray.add(branch.getAgency_rt_km());
+                        agentArray.add(branch.getAgency_name());
+                        kmArray.add(branch.getAgency_rt_km());
                     }
-//
-//                    ArrayAdapter<String> adapter = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicalarray);
-//                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinnerBranches.setAdapter(adapter);
 
-
-                    adapterAgent = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, aggentrarray);
+                    adapterAgent = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, agentArray);
                     adapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinneragetnt.setAdapter(adapterAgent);
-//                    searchableSpinner.setAdapter(adapterdriver);
+                    spinnerAgent.setAdapter(adapterAgent);
 
-//                    searchableSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-//                        @Override
-//                        public void onItemSelected(View view, int position, long id) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onNothingSelected() {
-//
-//                        }
-//                    });
-
-//                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//                        @Override
-//                        public boolean onQueryTextSubmit(String query) {
-//                            return false;
-//                        }
-//
-//                        @Override
-//                        public boolean onQueryTextChange(String newText) {
-//                            adapterdriver.getFilter().filter(newText);
-//                            return false;
-//                        }
-//                    });
-
-//                    setupSpinner(branchNames);
-                    Log.e("responce..", "branches:-  " + branches.size());
+                    Log.e("response..", "branches:-  " + branches.size());
 
                 } else {
                     Toast.makeText(CreatTrip.this, "Network Error!!", Toast.LENGTH_SHORT).show();
@@ -714,56 +538,53 @@ public class CreatTrip extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<FetchAgencyDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<FetchAgencyDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("FetchAgencyDataModel", "" + t);
                 dialog.dismiss();
             }
         });
     }
 
-    public void get_vendor() {
+    public void getVendor() {
         dialog.show();
-        vendorrarray.clear();
-        vendorrarray.add("Select Supplier");
+        vendorArray.clear();
+        vendorArray.add("Select Supplier");
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder().header("Authorization", "Bearer " + sp.getString("token", "")).method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<FetchVendorDataModel> call = loginservice.get_fatchaggent(sp.getString("userBranch", ""), "Diesel");
-        call.enqueue(new Callback<FetchVendorDataModel>() {
-            @Override
-            public void onResponse(Call<FetchVendorDataModel> call, Response<FetchVendorDataModel> response) {
-                Log.e("responce..", "" + response.toString());
+        Api loginService = retrofit.create(Api.class);
 
+        Call<FetchVendorDataModel> call = loginService.fetchAgent(sp.getString("userBranch", ""), "Diesel");
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<FetchVendorDataModel> call,
+                                   @NonNull Response<FetchVendorDataModel> response) {
+                Log.e("response..", "" + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 
                     ArrayList<FetchVendorDataModel> branches = response.body().getData();
 
                     for (FetchVendorDataModel branch : branches) {
-                        vendorrarray.add(branch.getVendor_name());
+                        vendorArray.add(branch.getVendor_name());
                     }
-//
-//                    ArrayAdapter<String> adapter = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicalarray);
-//                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinnerBranches.setAdapter(adapter);
 
+                    ArrayAdapter<String> adapterDriver = new ArrayAdapter<>(CreatTrip.this,
+                            R.layout.simple_spinner_item,
+                            vendorArray);
+                    adapterDriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerSupplier.setAdapter(adapterDriver);
 
-                    ArrayAdapter<String> adapterdriver = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vendorrarray);
-                    adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnersupplayer.setAdapter(adapterdriver);
-
-
-//                    setupSpinner(branchNames);
-                    Log.e("responce..", "branches:-  " + branches.size());
+                    Log.e("response..", "branches:-  " + branches.size());
 
                 } else {
                     Toast.makeText(CreatTrip.this, "Network Error!!", Toast.LENGTH_SHORT).show();
@@ -773,8 +594,9 @@ public class CreatTrip extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<FetchVendorDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<FetchVendorDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("FetchVendorDataModel: ", "" + t);
                 dialog.dismiss();
             }
         });
@@ -782,45 +604,43 @@ public class CreatTrip extends AppCompatActivity {
 
     String trip_hsd, trip_hsd_supplied;
 
-    public void get_BHSD(String vhnomber) {
+    public void getBHSD(String vehicleNumber) {
         dialog.show();
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
-            Request.Builder requestBuilder = original.newBuilder().header("Authorization", "Bearer " + sp.getString("token", "")).method(original.method(), original.body());
+            Request.Builder requestBuilder = original.newBuilder().header("Authorization", "Bearer " +
+                    sp.getString("token", "")).method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<FetchBHSDDataModel> call = loginservice.get_fetch_bhsd(vhnomber);
-        call.enqueue(new Callback<FetchBHSDDataModel>() {
-            @Override
-            public void onResponse(Call<FetchBHSDDataModel> call, Response<FetchBHSDDataModel> response) {
-                Log.e("responce..", "" + response.toString());
+        Api loginService = retrofit.create(Api.class);
 
+        Call<FetchBHSDDataModel> call = loginService.fetchVehicleBHSD(vehicleNumber);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<FetchBHSDDataModel> call,
+                                   @NonNull Response<FetchBHSDDataModel> response) {
+                Log.e("response..", "" + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 
                     ArrayList<FetchBHSDDataModel> branches = response.body().getData();
 
                     for (FetchBHSDDataModel branch : branches) {
-                        bhsd.setText("" + branch.getTrip_hsd() + " Ltr");
+                        String bhsd_ = " " + branch.getTrip_hsd() + " Ltr";
+                        tv_bhsd.setText(bhsd_);
                         trip_bhsd = branch.getTrip_hsd();
                         trip_hsd = branch.getTrip_hsd();
                         trip_hsd_supplied = branch.getTrip_hsd_supplied();
 
-//                        vendorrarray.add(branch.getTrip_hsd());
-
                     }
-
-//                    setupSpinner(branchNames);
-                    Log.e("responce..", "branches:-  " + branches.size());
-
+                    Log.e("response..", "branches:-  " + branches.size());
                 } else {
                     Toast.makeText(CreatTrip.this, "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
@@ -829,66 +649,58 @@ public class CreatTrip extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<FetchBHSDDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<FetchBHSDDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("FetchBHSDDataModel: ", "" + t);
                 dialog.dismiss();
             }
         });
     }
 
 
-    public void get_updatedata() {
+    public void getUpdatedData() {
         dialog.show();
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-//        if (token != null) {
+
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder().header("Authorization", "Bearer " + sp.getString("token", "")).method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
+
         Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
-        Api loginservice = retrofit.create(Api.class);
-
-//
-//        @POST("create-trip")
-//        Call<CreatTripModel> get_createtip(@Query("trip_year") String trip_year
-//                , @Query("trip_branch") String trip_branch,
-//                @Query("trip_date") String trip_date,
-//                @Query("trip_vehicle") String trip_vehicle,
-//                @Query("trip_driver") String trip_driver,
-//                @Query("trip_agency") String trip_agency,
-//                @Query("trip_hsd") String trip_hsd,
-//                @Query("trip_hsd_supplied") String trip_hsd_supplied,
-//                @Query("trip_advance") String trip_advance,
-//                @Query("trip_supplier") String trip_supplier,
-//                @Query("trip_remarks") String trip_remarks,
-//                @Query("trip_bhsd") String trip_bhsd);
-
+        Api loginService = retrofit.create(Api.class);
 
         Log.e("rahul..", "strDate:-  " + strDate);
 
-        Call<CreatTripModel> call = loginservice.get_createtip("2023-24",
+        Call<CreatTripModel> call = loginService.createTrip("2023-24",
                 sp.getString("userBranch", ""),
                 strDate,
                 trip_vehicle,
-                trip_driver, trip_agency, String.valueOf(fhsds), trip_SHSD, trip_advance, trip_supplier, trip_remarks, trip_bhsd);
+                trip_driver,
+                trip_agency,
+                String.valueOf(fhsd),
+                trip_SHSD,
+                trip_advance,
+                trip_supplier,
+                trip_remarks,
+                trip_bhsd);
 
 
-        call.enqueue(new Callback<CreatTripModel>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<CreatTripModel> call, Response<CreatTripModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<CreatTripModel> call,
+                                   @NonNull Response<CreatTripModel> response) {
+                Log.e("response..", "" + response);
 
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 
                     Toast.makeText(CreatTrip.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     strDate = null;
                     finish();
-
-//                    Log.e("responce..", "branches:-  " + branches.size());
 
                 } else {
                     Toast.makeText(CreatTrip.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
@@ -898,10 +710,12 @@ public class CreatTrip extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CreatTripModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<CreatTripModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("CreatTripModel: ", " " + t);
                 dialog.dismiss();
             }
         });
     }
+
 }

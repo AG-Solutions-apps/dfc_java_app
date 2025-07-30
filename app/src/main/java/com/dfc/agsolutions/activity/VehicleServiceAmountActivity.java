@@ -130,7 +130,7 @@ public class VehicleServiceAmountActivity extends
                 .build();
 
         Api loginService = retrofit.create(Api.class);
-        Call<ServiceTypeDataModel> call = loginService.get_getServiceType();
+        Call<ServiceTypeDataModel> call = loginService.getServiceType();
 
         call.enqueue(new Callback<>() {
             @Override
@@ -223,7 +223,7 @@ public class VehicleServiceAmountActivity extends
 // Log the request body
         Log.e("RequestLog", "Request Body: " + requestBodyJson);
 
-        Call<ServiceStatusDataModel> call = loginService.get_getServiceStatus(requestBody);
+        Call<ServiceStatusDataModel> call = loginService.getServiceStatus(requestBody);
 
         call.enqueue(new Callback<>() {
             @Override

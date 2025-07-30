@@ -75,7 +75,9 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.continues).setOnClickListener(v -> {
             String enteredOtp = otpTextView.getText().toString();
             if (TextUtils.isEmpty(enteredOtp) && enteredOtp.length() < 6) {
-                Toast.makeText(LoginActivity.this, "Please enter valid otp", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this,
+                        "Please enter valid otp",
+                        Toast.LENGTH_SHORT).show();
             } else {
                 if (!Myapplication.isNetworkAvailable()) {
                     Myapplication.noInternet(LoginActivity.this);
@@ -119,7 +121,9 @@ public class LoginActivity extends AppCompatActivity {
             otpTextView.setText("");
             // hide progress dialog
             hideProgressDialog();
-            Toast.makeText(LoginActivity.this, "OTP sent", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this,
+                    "OTP sent",
+                    Toast.LENGTH_SHORT).show();
             // Start the countdown timer here after OTP is sent
             startResendOtpTimer();
         }
@@ -139,7 +143,9 @@ public class LoginActivity extends AppCompatActivity {
         public void onVerificationFailed(FirebaseException e) {
             // hide progress dialog
             hideProgressDialog();
-            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this,
+                    e.getMessage(),
+                    Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -147,7 +153,9 @@ public class LoginActivity extends AppCompatActivity {
             super.onCodeAutoRetrievalTimeOut(s);
             // hide progress dialog
             hideProgressDialog();
-            Toast.makeText(LoginActivity.this, "OTP expired", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this,
+                    "OTP expired",
+                    Toast.LENGTH_SHORT).show();
         }
 
     };
@@ -186,7 +194,9 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         getLogin();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,
+                                "Something went wrong",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
         }
@@ -224,9 +234,10 @@ public class LoginActivity extends AppCompatActivity {
             .build();
 
         Api loginService = retrofit.create(Api.class);
-        Call<MyResponseData> call = loginService.get_login(sp.getString("mobile", ""), sp.getString("password", ""));
+        Call<MyResponseData> call = loginService.getLogin(sp.getString("mobile", ""),
+                sp.getString("password", ""));
 
-        call.enqueue(new Callback<MyResponseData>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<MyResponseData> call,
                 @NonNull Response<MyResponseData> response) {
@@ -249,12 +260,15 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
 
                         // Inside your LoginActivity, where you start HomeActivity
-                        Log.e("LOGIN_DEBUG", "About to call finish() on LoginActivity. HashCode: " + this.hashCode());
+                        Log.e("LOGIN_DEBUG",
+                                "About to call finish() on LoginActivity. HashCode: " + this.hashCode());
                         finish();
                         Log.d("LOGIN_DEBUG", "finish() was called on LoginActivity.");
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,
+                            "Something went wrong",
+                            Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -265,9 +279,13 @@ public class LoginActivity extends AppCompatActivity {
                 // Handle failure
                 hideProgressDialog();
                 if (t!= null && t.getMessage() != null) {
-                    Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,
+                            t.getMessage(),
+                            Toast.LENGTH_SHORT).show();
                 } else  {
-                    Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,
+                            "Something went wrong",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
 

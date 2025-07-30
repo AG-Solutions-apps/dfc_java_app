@@ -20,6 +20,4 @@ public class ActivityIntroScreen extends AppCompatActivity {
         finish();
     }
 
-
-
 }

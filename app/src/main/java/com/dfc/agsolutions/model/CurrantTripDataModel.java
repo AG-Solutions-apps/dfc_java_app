@@ -95,7 +95,7 @@ public class CurrantTripDataModel {
             this.trip_agency = trip_agency;
         }
 
-        public String getTrip_date() {
+        public String getTripDate() {
             return trip_date;
         }
 

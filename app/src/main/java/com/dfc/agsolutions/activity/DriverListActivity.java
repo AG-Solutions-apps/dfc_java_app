@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,14 +42,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DriverListActivity extends AppCompatActivity {
 
-    RecyclerView driverlist;
+    RecyclerView rv_driver_list;
 
     ProgressDialog dialog;
     SharedPreferences sp;
 
     SharedPreferences.Editor ed;
     SwipeRefreshLayout swipeRefreshLayout;
-    LottieAnimationView nodata;
+    LottieAnimationView lav_no_data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,49 +59,41 @@ public class DriverListActivity extends AppCompatActivity {
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        nodata = findViewById(R.id.lav_no_data);
+        lav_no_data = findViewById(R.id.lav_no_data);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                nodata.setVisibility(View.VISIBLE);
-                driverlist.setVisibility(View.GONE);
-                driver_list();
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            lav_no_data.setVisibility(View.VISIBLE);
+            rv_driver_list.setVisibility(View.GONE);
+            driverList();
         });
+
         dialog = new ProgressDialog(DriverListActivity.this);
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
 
-        driverlist = findViewById(R.id.rv_driver_list);
+        rv_driver_list = findViewById(R.id.rv_driver_list);
 
-        findViewById(R.id.back).setOnClickListener(v -> {
-            finish();
-        });
-        driver_list();
-
+        findViewById(R.id.back).setOnClickListener(v -> finish());
+        driverList();
     }
 
-    List<String> fullname = new ArrayList<>();
+    List<String> full_name = new ArrayList<>();
     List<String> mobile = new ArrayList<>();
     List<String> dl_expiry = new ArrayList<>();
     List<String> user_status = new ArrayList<>();
     List<String> user_image = new ArrayList<>();
 
-
-    public void driver_list() {
+    public void driverList() {
 
         dialog.show();
-        fullname.clear();
+        full_name.clear();
         mobile.clear();
         dl_expiry.clear();
         user_status.clear();
         user_image.clear();
-//        milageaaray.clear();
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -111,64 +102,37 @@ public class DriverListActivity extends AppCompatActivity {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<DriverListDataModel> call = loginservice.get_driverlist(sp.getString("userBranch", ""));
-        call.enqueue(new Callback<DriverListDataModel>() {
+
+        Api loginService = retrofit.create(Api.class);
+
+        Call<DriverListDataModel> call = loginService.getDriverList(sp.getString("userBranch", ""));
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<DriverListDataModel> call, Response<DriverListDataModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<DriverListDataModel> call,
+                                   @NonNull Response<DriverListDataModel> response) {
+                Log.e("response..", "" + response);
 
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
-//
+
                     ArrayList<DriverListDataModel> branches = response.body().getData();
-//                    for (DriverListDataModel branch : branches) {
-//
-//                        fullname.add(branch.getFull_name());
-//                        mobile.add(branch.getMobile());
-//                        dl_expiry.add(branch.getDl_expiry());
-//                        user_status.add(branch.getUser_status());
-//                        user_image.add(branch.getUser_image());
-//
-//                    }
-                    nodata.setVisibility(View.GONE);
-                    driverlist.setVisibility(View.VISIBLE);
-                    Home_Today_list_Adapter adapter = new Home_Today_list_Adapter(DriverListActivity.this, response.body().getData());
-                    driverlist.setAdapter(adapter);
 
-//
-////response.body().getData().get(0).getReg_no();
-////                    for (ServiceFatchVhicalDataModel branch : branches) {
-////                        vhicalarray.add(branch.getReg_no());
-//////                        vhicaldraiverarray.add(branch.getVehicle_driver());
-//////                        milageaaray.add(branch.getVehicle_mileage());
-////                    }
-//                    for (ServiceFatchVhicalDataModel branch : branches) {
-//                        vhicalarray.add(branch.getReg_no());
-//                    }
-////
-//                    ArrayAdapter<String> adapter = new ArrayAdapter<>(DriverListActivity.this, R.layout.simple_spinner_item, vhicalarray);
-//                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinner.setAdapter(adapter);
+                    lav_no_data.setVisibility(View.GONE);
+                    rv_driver_list.setVisibility(View.VISIBLE);
+                    HomeTodayListAdapter adapter = new HomeTodayListAdapter(response.body().getData());
+                    rv_driver_list.setAdapter(adapter);
 
-//
-//                    ArrayAdapter<String> adapterdriver = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicaldraiverarray);
-//                    adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinnerdriver.setAdapter(adapterdriver);
-
-
-//                    setupSpinner(branchNames);
-                    Log.e("responce..", "branches:-  " + branches.size());
+                    Log.e("response..", "branches:-  " + branches.size());
 
                 } else {
-                    nodata.setVisibility(View.VISIBLE);
-                    driverlist.setVisibility(View.GONE);
+                    lav_no_data.setVisibility(View.VISIBLE);
+                    rv_driver_list.setVisibility(View.GONE);
                     Toast.makeText(DriverListActivity.this, "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
@@ -178,11 +142,12 @@ public class DriverListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<DriverListDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<DriverListDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("DriverListDataModel: ", "" + t);
                 dialog.dismiss();
-                nodata.setVisibility(View.VISIBLE);
-                driverlist.setVisibility(View.GONE);
+                lav_no_data.setVisibility(View.VISIBLE);
+                rv_driver_list.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
 
             }
@@ -190,13 +155,11 @@ public class DriverListActivity extends AppCompatActivity {
 
     }
 
-    public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
-        private Activity context;
+    public class HomeTodayListAdapter extends RecyclerView.Adapter<HomeTodayListAdapter.Holder> {
 
         ArrayList<DriverListDataModel> arrayListTopic;
 
-        public Home_Today_list_Adapter(Activity context, ArrayList<DriverListDataModel> arrayListTopic) {
-            this.context = context;
+        public HomeTodayListAdapter(ArrayList<DriverListDataModel> arrayListTopic) {
             this.arrayListTopic = arrayListTopic;
         }
 
@@ -207,19 +170,23 @@ public class DriverListActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public Home_Today_list_Adapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public HomeTodayListAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.driver_list_item, parent, false);
-            return new Home_Today_list_Adapter.Holder(view);
+            return new HomeTodayListAdapter.Holder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final Home_Today_list_Adapter.Holder holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(@NonNull final HomeTodayListAdapter.Holder holder,
+                                     @SuppressLint("RecyclerView") final int position) {
 
+            holder.tv_name.setText(arrayListTopic.get(position).getFull_name());
 
-            holder.name.setText(arrayListTopic.get(position).getFull_name());
-            holder.active.setText("Status : " + arrayListTopic.get(position).getUser_status());
+            String status = "Status : " + arrayListTopic.get(position).getUser_status();
+            holder.tv_active_status.setText(status);
 //            holder.date.setText("Lic Expiry : " + arrayListTopic.get(position).getDl_expiry());
-            holder.mobile.setText("Phone no : " + arrayListTopic.get(position).getMobile());
+
+            String phoneNo = "Phone no : " + arrayListTopic.get(position).getMobile();
+            holder.iv_mobile.setText(phoneNo);
 
             String date1 = arrayListTopic.get(position).getDl_expiry();
 
@@ -228,39 +195,40 @@ public class DriverListActivity extends AppCompatActivity {
                 Date date = inputDateFormat.parse(date1);
 
                 SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                String datefiormate = outputDateFormat.format(date);
-
-                holder.date.setText("Lic Expiry : " + datefiormate);
+                String dateFormated;
+                if (date != null) {
+                    dateFormated = outputDateFormat.format(date);
+                    String licExpiry = "Lic Expiry : " + dateFormated;
+                    holder.tv_date.setText(licExpiry);
+                }
 
             } catch (ParseException e) {
-
-                holder.date.setText("Lic Expiry : " + date1);
+                Log.e("TAG", "onBindViewHolder: " + e);
+                String licExpiry = "Lic Expiry : " + date1;
+                holder.tv_date.setText(licExpiry);
             }
 
             if (arrayListTopic.get(position).getUser_image() == null) {
-                Glide.with(DriverListActivity.this).load(Uri.parse("https://dfcgroup.in/crmapi/storage/app/public/profiles/no_profile.png")).error(R.drawable.no_profile).into(holder.profile);
+                Glide.with(DriverListActivity.this).load(Uri.parse("https://dfcgroup.in/crmapi/storage/app/public/profiles/no_profile.png")).error(R.drawable.no_profile).into(holder.iv_profile);
             } else {
-                Glide.with(DriverListActivity.this).load(Uri.parse("https://dfcgroup.in/crmapi/storage/app/public/profiles/" + arrayListTopic.get(position).getUser_image())).error(R.drawable.no_profile).into(holder.profile);
+                Glide.with(DriverListActivity.this).load(Uri.parse("https://dfcgroup.in/crmapi/storage/app/public/profiles/" + arrayListTopic.get(position).getUser_image())).error(R.drawable.no_profile).into(holder.iv_profile);
             }
 
             Log.e("TAG", "onBindViewHolder: " + arrayListTopic.get(position).getUser_image());
 
-//            Log.e("TAG", "onBindViewHolder: "+arrayListTopic.get(position).getUser_image() );
-
-//            Glide.with(context).load(arrayListTopic.get(position).getUser_image()).into(holder.profile);
-//            String lastTripDateStr = arrayListTopic.get(position).getTrip_date();
-
-            holder.call.setOnClickListener(v -> {
+            holder.iv_call.setOnClickListener(v -> {
 
                 String phoneNumber = "tel:" + "+91 " + arrayListTopic.get(position).getMobile(); // replace with the actual phone number
                 Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
                 startActivity(dialIntent);
 
             });
-            holder.whatssap.setOnClickListener(v -> {
+
+            holder.iv_whats_app.setOnClickListener(v -> {
 
                 try {
-                    Uri uri = Uri.parse("https://api.whatsapp.com/send?phone=" + "+91 +" + arrayListTopic.get(position).getMobile());
+                    Uri uri = Uri.parse("https://api.whatsapp.com/send?phone=" +
+                            "+91 +" + arrayListTopic.get(position).getMobile());
 
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
@@ -268,7 +236,7 @@ public class DriverListActivity extends AppCompatActivity {
 
                     startActivity(intent);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("TAG", "onBindViewHolder: " + e);
                 }
 
             });
@@ -276,24 +244,22 @@ public class DriverListActivity extends AppCompatActivity {
 
         class Holder extends RecyclerView.ViewHolder {
 
-            TextView name, mobile, date, active;
-            ImageView profile, call, whatssap;
+            TextView tv_name, iv_mobile, tv_date, tv_active_status;
+            ImageView iv_profile, iv_call, iv_whats_app;
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
 
-
-                name = itemView.findViewById(R.id.name);
-                mobile = itemView.findViewById(R.id.mobile);
-                date = itemView.findViewById(R.id.date);
-                active = itemView.findViewById(R.id.Active);
-                profile = itemView.findViewById(R.id.profile);
-                call = itemView.findViewById(R.id.call);
-                whatssap = itemView.findViewById(R.id.whatsapp);
+                tv_name = itemView.findViewById(R.id.name);
+                iv_mobile = itemView.findViewById(R.id.mobile);
+                tv_date = itemView.findViewById(R.id.date);
+                tv_active_status = itemView.findViewById(R.id.Active);
+                iv_profile = itemView.findViewById(R.id.profile);
+                iv_call = itemView.findViewById(R.id.call);
+                iv_whats_app = itemView.findViewById(R.id.whatsapp);
 
             }
         }
-
 
     }
 

@@ -164,5 +164,7 @@
   <string name="vehicle_list___">Vehicle list -</string>
   <string name="are_you_sure_you_want_to_delete_your_account">Are you sure you want to delete your account? This action cannot be undone.</string>
   <string name="are_you_sure_you_want_to_logut">Are you sure you want to logout ?</string>
+  <string name="return">Return</string>
+  <string name="reached">Reached</string>
 
 </resources>

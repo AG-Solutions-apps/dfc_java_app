@@ -29,7 +29,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ActivityCheckMobileNumber extends
-    AppCompatActivity {
+        AppCompatActivity {
 
     EditText edtMobile, edtPassword;
     MaterialCheckBox checkBox;
@@ -64,10 +64,7 @@ public class ActivityCheckMobileNumber extends
 
                 if (checkBox.isChecked()) {
                     String mobileNumber = edtMobile.getText().toString();
-//                    String password = edtPassword.getText().toString();
-//                    if (TextUtils.isEmpty(password)) {
-//                        password = getString(R.string._123456);
-//                    }
+
                     if (mobileNumber.isEmpty()) {
                         Toast.makeText(ActivityCheckMobileNumber.this, "Please Enter Mobile Number!!", Toast.LENGTH_SHORT).show();
                     } else if (mobileNumber.trim().length() < 10) {
@@ -94,39 +91,6 @@ public class ActivityCheckMobileNumber extends
         findViewById(R.id.privacy2).setOnClickListener(v -> showUpdateAppDialog());
 
     }
-
-//    private void getPhoneNumberHint() {
-//        GetPhoneNumberHintIntentRequest request = GetPhoneNumberHintIntentRequest.builder().build();
-//        Identity.getSignInClient(this)
-//            .getPhoneNumberHintIntent(request)
-//            .addOnSuccessListener(result -> {
-//                try {
-//                    phoneNumberLauncher.launch(new IntentSenderRequest.Builder(result).build());
-//                } catch (Exception e) {
-//                    Toast.makeText(this, "Launching the PendingIntent failed", Toast.LENGTH_SHORT).show();
-//                }
-//            })
-//            .addOnFailureListener(e ->    Toast.makeText(this, "Phone Number Hint failed", Toast.LENGTH_SHORT).show());
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 1) {
-//            if (resultCode == RESULT_OK) {
-//                try {
-//                    String phoneNumber = Identity.getSignInClient(this)
-//                        .getPhoneNumberFromIntent(data);
-//                    edtMobile.setText(phoneNumber);
-//                } catch (Exception e) {
-//                    Toast.makeText(this, "Failed to extract phone number" + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
-//            } else {
-//                // Handle user cancellation or error
-//                Toast.makeText(this, "Phone number hint canceled", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
 
     @SuppressLint("SetJavaScriptEnabled")
     private void showUpdateAppDialog() {
@@ -166,16 +130,18 @@ public class ActivityCheckMobileNumber extends
             dialog.show();
 
             Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+                    .baseUrl(getString(R.string.commn_url))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
             Api loginService = retrofit.create(Api.class);
+
             String userMobileNumber = edtMobile.getText().toString();
-            Call<CheckNumberModel> call = loginService.get_check_mobail(userMobileNumber);
-            call.enqueue(new Callback<CheckNumberModel>() {
+            Call<CheckNumberModel> call = loginService.getCheckMobile(userMobileNumber);
+            call.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(@NonNull Call<CheckNumberModel> call,
-                    @NonNull Response<CheckNumberModel> response) {
+                                       @NonNull Response<CheckNumberModel> response) {
 
                     CheckNumberModel apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getCode() == 200) {
@@ -210,7 +176,7 @@ public class ActivityCheckMobileNumber extends
 
                 @Override
                 public void onFailure(@NonNull Call<CheckNumberModel> call,
-                    @NonNull Throwable t) {
+                                      @NonNull Throwable t) {
                     dialog.dismiss();
                     Toast.makeText(ActivityCheckMobileNumber.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
@@ -220,16 +186,5 @@ public class ActivityCheckMobileNumber extends
         }
 
     }
-
-//    private final ActivityResultLauncher<IntentSenderRequest> phoneNumberLauncher = registerForActivityResult(
-//        new ActivityResultContracts.StartIntentSenderForResult(), result -> {
-//            try {
-//                String phoneNumber = Identity.getSignInClient(this).getPhoneNumberFromIntent(result.getData());
-//                String strNew = phoneNumber.replaceAll("\\+91|\\(|\\)|-|\\s", "");
-//                edtMobile.setText(strNew);
-//            } catch (Exception e) {
-//                Toast.makeText(this, "Failed to extract phone number" + e.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
 }

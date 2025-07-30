@@ -107,7 +107,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
         });
 
         spinner = findViewById(R.id.spinner);
-        spinner1 = findViewById(R.id.spinner1);
+        spinner1 = findViewById(R.id.spinner_amount);
 
         spinner.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.black1),
                 PorterDuff.Mode.SRC_ATOP);
@@ -214,7 +214,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
 
         Api loginService = retrofit.create(Api.class);
 
-        Call<ServiceStatusDataModel> call = loginService.get_getServiceStatus(eDate,"2023-24",
+        Call<ServiceStatusDataModel> call = loginService.getServiceStatus(eDate,"2023-24",
                 eVehicle,pump,ekm,totalAmount,eDescription);
 
         call.enqueue(new Callback<>() {
@@ -283,7 +283,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
                 .build();
 
         Api loginService = retrofit.create(Api.class);
-        Call<ServiceFetchVehicleDataModel> call = loginService.get_servicefatchvhiclelist(sp.getString("userBranch", ""));
+        Call<ServiceFetchVehicleDataModel> call = loginService.getServiceFetchVehicleList(sp.getString("userBranch", ""));
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ServiceFetchVehicleDataModel> call,

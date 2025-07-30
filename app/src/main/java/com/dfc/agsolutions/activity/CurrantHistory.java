@@ -13,9 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -41,10 +39,11 @@ public class CurrantHistory extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     ProgressDialog dialog;
+    LottieAnimationView lav_no_data;
+
     SharedPreferences sp;
-    LottieAnimationView nodata;
-    CardView cd;
     SharedPreferences.Editor ed;
+
     public static Fragment newInstance(int i) {
         CurrantHistory fragment = new CurrantHistory();
         Bundle args = new Bundle();
@@ -55,47 +54,37 @@ public class CurrantHistory extends Fragment {
 
     RecyclerView rv;
     SwipeRefreshLayout swipeRefreshLayout;
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_previous_history, container, false);
 
-        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_previous_history,
+                container,
+                false);
+
+        sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
         ed = sp.edit();
-        nodata = view.findViewById(R.id.lav_no_data);
-//        cd = view.findViewById(R.id.cd);
-        dialog = new ProgressDialog(getActivity());
+        lav_no_data = view.findViewById(R.id.lav_no_data);
+
+        dialog = new ProgressDialog(requireActivity());
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
 
         rv = view.findViewById(R.id.rv);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                previousHistory();
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(this::previousHistory);
 
         previousHistory();
 
         return view;
-
     }
 
     public void previousHistory() {
 
-//        dialog.show();
-//        fullname.clear();
-//        mobile.clear();
-//        dl_expiry.clear();
-//        user_status.clear();
-//        user_image.clear();
-//        milageaaray.clear();
-
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -104,99 +93,66 @@ public class CurrantHistory extends Fragment {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<PreviousHistoryDataModel> call = loginservice.get_previousHistory(String.valueOf(1));
-        call.enqueue(new Callback<PreviousHistoryDataModel>() {
-            @Override
-            public void onResponse(Call<PreviousHistoryDataModel> call, Response<PreviousHistoryDataModel> response) {
-                Log.e("responce..", "" + response.toString());
 
+        Api loginService = retrofit.create(Api.class);
+
+        Call<PreviousHistoryDataModel> call = loginService.getPreviousHistory(String.valueOf(1));
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<PreviousHistoryDataModel> call,
+                                   @NonNull Response<PreviousHistoryDataModel> response) {
+                Log.e("response..", "" + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
-//
+
                     ArrayList<PreviousHistoryDataModel> branches = response.body().getData();
 
-                    Log.e("Respone---------", "onResponse: "+response.body().getData().size());
+                    Log.e("Response---------", "onResponse: "+response.body().getData().size());
 
-//                    for (DriverListDataModel branch : branches) {
-//
-//                        fullname.add(branch.getFull_name());
-//                        mobile.add(branch.getMobile());
-//                        dl_expiry.add(branch.getDl_expiry());
-//                        user_status.add(branch.getUser_status());
-//                        user_image.add(branch.getUser_image());
-//
-//                    }
-
-
-                    if(response.body().getData().size() == 0)
-                    {
-                        nodata.setVisibility(View.VISIBLE);
+                    if(response.body().getData().isEmpty()) {
+                        lav_no_data.setVisibility(View.VISIBLE);
                         rv.setVisibility(View.GONE);
-                    }else {
-                        nodata.setVisibility(View.GONE);
+                    } else {
+                        lav_no_data.setVisibility(View.GONE);
                         rv.setVisibility(View.VISIBLE);
-                        Home_Today_list_Adapter adapter = new Home_Today_list_Adapter(getActivity(), response.body().getData());
+                        HomeTodayListAdapter adapter = new HomeTodayListAdapter(response.body().getData());
                         rv.setAdapter(adapter);
                     }
 
-//
-////response.body().getData().get(0).getReg_no();
-////                    for (ServiceFatchVhicalDataModel branch : branches) {
-////                        vhicalarray.add(branch.getReg_no());
-//////                        vhicaldraiverarray.add(branch.getVehicle_driver());
-//////                        milageaaray.add(branch.getVehicle_mileage());
-////                    }
-//                    for (ServiceFatchVhicalDataModel branch : branches) {
-//                        vhicalarray.add(branch.getReg_no());
-//                    }
-////
-//                    ArrayAdapter<String> adapter = new ArrayAdapter<>(DriverListActivity.this, R.layout.simple_spinner_item, vhicalarray);
-//                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinner.setAdapter(adapter);
-
-//
-//                    ArrayAdapter<String> adapterdriver = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicaldraiverarray);
-//                    adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinnerdriver.setAdapter(adapterdriver);
-
-
-//                    setupSpinner(branchNames);
-                    Log.e("responce..", "branches:-  " + branches.size());
+                    Log.e("response..", "branches:-  " + branches.size());
 
                 } else {
-                    Toast.makeText(getActivity(),  "Network Error!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity(),  "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
 
             }
 
             @Override
-            public void onFailure(Call<PreviousHistoryDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<PreviousHistoryDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("PreviousHistoryDataModel: ", "" + t);
                 dialog.dismiss();
             }
         });
+
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
-        private FragmentActivity activity;
+    public static class HomeTodayListAdapter extends
+            RecyclerView.Adapter<HomeTodayListAdapter.Holder> {
 
         ArrayList<PreviousHistoryDataModel> data;
 
-//        public Home_Today_list_Adapter(Activity context, ArrayList<OngoingTruckTypeModel> data) {
-//
-//        }
-
-        public Home_Today_list_Adapter(FragmentActivity activity, ArrayList<PreviousHistoryDataModel> data) {
-            this.activity = activity;
+        public HomeTodayListAdapter(ArrayList<PreviousHistoryDataModel> data) {
             this.data = data;
         }
 
@@ -209,59 +165,68 @@ public class CurrantHistory extends Fragment {
         @NonNull
         @Override
         public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_on_going_trip, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_on_going_trip,
+                    parent,
+                    false);
             return new Holder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final Holder holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(@NonNull final Holder holder,
+                                     @SuppressLint("RecyclerView") final int position) {
 
+            String status = "Status:- " + data.get(position).getTrip_status();
+            holder.tv_status.setText(status);
 
-            holder.status.setText("Status:- " + data.get(position).getTrip_status());
-            holder.carname.setText("" + data.get(position).getTrip_vehicle());
-            holder.loacation.setText("Destination : " + data.get(position).getTrip_agency());
-//            holder.date.setText("Date : " + data.get(position).getTrip_date());
-            holder.driver.setText("Driver : " + data.get(position).getTrip_driver());
-            holder.distance.setText("Distance : " + data.get(position).getTrip_km() + " Km");
-            String date1 = data.get(position).getTrip_date();
+            String carName = " " + data.get(position).getTrip_vehicle();
+            holder.tv_car_name.setText(carName);
+
+            String location = "Destination : " + data.get(position).getTrip_agency();
+            holder.tv_location.setText(location);
+
+            String driver = "Driver : " + data.get(position).getTrip_driver();
+            holder.tv_driver.setText(driver);
+
+            String distance = "Distance : " + data.get(position).getTrip_km() + " Km";
+            holder.tv_distance.setText(distance);
+            String date1 = data.get(position).getTripDate();
+
             try {
                 SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 Date date = inputDateFormat.parse(date1);
 
                 SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                String datefiormate = outputDateFormat.format(date);
-
-                holder.date.setText("Date : " + datefiormate);
+                String dateFormated;
+                if (date != null) {
+                    dateFormated = outputDateFormat.format(date);
+                    String date_ = "Date : " + dateFormated;
+                    holder.tv_date.setText(date_);
+                }
 
             } catch (ParseException e) {
-                holder.date.setText("Date : " + date1);
+                String date_ = "Date : " + date1;
+                holder.tv_date.setText(date_);
             }
-//            System.out.println("Last Trip Date: " + lastTripDateStr);
-//            System.out.println("New Date (" + daysBeforeLastTrip + " days before last trip): " + formattedNewDate);
-
-
 
         }
 
-        class Holder extends RecyclerView.ViewHolder {
+        static class Holder extends RecyclerView.ViewHolder {
 
-            TextView status,loacation,date,driver,distance,carname;
-//            LinearLayout click;
+            TextView tv_status, tv_location, tv_date, tv_driver, tv_distance, tv_car_name;
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
 
-
-                status = itemView.findViewById(R.id.status);
-                loacation = itemView.findViewById(R.id.tv_location);
-                date = itemView.findViewById(R.id.date);
-                driver = itemView.findViewById(R.id.ll_drivers);
-                distance = itemView.findViewById(R.id.distance);
-                carname = itemView.findViewById(R.id.tv_car_name);
+                tv_status = itemView.findViewById(R.id.status);
+                tv_location = itemView.findViewById(R.id.tv_location);
+                tv_date = itemView.findViewById(R.id.date);
+                tv_driver = itemView.findViewById(R.id.ll_drivers);
+                tv_distance = itemView.findViewById(R.id.distance);
+                tv_car_name = itemView.findViewById(R.id.tv_car_name);
 
             }
         }
 
-
     }
+
 }

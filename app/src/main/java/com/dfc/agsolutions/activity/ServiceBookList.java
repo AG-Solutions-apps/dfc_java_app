@@ -44,8 +44,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ServiceBookList extends AppCompatActivity {
-    String totalamount;
+public class ServiceBookList extends
+        AppCompatActivity {
+
     String service_ref;
     ImageView save;
     SharedPreferences sp;
@@ -53,18 +54,18 @@ public class ServiceBookList extends AppCompatActivity {
 
     ProgressDialog dialog;
     Spinner spinner;
-    private ArrayList<CreateServiceListDataModel> data;
+
     RecyclerView service_sub_list;
 
-    EditText amount, tamount, amount1;
+    EditText amount, et_total_amount, amount1;
 
-    String fainalservicetype;
+    String finalServiceType;
 
-    Home_Today_list_Adapter home_today_list_adapter;
+    HomeTodayListAdapter home_today_list_adapter;
 
-    String tamountttt;
+    String totalAmount;
 
-    int plushamount;
+    int plushAmount;
 
     CardView cd;
 
@@ -74,42 +75,41 @@ public class ServiceBookList extends AppCompatActivity {
         setContentView(R.layout.activity_service_book_list);
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();
-        data = new ArrayList<>();
-        totalamount = getIntent().getStringExtra("amount");
+
         service_ref = getIntent().getStringExtra("service_ref");
+
         dialog = new ProgressDialog(ServiceBookList.this);
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
+
         spinner = findViewById(R.id.spinner);
         service_sub_list = findViewById(R.id.service_sub_list);
         amount = findViewById(R.id.amount);
-        tamount = findViewById(R.id.et_total_amount);
+        et_total_amount = findViewById(R.id.et_total_amount);
         amount1 = findViewById(R.id.amount1);
 
         save = findViewById(R.id.save);
         cd = findViewById(R.id.cd);
         serviceType.add("Service Type");
 
-        tamountttt = getIntent().getStringExtra("amount");
+        totalAmount = getIntent().getStringExtra("amount");
 
-        tamount.setText(tamountttt);
-        amount1.setText(String.valueOf(amontttt));
+        et_total_amount.setText(totalAmount);
+        amount1.setText(String.valueOf(amountOne));
         if (Myapplication.isNetworkAvailable()) {
             get_Service_type();
         } else {
             Myapplication.noInternet(ServiceBookList.this);
         }
 
-        home_today_list_adapter = new Home_Today_list_Adapter(ServiceBookList.this);
+        home_today_list_adapter = new HomeTodayListAdapter(ServiceBookList.this);
         service_sub_list.setAdapter(home_today_list_adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-                fainalservicetype = (String) parentView.getItemAtPosition(position);
-//
-//                possss = position;
+                finalServiceType = (String) parentView.getItemAtPosition(position);
 
             }
 
@@ -120,53 +120,46 @@ public class ServiceBookList extends AppCompatActivity {
         });
 
 
-        findViewById(R.id.continues).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int plu = 0;
-                if (Myapplication.isNetworkAvailable()) {
+        findViewById(R.id.continues).setOnClickListener(v -> {
+            int plu;
+            if (Myapplication.isNetworkAvailable()) {
 
+                if (!finalServiceType.equals("Service Type") && !amount.getText().toString().isEmpty()) {
 
-                    if (!fainalservicetype.equals("Service Type") && amount.getText().toString().length() != 0) {
+                    plu = Integer.parseInt(amount.getText().toString());
 
-                        plu = Integer.parseInt(amount.getText().toString());
+                    plushAmount += plu;
 
-                        plushamount += plu;
+                    if (Integer.parseInt(totalAmount) < plushAmount) {
+                        Toast.makeText(ServiceBookList.this, "Your Amount High",
+                                Toast.LENGTH_SHORT).show();
 
-                        if (Integer.parseInt(tamountttt) < plushamount) {
-                            Toast.makeText(ServiceBookList.this, "Your Amount High", Toast.LENGTH_SHORT).show();
-//                            int i = plu - plushamount;
-                            plushamount -= plu;
+                        plushAmount -= plu;
+                        amount.setText("");
+                    } else if (Integer.parseInt(totalAmount) > plushAmount) {
+                        if (plu != 0) {
+                            setData(plushAmount);
+                            get_create_service_sub_temp(finalServiceType, amount);
                             amount.setText("");
-                        } else if (Integer.parseInt(tamountttt) > plushamount) {
-                            if (plu != 0) {
-                                setdata(plushamount);
-                                get_create_service_sub_temp(fainalservicetype, amount);
-                                amount.setText("");
-                                spinner.setSelection(0);
-                            }
-                        } else if (Integer.parseInt(tamountttt) == plushamount) {
-                            setdata(plushamount);
-                            get_create_service_sub_temp(fainalservicetype, amount);
-                            save.setVisibility(View.VISIBLE);
-                            cd.setVisibility(View.GONE);
+                            spinner.setSelection(0);
                         }
+                    } else if (Integer.parseInt(totalAmount) == plushAmount) {
+                        setData(plushAmount);
+                        get_create_service_sub_temp(finalServiceType, amount);
+                        save.setVisibility(View.VISIBLE);
+                        cd.setVisibility(View.GONE);
                     }
-
-
-                } else {
-                    Myapplication.noInternet(ServiceBookList.this);
-
                 }
 
+
+            } else {
+                Myapplication.noInternet(ServiceBookList.this);
+
             }
-        });
-
-        save.setOnClickListener(v -> {
-
-            creat_service(fainalservicetype);
 
         });
+
+        save.setOnClickListener(v -> creat_service(finalServiceType));
 
     }
 
@@ -174,7 +167,7 @@ public class ServiceBookList extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (Integer.parseInt(tamountttt) == plushamount) {
+        if (Integer.parseInt(totalAmount) == plushAmount) {
             save.setVisibility(View.VISIBLE);
             cd.setVisibility(View.GONE);
         }
@@ -182,17 +175,20 @@ public class ServiceBookList extends AppCompatActivity {
     }
 
     List<String> serviceType = new ArrayList<>();
-    ArrayAdapter<String> adapterdriver;
+    ArrayAdapter<String> adapterDriver;
 
-    int possss;
+    int amtPosition;
+
+    private OkHttpClient.Builder createHttpClient() {
+        return new OkHttpClient.Builder();
+    }
 
     public void get_Service_type() {
 
         dialog.show();
-        ;
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
+        OkHttpClient.Builder httpClient = createHttpClient();
+
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -201,22 +197,25 @@ public class ServiceBookList extends AppCompatActivity {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<ServiceTypeDataModel> call = loginservice.get_getServiceType();
-        call.enqueue(new Callback<ServiceTypeDataModel>() {
-            @Override
-            public void onResponse(Call<ServiceTypeDataModel> call, Response<ServiceTypeDataModel> response) {
-                Log.e("responce..", "" + response.toString());
 
+        Api loginService = retrofit.create(Api.class);
+
+        Call<ServiceTypeDataModel> call = loginService.getServiceType();
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ServiceTypeDataModel> call,
+                                   @NonNull Response<ServiceTypeDataModel> response) {
+                Log.e("ServiceTypeDataModel: ", "" + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
-//
+
                     ArrayList<ServiceTypeDataModel> branches = response.body().getData();
 
                     for (ServiceTypeDataModel branch : branches) {
@@ -224,36 +223,96 @@ public class ServiceBookList extends AppCompatActivity {
                         Log.e("getVoucher_type", "getVoucher_type================: " + branch.getService_types());
 //                        s = branch.getVoucher_type();
                     }
-                    adapterdriver = new ArrayAdapter<>(ServiceBookList.this, R.layout.simple_spinner_item1, serviceType);
-                    adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinner.setAdapter(adapterdriver);
+                    adapterDriver = new ArrayAdapter<>(ServiceBookList.this, R.layout.simple_spinner_item1, serviceType);
+                    adapterDriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(adapterDriver);
 
-
-                    Log.e("responce..", "branches:-  " + branches.size());
-
+                    Log.e("response..", "branches:-  " + branches.size());
 
                 } else {
-                    Toast.makeText(ServiceBookList.this, "Network Error!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ServiceBookList.this,
+                            "Network Error!!",
+                            Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
 
             }
 
             @Override
-            public void onFailure(Call<ServiceTypeDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<ServiceTypeDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("ServiceTypeDataModel Failure: ", "" + t);
                 dialog.dismiss();
             }
         });
     }
 
-    public void get_create_service_sub_temp(String fainalservicetype, EditText amount) {
+    public void get_create_service_sub_temp(String finalServiceType, EditText amount) {
 
         dialog.show();
-        ;
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
+        OkHttpClient.Builder httpClient = createHttpClient();
+
+        httpClient.addInterceptor(chain -> {
+            Request original = chain.request();
+            Request.Builder requestBuilder = original.newBuilder()
+                    .header("Authorization", "Bearer "
+                            + sp.getString("token", ""))
+                    .method(original.method(), original.body());
+            Request request = requestBuilder.build();
+            return chain.proceed(request);
+        });
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.commn_url))
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build())
+                .build();
+
+        Api loginService = retrofit.create(Api.class);
+
+        Call<CreateServiceListDataModel> call = loginService.getServiceSubType(service_ref,
+                finalServiceType,
+                amount.getText().toString());
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<CreateServiceListDataModel> call,
+                                   @NonNull Response<CreateServiceListDataModel> response) {
+                Log.e("CreateServiceListDataModel: ", "" + response);
+
+                assert response.body() != null;
+                if (response.body().getCode().equalsIgnoreCase("200")) {
+
+                    Toast.makeText(ServiceBookList.this,
+                            response.body().getMsg(),
+                            Toast.LENGTH_SHORT).show();
+                    home_today_list_adapter.addData(response.body().getData());
+
+                } else {
+                    Toast.makeText(ServiceBookList.this,
+                            response.body().getMsg(),
+                            Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CreateServiceListDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("CreateServiceListDataModel", " " + t);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    public void creat_service(String finalServiceType) {
+
+        dialog.show();
+
+        OkHttpClient.Builder httpClient = createHttpClient();
+
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -262,47 +321,53 @@ public class ServiceBookList extends AppCompatActivity {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<CreateServiceListDataModel> call = loginservice.get_getServicesubType(service_ref, fainalservicetype, amount.getText().toString());
-        call.enqueue(new Callback<CreateServiceListDataModel>() {
+
+        Api loginService = retrofit.create(Api.class);
+
+        Call<ServiceSubFinalModel> call = loginService.fetchServiceFinal(finalServiceType);
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<CreateServiceListDataModel> call, Response<CreateServiceListDataModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<ServiceSubFinalModel> call,
+                                   @NonNull Response<ServiceSubFinalModel> response) {
+                Log.e("response..", "" + response);
 
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
-//
-                    Toast.makeText(ServiceBookList.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                    home_today_list_adapter.adddata(response.body().getData());
 
-                } else {
                     Toast.makeText(ServiceBookList.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(() -> startActivity(new Intent(ServiceBookList.this,
+                            HomeActivity.class)), 1000);
+                } else {
+                    Toast.makeText(ServiceBookList.this,
+                            response.body().getMsg(),
+                            Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
 
             }
 
             @Override
-            public void onFailure(Call<CreateServiceListDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<ServiceSubFinalModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("ServiceSubFinalModel: ", "" + t);
                 dialog.dismiss();
             }
         });
     }
 
-    public void creat_service(String fainalservicetype) {
+    public void delete(String idd, String finalServiceType, int pos) {
 
         dialog.show();
-        ;
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
+        OkHttpClient.Builder httpClient = createHttpClient();
+
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -311,53 +376,57 @@ public class ServiceBookList extends AppCompatActivity {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<ServiceSubFinalModel> call = loginservice.Service_final(fainalservicetype);
-        call.enqueue(new Callback<ServiceSubFinalModel>() {
+
+        Api loginService = retrofit.create(Api.class);
+
+        Call<DeleteModel> call = loginService.deleteServiceType(idd, finalServiceType);
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<ServiceSubFinalModel> call, Response<ServiceSubFinalModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<DeleteModel> call,
+                                   @NonNull Response<DeleteModel> response) {
+                Log.e("response..", "" + response);
 
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
-//
-                    Toast.makeText(ServiceBookList.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-//                    home_today_list_adapter.adddata(response.body().getData());
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(new Intent(ServiceBookList.this, HomeActivity.class));
-                        }
-                    }, 1000);
-
+                    Toast.makeText(ServiceBookList.this,
+                            response.body().getMsg(),
+                            Toast.LENGTH_SHORT).show();
+                    home_today_list_adapter.remove(pos);
+                    int s = plushAmount -= positionalAmount;
+                    setData(s);
                 } else {
-                    Toast.makeText(ServiceBookList.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ServiceBookList.this,
+                            response.body().getMsg(),
+                            Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
 
             }
 
             @Override
-            public void onFailure(Call<ServiceSubFinalModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<DeleteModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("DeleteModel: ", "" + t);
                 dialog.dismiss();
             }
         });
     }
 
-    public void delete(String idd, String fainalservicetype, int pos) {
+    public void editService(String idd,
+                            String finaleServiceType,
+                            String amm, String sType,
+                            int posi) {
 
         dialog.show();
-        ;
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
+        OkHttpClient.Builder httpClient = createHttpClient();
+
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -366,153 +435,87 @@ public class ServiceBookList extends AppCompatActivity {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
+
+        Log.e("TAG", "edit_service: " + idd + " : " + finaleServiceType + " : " + amm + " : " + sType);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<DeleteModel> call = loginservice.delete_ServiceType(idd, fainalservicetype);
-        call.enqueue(new Callback<DeleteModel>() {
+
+        Api loginService = retrofit.create(Api.class);
+
+        Call<CreateServiceListDataModel> call = loginService.editServiceType(idd, finaleServiceType, sType, amm);
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<DeleteModel> call, Response<DeleteModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<CreateServiceListDataModel> call,
+                                   @NonNull Response<CreateServiceListDataModel> response) {
+                Log.e("response..", "" + response);
 
-                if (response.body().getCode().equalsIgnoreCase("200")) {
-//
-//                    Toast.makeText(ServiceBookList.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-//                    home_today_list_adapter.adddata(response.body().getData());
-                    Toast.makeText(ServiceBookList.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-//                    home_today_list_adapter.notifyDataSetChanged();
-                    home_today_list_adapter.removee(pos);
-                    int s = plushamount -= positionamount;
-                    setdata(s);
-
-
-                } else {
-                    Toast.makeText(ServiceBookList.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                }
-                dialog.dismiss();
-
-            }
-
-            @Override
-            public void onFailure(Call<DeleteModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
-                dialog.dismiss();
-            }
-        });
-    }
-
-    public void edit_service(String idd, String fainalservicetype, String amm, String sType, int positionamount, int posi) {
-
-        dialog.show();
-        ;
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-
-//        if (token != null) {
-        httpClient.addInterceptor(chain -> {
-            Request original = chain.request();
-            Request.Builder requestBuilder = original.newBuilder()
-                    .header("Authorization", "Bearer " + sp.getString("token", ""))
-                    .method(original.method(), original.body());
-            Request request = requestBuilder.build();
-            return chain.proceed(request);
-        });
-//        }
-
-        Log.e("TAG", "edit_service: " + idd + " : " + fainalservicetype + " : " + amm + " : " + sType);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<CreateServiceListDataModel> call = loginservice.Edit_ServiceType(idd, fainalservicetype, sType, amm);
-        call.enqueue(new Callback<CreateServiceListDataModel>() {
-            @Override
-            public void onResponse(Call<CreateServiceListDataModel> call, Response<CreateServiceListDataModel> response) {
-                Log.e("responce..", "" + response.toString());
-
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 
                     Toast.makeText(ServiceBookList.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                    home_today_list_adapter.adddata(response.body().getData());
+                    home_today_list_adapter.addData(response.body().getData());
 
                     ArrayList<CreateServiceListDataModel> branches = response.body().getData();
-//                    for (CreatServicaeListDataModel branch : branches) {
-//
-//
+
                     Log.e("branches", "branches111111111: " + branches.size());
-//
-//                    }
 
-//                    int s = plushamount - positionamount;
-//                    plushamount = s + Integer.parseInt(amm);
-
-                    setdata(posi);
+                    setData(posi);
 
                     Log.e("TAG", "onResponse: " + response.body().getData());
 
 
                 } else {
-                    Toast.makeText(ServiceBookList.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ServiceBookList.this,
+                            response.body().getMsg(),
+                            Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
 
             }
 
             @Override
-            public void onFailure(Call<CreateServiceListDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<CreateServiceListDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("CreateServiceListDataModel: ", "" + t);
                 dialog.dismiss();
             }
         });
     }
 
-    int amontttt = 0;
+    int amountOne = 0;
     String id;
 
-    String fainalservicetype1;
+    String finalServiceType1;
 
-    int positionamount;
+    int positionalAmount;
 
-    public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
-        private Activity context;
+    public class HomeTodayListAdapter extends
+            RecyclerView.Adapter<HomeTodayListAdapter.Holder> {
 
-        List<CreateServiceListDataModel> arrayListTopic = new ArrayList<>();
+        private final Activity context;
 
-        public Home_Today_list_Adapter(Activity context) {
+        List<CreateServiceListDataModel> arrayListTopic;
+
+        public HomeTodayListAdapter(Activity context) {
             this.context = context;
             arrayListTopic = new ArrayList<>();
-
-//            this.arrayListTopic = new List<CreatServicaeListDataModel>() {
-//            };
         }
 
-
-        public void adddata(ArrayList<CreateServiceListDataModel> arrayListTopics) {
+        public void addData(ArrayList<CreateServiceListDataModel> arrayListTopics) {
             arrayListTopic.clear();
             arrayListTopic.addAll(arrayListTopics);
             Log.e("arrayListTopics", "arrayListTopics: " + arrayListTopics);
-            notifyDataSetChanged();
+            arrayListTopic.notify();
         }
 
-        public void refresh(ArrayList<CreateServiceListDataModel> arrayListTopics) {
-            arrayListTopic.clear();
-            arrayListTopic.addAll(arrayListTopics);
-            Log.e("arrayListTopics", "arrayListTopics: " + arrayListTopics);
-            notifyDataSetChanged();
-        }
-
-        public void removee(int pos) {
-//            arrayListTopic.clear();
+        public void remove(int pos) {
             arrayListTopic.remove(pos);
             Log.e("arrayListTopics", "arrayListTopics: " + pos);
-            notifyDataSetChanged();
+            arrayListTopic.notify();
         }
 
         @Override
@@ -522,24 +525,30 @@ public class ServiceBookList extends AppCompatActivity {
 
         @NonNull
         @Override
-        public Home_Today_list_Adapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itam_service_list, parent, false);
-            return new Home_Today_list_Adapter.Holder(view);
+        public HomeTodayListAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                              int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itam_service_list,
+                    parent,
+                    false);
+            return new HomeTodayListAdapter.Holder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final Home_Today_list_Adapter.Holder holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(@NonNull final HomeTodayListAdapter.Holder holder,
+                                     @SuppressLint("RecyclerView") final int position) {
             int count = 1 + position;
 
-            holder.servicetype.setText(arrayListTopic.get(position).getTemp_service_sub_type());
-            holder.textnumber.setText(String.valueOf(count));
-            holder.serviceamt.setText("" + arrayListTopic.get(position).getTemp_service_sub_amount());
+            holder.serviceType.setText(arrayListTopic.get(position).getTemp_service_sub_type());
+            holder.text_number.setText(String.valueOf(count));
+            String serviceAmount = " " + arrayListTopic.get(position).getTemp_service_sub_amount();
+            holder.service_amt.setText(serviceAmount);
 
 
-            holder.spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            holder.spinner_amount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    fainalservicetype1 = (String) parentView.getItemAtPosition(position);
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
+                                           int position, long id) {
+                    finalServiceType1 = (String) parentView.getItemAtPosition(position);
                 }
 
                 @Override
@@ -547,97 +556,87 @@ public class ServiceBookList extends AppCompatActivity {
                 }
             });
 
-            adapterdriver = new ArrayAdapter<>(ServiceBookList.this, R.layout.simple_spinner_item1, serviceType);
-            adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            holder.spinner1.setAdapter(adapterdriver);
-            int posssssss = possss;
+            adapterDriver = new ArrayAdapter<>(ServiceBookList.this, R.layout.simple_spinner_item1, serviceType);
+            adapterDriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            holder.spinner_amount.setAdapter(adapterDriver);
+            int amountPosition = amtPosition;
 
             holder.edt.setOnClickListener(v -> {
 
                 holder.lin.setVisibility(View.VISIBLE);
-                holder.delet.setVisibility(View.GONE);
+                holder.iv_delete.setVisibility(View.GONE);
                 holder.edt.setVisibility(View.GONE);
-                holder.edta.setText(arrayListTopic.get(position).getTemp_service_sub_amount());
-                holder.spinner1.setSelection(posssssss);
+                holder.edt_service_amount.setText(arrayListTopic.get(position).getTemp_service_sub_amount());
+                holder.spinner_amount.setSelection(amountPosition);
 
             });
 
             holder.done.setOnClickListener(v -> {
-                positionamount = Integer.parseInt(arrayListTopic.get(position).getTemp_service_sub_amount());
+                positionalAmount = Integer.parseInt(arrayListTopic.get(position).getTemp_service_sub_amount());
                 id = arrayListTopic.get(position).getId();
-                int posi = count - 1;
-                String edta = holder.edta.getText().toString().trim();
-                int ta = plushamount;
-                int minvalue = ta-positionamount;
-                ta = minvalue+Integer.parseInt(edta);
 
-                if (Integer.parseInt(tamountttt) < ta) {
+                String edt_service_amount = holder.edt_service_amount.getText().toString().trim();
+                int ta = plushAmount;
+                int minvalue = ta- positionalAmount;
+                ta = minvalue+Integer.parseInt(edt_service_amount);
+
+                if (Integer.parseInt(totalAmount) < ta) {
                     Toast.makeText(ServiceBookList.this, "Your Amount High", Toast.LENGTH_SHORT).show();
-                } else if (Integer.parseInt(tamountttt) > ta) {
-                    if (fainalservicetype1.equals("Service Type")) {
-                        Toast.makeText(context, "Pleash Select Service Type", Toast.LENGTH_SHORT).show();
+                } else if (Integer.parseInt(totalAmount) > ta) {
+                    if (finalServiceType1.equals("Service Type")) {
+                        Toast.makeText(context, "Please Select Service Type", Toast.LENGTH_SHORT).show();
                     } else {
 
-                        edit_service(id, service_ref, edta, fainalservicetype1, positionamount, ta);
+                        editService(id, service_ref, edt_service_amount, finalServiceType1, ta);
                         holder.lin.setVisibility(View.GONE);
-                        holder.delet.setVisibility(View.VISIBLE);
+                        holder.iv_delete.setVisibility(View.VISIBLE);
                         holder.edt.setVisibility(View.VISIBLE);
                     }
-                } else if (Integer.parseInt(tamountttt) == ta) {
-                    if (fainalservicetype1.equals("Service Type")) {
-                        Toast.makeText(context, "Pleash Select Service Type", Toast.LENGTH_SHORT).show();
+                } else if (Integer.parseInt(totalAmount) == ta) {
+                    if (finalServiceType1.equals("Service Type")) {
+                        Toast.makeText(context, "Please Select Service Type", Toast.LENGTH_SHORT).show();
                     } else {
-                        edit_service(id, service_ref, edta, fainalservicetype1, positionamount, ta);
+                        editService(id, service_ref, edt_service_amount, finalServiceType1, ta);
                         holder.lin.setVisibility(View.GONE);
-                        holder.delet.setVisibility(View.VISIBLE);
+                        holder.iv_delete.setVisibility(View.VISIBLE);
                         holder.edt.setVisibility(View.VISIBLE);
                     }
                 }
             });
 
-            holder.delet.setOnClickListener(v ->
-            {
+            holder.iv_delete.setOnClickListener(v -> {
                 try {
                     int posi = count - 1;
                     id = arrayListTopic.get(position).getId();
-                    delete(id, fainalservicetype, posi);
-                    positionamount = Integer.parseInt(arrayListTopic.get(position).getTemp_service_sub_amount());
+                    delete(id, finalServiceType, posi);
+                    positionalAmount = Integer.parseInt(arrayListTopic.get(position).getTemp_service_sub_amount());
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("Exception: ", e.toString());
                 }
             });
         }
 
-//        public void refresh(ArrayList<EditServiceModell> data) {
-//
-////            arrayListTopic.clear();
-////            arrayListTopic.addAll(data);
-//            Log.e("arrayListTopics", "arrayListTopics: " + data);
-//            notifyDataSetChanged();
-//
-//        }
-
         class Holder extends RecyclerView.ViewHolder {
 
-            TextView servicetype, serviceamt, textnumber;
+            TextView serviceType, service_amt, text_number;
 
-            EditText edta;
+            EditText edt_service_amount;
 
-            Spinner spinner1;
-            ImageView delet, edt;
+            Spinner spinner_amount;
+            ImageView iv_delete, edt;
 
             CardView done;
             LinearLayout lin;
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
-                servicetype = itemView.findViewById(R.id.tv_service_type);
-                textnumber = itemView.findViewById(R.id.tv_text_number);
-                serviceamt = itemView.findViewById(R.id.tv_service_amt);
-                edta = itemView.findViewById(R.id.et_service_amount);
-                spinner1 = itemView.findViewById(R.id.spinner1);
-                delet = itemView.findViewById(R.id.iv_delete);
+                serviceType = itemView.findViewById(R.id.tv_service_type);
+                text_number = itemView.findViewById(R.id.tv_text_number);
+                service_amt = itemView.findViewById(R.id.tv_service_amt);
+                edt_service_amount = itemView.findViewById(R.id.et_service_amount);
+                spinner_amount = itemView.findViewById(R.id.spinner_amount);
+                iv_delete = itemView.findViewById(R.id.iv_delete);
                 edt = itemView.findViewById(R.id.edt);
                 done = itemView.findViewById(R.id.done);
                 lin = itemView.findViewById(R.id.lin);
@@ -646,12 +645,12 @@ public class ServiceBookList extends AppCompatActivity {
 
     }
 
-    public void setdata(int amontt) {
+    public void setData(int amount) {
 
-        amount1.setText(String.valueOf(amontt));
+        amount1.setText(String.valueOf(amount));
         String t = amount1.getText().toString();
 
-         if (Integer.parseInt(tamountttt) == Integer.parseInt(t)) {
+        if (Integer.parseInt(totalAmount) == Integer.parseInt(t)) {
             save.setVisibility(View.VISIBLE);
             cd.setVisibility(View.GONE);
         }

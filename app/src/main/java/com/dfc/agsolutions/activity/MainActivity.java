@@ -1,9 +1,7 @@
 package com.dfc.agsolutions.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
 import com.dfc.agsolutions.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,4 +12,5 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
     }
+
 }

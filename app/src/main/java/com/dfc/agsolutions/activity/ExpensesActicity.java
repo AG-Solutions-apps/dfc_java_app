@@ -39,7 +39,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ExpensesActicity extends AppCompatActivity {
 
-    ImageView icback;
+    ImageView iv_back;
 
     RecyclerView rv;
     SharedPreferences sp;
@@ -50,51 +50,43 @@ public class ExpensesActicity extends AppCompatActivity {
 
     ProgressDialog dialog;
 
-    TextView totalamount;
+    TextView tv_total_amount;
     SwipeRefreshLayout swipeRefreshLayout;
-    LottieAnimationView nodata;
-
+    LottieAnimationView lav_no_data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expenses_activity);
+
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();
+
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        nodata = findViewById(R.id.lav_no_data);
+        lav_no_data = findViewById(R.id.lav_no_data);
         rv = findViewById(R.id.rv);
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            nodata.setVisibility(View.VISIBLE);
+            lav_no_data.setVisibility(View.VISIBLE);
             rv.setVisibility(View.GONE);
-            Expenses_List();
+            expensesList();
         });
 
         dialog = new ProgressDialog(ExpensesActicity.this);
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
-        icback = findViewById(R.id.iv_back);
-        totalamount = findViewById(R.id.tv_total_amount);
-        icback.setOnClickListener(v -> {
-            finish();
-        });
-        Expenses_List();
+        iv_back = findViewById(R.id.iv_back);
+        tv_total_amount = findViewById(R.id.tv_total_amount);
+        iv_back.setOnClickListener(v -> finish());
+        expensesList();
     }
 
-    public void Expenses_List() {
+    public void expensesList() {
 
         dialog.show();
-//        fullname.clear();
-//        mobile.clear();
-//        dl_expiry.clear();
-//        user_status.clear();
-//        user_image.clear();
-//        milageaaray.clear();
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -103,107 +95,68 @@ public class ExpensesActicity extends AppCompatActivity {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<ExpensesListDataModel> call = loginservice.get_ExpensesList(sp.getString("userBranch", ""));
-        call.enqueue(new Callback<ExpensesListDataModel>() {
-            @Override
-            public void onResponse(Call<ExpensesListDataModel> call, Response<ExpensesListDataModel> response) {
-                Log.e("responce..", "" + response.toString());
 
+        Api loginService = retrofit.create(Api.class);
+        Call<ExpensesListDataModel> call = loginService.get_ExpensesList(sp.getString("userBranch", ""));
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ExpensesListDataModel> call,
+                                   @NonNull Response<ExpensesListDataModel> response) {
+                Log.e("response..", "" + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
-//
+
                     ArrayList<ExpensesListDataModel> branches = response.body().getData();
                     totalAmount = response.body().getTotalExpensive();
                     totalReceived = response.body().getTotalReceived();
 
-                    Log.e("amtcheck","totalAmount:-  " + totalAmount);
-                    Log.e("amtcheck","totalReceived:- " + totalReceived);
+                    Log.e("amtCheck","totalAmount:-  " + totalAmount);
+                    Log.e("amtCheck","totalReceived:- " + totalReceived);
 
                     try {
-                        int totalamounts = Integer.parseInt(totalAmount);
-                        int totalrc = Integer.parseInt(totalReceived);
+                        int totalAmounts = Integer.parseInt(totalAmount);
+                        int total_rc = Integer.parseInt(totalReceived);
 
+                        int finalAmt = total_rc -totalAmounts ;
 
-                        int fainalamt = totalrc -totalamounts ;
-
-                        totalamount.setText("  \u20B9 " + fainalamt + " ");
-
-
-//                        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
-//                            totalamount.setText("" + Html.fromHtml("<b>Balance:</b>") + fainalamt);
-//                        } else {
-//                            // Use HtmlCompat.fromHtml() for Nougat (API 24) and above
-//                            totalamount.setText("" +  HtmlCompat.fromHtml("<b>Balance:</b>", HtmlCompat.FROM_HTML_MODE_LEGACY) +fainalamt );
-//                        }
+                        String totalAmount = "  ₹ " + finalAmt + " ";
+                        tv_total_amount.setText(totalAmount);
 
                     } catch (NumberFormatException e) {
-//                        throw new RuntimeException(e);
+                        Log.e("Error: ", e.toString());
                     }
 
-//                    ArrayList<ExpensesListDataModel> branches1 = response.body().getTotalAmount();
-//                    ArrayList<ExpensesListDataModel> branches2 = response.body().getTotalReceived();
-//                    for (ExpensesListDataModel branch : branches) {
-//
-//                        fullname.add(branch.getFull_name());
-//                        mobile.add(branch.getMobile());
-//                        dl_expiry.add(branch.getDl_expiry());
-
-//                        user_status.add(branch.getUser_status());
-//                        user_image.add(branch.getUser_image());
-//
-//                    }
-                    nodata.setVisibility(View.GONE);
+                    lav_no_data.setVisibility(View.GONE);
                     rv.setVisibility(View.VISIBLE);
-                    Home_Today_list_Adapter adapter = new Home_Today_list_Adapter(ExpensesActicity.this, response.body().getData());
+                    HomeTodayListAdapter adapter = new HomeTodayListAdapter(response.body().getData());
                     rv.setAdapter(adapter);
 
-//
-////response.body().getData().get(0).getReg_no();
-////                    for (ServiceFatchVhicalDataModel branch : branches) {
-////                        vhicalarray.add(branch.getReg_no());
-//////                        vhicaldraiverarray.add(branch.getVehicle_driver());
-//////                        milageaaray.add(branch.getVehicle_mileage());
-////                    }
-//                    for (ServiceFatchVhicalDataModel branch : branches) {
-//                        vhicalarray.add(branch.getReg_no());
-//                    }
-////
-//                    ArrayAdapter<String> adapter = new ArrayAdapter<>(DriverListActivity.this, R.layout.simple_spinner_item, vhicalarray);
-//                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinner.setAdapter(adapter);
-
-//
-//                    ArrayAdapter<String> adapterdriver = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicaldraiverarray);
-//                    adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinnerdriver.setAdapter(adapterdriver);
-
-
-//                    setupSpinner(branchNames);
-                    Log.e("responce..", "branches:-  " + branches.size());
+                    Log.e("response..", "branches:-  " + branches.size());
 
                 } else {
-                    nodata.setVisibility(View.VISIBLE);
+                    lav_no_data.setVisibility(View.VISIBLE);
                     rv.setVisibility(View.GONE);
                     Toast.makeText(ExpensesActicity.this, "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
                 swipeRefreshLayout.setRefreshing(false);
 
-
             }
 
             @Override
-            public void onFailure(Call<ExpensesListDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<ExpensesListDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("ExpensesListDataModel: ", "" + t);
                 dialog.dismiss();
-                nodata.setVisibility(View.VISIBLE);
+                lav_no_data.setVisibility(View.VISIBLE);
                 rv.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
 
@@ -212,19 +165,14 @@ public class ExpensesActicity extends AppCompatActivity {
 
     }
 
-    public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
-        private ExpensesActicity context;
+    public static class HomeTodayListAdapter extends
+            RecyclerView.Adapter<HomeTodayListAdapter.Holder> {
 
         ArrayList<ExpensesListDataModel> data;
 
-        public Home_Today_list_Adapter(ExpensesActicity context, ArrayList<ExpensesListDataModel> data) {
-            this.context = context;
+        public HomeTodayListAdapter(ArrayList<ExpensesListDataModel> data) {
             this.data = data;
         }
-
-//        public Home_Today_list_Adapter(ExpensesActicity context, ArrayList<ExpensesListDataModel> data) {
-//
-//        }
 
         @Override
         public int getItemCount() {
@@ -233,20 +181,20 @@ public class ExpensesActicity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public Home_Today_list_Adapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public HomeTodayListAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_expenses, parent, false);
-            return new Home_Today_list_Adapter.Holder(view);
+            return new Holder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final Home_Today_list_Adapter.Holder holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(@NonNull final HomeTodayListAdapter.Holder holder,
+                                     @SuppressLint("RecyclerView") final int position) {
 
-
-//            holder.date.setText(data.get(position).getPayment_details_date());
             try {
-                holder.money.setText("\u20B9 " + data.get(position).getPayment_details_amount());
-                holder.voucher.setText(data.get(position).getPayment_details_voucher_type());
-                holder.debit.setText(data.get(position).getPayment_details_debit());
+                String money = "₹ " + data.get(position).getPayment_details_amount();
+                holder.tv_money.setText(money);
+                holder.tv_voucher.setText(data.get(position).getPayment_details_voucher_type());
+                holder.tv_debit.setText(data.get(position).getPayment_details_debit());
 
                 String date1 = data.get(position).getPayment_details_date();
 
@@ -255,83 +203,45 @@ public class ExpensesActicity extends AppCompatActivity {
                     Date date = inputDateFormat.parse(date1);
 
                     SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                    String datefiormate = outputDateFormat.format(date);
+                    String dateFormated = null;
+                    if (date != null) {
+                        dateFormated = outputDateFormat.format(date);
+                    }
 
-                    holder.date.setText("Date : "+datefiormate);
+                    String formatedDate = "Date : "+dateFormated;
+                    holder.tv_date.setText(formatedDate);
                 } catch (ParseException e) {
-                    holder.date.setText("Date : "+date1);
+                    String date = "Date : "+date1;
+                    holder.tv_date.setText(date);
 
                 }
             } catch (Exception e) {
-//                throw new RuntimeException(e);
-                holder.money.setText("\u20B9 " + data.get(position).getPayment_details_amount());
-                holder.voucher.setText("Voucher : "+data.get(position).getPayment_details_voucher_type());
-                holder.debit.setText("Debit : "+data.get(position).getPayment_details_debit());
+                Log.e("TAG", "onBindViewHolder: " + e);
+                String money = "₹ " + data.get(position).getPayment_details_amount();
+                holder.tv_money.setText(money);
+                String voucher = "Voucher : "+data.get(position).getPayment_details_voucher_type();
+                holder.tv_voucher.setText(voucher);
+                String debit = "Debit : "+data.get(position).getPayment_details_debit();
+                holder.tv_debit.setText(debit);
             }
-
-//            holder.profile.set(arrayListTopic.get(position).getDl_expiry());
-//            Glide.with(context).load(arrayListTopic.get(position).getUser_image()).into(holder.profile);
-//            String lastTripDateStr = arrayListTopic.get(position).getTrip_date();
-
-
-//            if (arrayListTopic.get(position).getTrip_date().equals("")) {
-//                holder.tripdate.setText("-" + " / " + "0" + "days");
-//
-//            } else {
-//
-//                long daysDifference;
-//                try {
-//                    String givenDateString = arrayListTopic.get(position).getTrip_date();
-//
-//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//
-//                    // Parse the given date string
-//                    Date givenDate = sdf.parse(givenDateString);
-//
-//                    // Get the current date
-//                    Date currentDate = new Date();
-//
-//                    // Calculate the difference in milliseconds
-//                    long timeDifference = currentDate.getTime() - givenDate.getTime();
-//
-//                    // Convert milliseconds to days
-//                    daysDifference = timeDifference / (24 * 60 * 60 * 1000);
-//                    holder.tripdate.setText(arrayListTopic.get(position).getTrip_date() + " / " + daysDifference + " days");
-//
-//
-//
-//                    System.out.println("Days difference between " + givenDateString + " and today: " + daysDifference + " days");
-//
-//
-//                } catch (ParseException e) {
-////                e.printStackTrace();
-//                    holder.tripdate.setText(arrayListTopic.get(position).getTrip_date() + " / " + "0" + "days");
-//
-//                }
-////            System.out.println("Last Trip Date: " + lastTripDateStr);
-////            System.out.println("New Date (" + daysBeforeLastTrip + " days before last trip): " + formattedNewDate);
-//
-//            }
-
 
         }
 
-        class Holder extends RecyclerView.ViewHolder {
+        static class Holder extends RecyclerView.ViewHolder {
 
-            TextView date, money, voucher, debit;
-//            ImageView profile;
+            TextView tv_date, tv_money, tv_voucher, tv_debit;
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
 
-                date = itemView.findViewById(R.id.date);
-                money = itemView.findViewById(R.id.money);
-                voucher = itemView.findViewById(R.id.voucher);
-                debit = itemView.findViewById(R.id.debit);
+                tv_date = itemView.findViewById(R.id.date);
+                tv_money = itemView.findViewById(R.id.money);
+                tv_voucher = itemView.findViewById(R.id.voucher);
+                tv_debit = itemView.findViewById(R.id.debit);
 
             }
         }
 
-
     }
+
 }

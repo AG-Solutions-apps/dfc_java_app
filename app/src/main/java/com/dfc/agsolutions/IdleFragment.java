@@ -139,7 +139,7 @@ public class IdleFragment extends Fragment {
 
         Api loginService = retrofit.create(Api.class);
 
-        Call<TruckTypeModel> call = loginService.get_vhiclelist(selectedBranch, "2");
+        Call<TruckTypeModel> call = loginService.getVehicleList(selectedBranch, "2");
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<TruckTypeModel> call,

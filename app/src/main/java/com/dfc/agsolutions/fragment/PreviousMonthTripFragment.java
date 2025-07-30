@@ -119,7 +119,7 @@ public class PreviousMonthTripFragment extends Fragment {
                 .build();
 
         Api loginService = retrofit.create(Api.class);
-        Call<PreviousHistoryDataModel> call = loginService.get_vhicleHistory( "2",
+        Call<PreviousHistoryDataModel> call = loginService.getVehicleHistory( "2",
                 activity.getIntent().getStringExtra("v_name"));
 
         call.enqueue(new Callback<>() {
@@ -209,7 +209,7 @@ public class PreviousMonthTripFragment extends Fragment {
             String distance = " " + data.get(position).getTrip_km() + " Km";
             holder.distance.setText(distance);
 
-            String date1 = data.get(position).getTrip_date();
+            String date1 = data.get(position).getTripDate();
             try {
                 SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 Date date = inputDateFormat.parse(date1);

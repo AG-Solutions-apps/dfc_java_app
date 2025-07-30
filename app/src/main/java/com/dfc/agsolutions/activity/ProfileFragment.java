@@ -42,16 +42,16 @@ public class ProfileFragment extends Fragment {
 
     SharedPreferences.Editor ed;
 
-    TextView name,mobile,email,vehicle,adress,dl_no,dl_expire,lice_no,lice_expiry;
+    TextView name, mobile, email, vehicle, tv_address, dl_no, dl_expire, lice_no, lice_expiry;
 
     ImageView profile_image;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
-        ViewGroup container,
-        Bundle savedInstanceState) {
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_profile_fragment,
-            container, false);
+                container, false);
 
         sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
         ed = sp.edit();
@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
         mobile = view.findViewById(R.id.mobile);
         email = view.findViewById(R.id.email);
         vehicle = view.findViewById(R.id.vehicle);
-        adress = view.findViewById(R.id.tv_address);
+        tv_address = view.findViewById(R.id.tv_address);
         dl_no = view.findViewById(R.id.dl_no);
         dl_expire = view.findViewById(R.id.dl_expire);
         lice_no = view.findViewById(R.id.lice_no);
@@ -74,7 +74,6 @@ public class ProfileFragment extends Fragment {
         currantHistory();
 
         return view;
-
     }
 
     // show progress dialog
@@ -91,34 +90,39 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    private OkHttpClient.Builder createHttpClient() {
+        return new OkHttpClient.Builder();
+    }
+
     public void currantHistory() {
         // show progress dialog
         showProgressDialog();
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        OkHttpClient.Builder httpClient = createHttpClient();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
-                .header("Authorization", "Bearer " + sp.getString("token", ""))
-                .method(original.method(), original.body());
+                    .header("Authorization", "Bearer " + sp.getString("token", ""))
+                    .method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
 
 
         Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(getString(R.string.commn_url))
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(httpClient.build())
-            .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<ProfileModel> call = loginservice.get_profile();
-        call.enqueue(new Callback<ProfileModel>() {
+                .baseUrl(getString(R.string.commn_url))
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build())
+                .build();
+
+        Api loginService = retrofit.create(Api.class);
+
+        Call<ProfileModel> call = loginService.get_profile();
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ProfileModel> call,
-                @NonNull Response<ProfileModel> response) {
+                                   @NonNull Response<ProfileModel> response) {
 
                 ProfileModel profileModel = response.body();
                 if (profileModel != null && profileModel.getCode() == 200) {
@@ -126,19 +130,17 @@ public class ProfileFragment extends Fragment {
                     ProfileModel.Profile profile = profileModel.getData();
                     if (profile != null) {
 
-                        String ename = profile.getFull_name();
-                        String emobile = "+91 " + profile.getMobile();
-                        String eemail = profile.getEmail();
-                        String evehicle = ":  "+profile.getVehicle_type();
-                        String eadress = ":  "+profile.getUser_address();
+                        String e_name = profile.getFull_name();
+                        String e_mobile = "+91 " + profile.getMobile();
+                        String e_email = profile.getEmail();
+                        String e_vehicle = ":  "+profile.getVehicle_type();
+                        String e_address = ":  "+profile.getUser_address();
                         String edl_no = ":  "+profile.getDl_no();
-//                        String edl_expire = ":  "+profile.getDl_expiry();
-                        String elice_no = ":  "+profile.getHazard_lice_no();
-                        String elice_expiry = profile.getHazard_lice_expiry();
 
-//                        TextView name,mobile,email,vehicle,adress,dl_no,dl_expire,lice_no,lice_expir
+                        String e_lice_no = ":  "+profile.getHazard_lice_no();
+                        String e_lice_expiry = profile.getHazard_lice_expiry();
 
-                        Log.e("fsdfsdfsfdf","00000:-  " + profile.getDl_expiry());
+                        Log.e("DL Expiry","00000:-  " + profile.getDl_expiry());
                         try {
 
                             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -170,24 +172,24 @@ public class ProfileFragment extends Fragment {
                             }
 
                         } catch (ParseException e) {
-                            String eliceExpiry = ":  "+elice_expiry;
-                            lice_expiry.setText(eliceExpiry);
+                            String eLiceExpiry = ":  "+e_lice_expiry;
+                            lice_expiry.setText(eLiceExpiry);
                         }
-                        name.setText(ename);
+                        name.setText(e_name);
 
-                        mobile.setText(emobile);
-                        email.setText(eemail);
-                        vehicle.setText(evehicle);
-                        adress.setText(eadress);
+                        mobile.setText(e_mobile);
+                        email.setText(e_email);
+                        vehicle.setText(e_vehicle);
+                        tv_address.setText(e_address);
                         dl_no.setText(edl_no);
-                        lice_no.setText(elice_no);
-//                        lice_expiry.setText(elice_expiry);
+                        lice_no.setText(e_lice_no);
+//                        lice_expiry.setText(e_lice_expiry);
 
                         String userImageUrl = profile.getUser_image();
                         if(!TextUtils.isEmpty(userImageUrl)) {
                             Glide.with(requireActivity()).
-                                load(Uri.parse("https://dfcgroup.in/crmapi/public/profiles/"+profile.getUser_image()))
-                                .into(profile_image);
+                                    load(Uri.parse("https://dfcgroup.in/crmapi/public/profiles/"+profile.getUser_image()))
+                                    .into(profile_image);
                         }
 
                     }
@@ -201,7 +203,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<ProfileModel> call,
-                @NonNull Throwable t) {
+                                  @NonNull Throwable t) {
                 // hide progress dialog
                 hideProgressDialog();
             }

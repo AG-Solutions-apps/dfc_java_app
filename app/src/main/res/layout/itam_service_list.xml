@@ -169,7 +169,7 @@
                     android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/spinner1"
+                        android:id="@+id/spinner_amount"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginStart="8dp"
@@ -201,7 +201,7 @@
                             android:focusable="true"
                             android:fontFamily="@font/poppins_regular"
                             android:hint="@string/amount"
-                            android:inputType="phone"
+                            android:inputType="number"
                             android:maxLines="1"
                             android:autofillHints="amount"
                             android:paddingStart="14dp"
