@@ -1,7 +1,7 @@
 package com.dfc.agsolutions.activity;
 
-import com.dfc.agsolutions.model.CheckNomberModel;
-import com.dfc.agsolutions.model.CreatServicaeListDataModel;
+import com.dfc.agsolutions.model.CheckNumberModel;
+import com.dfc.agsolutions.model.CreateServiceListDataModel;
 import com.dfc.agsolutions.model.CreatTripModel;
 import com.dfc.agsolutions.model.CreatePaymentDataModel;
 import com.dfc.agsolutions.model.CurrantHistoryModel;
@@ -11,12 +11,12 @@ import com.dfc.agsolutions.model.DeletModel;
 import com.dfc.agsolutions.model.DeleteModel;
 import com.dfc.agsolutions.model.DriverListDataModel;
 import com.dfc.agsolutions.model.ExpensesListDataModel;
-import com.dfc.agsolutions.model.FatchAggencyDataModel;
-import com.dfc.agsolutions.model.FatchAllVhicalDataModel;
-import com.dfc.agsolutions.model.FatchBHSDDataModel;
-import com.dfc.agsolutions.model.FatchDriverDataModel;
-import com.dfc.agsolutions.model.FatchVendorDataModel;
-import com.dfc.agsolutions.model.FatchVhicalDataModel;
+import com.dfc.agsolutions.model.FetchAgencyDataModel;
+import com.dfc.agsolutions.model.FetchAllVehicleDataModel;
+import com.dfc.agsolutions.model.FetchBHSDDataModel;
+import com.dfc.agsolutions.model.FetchDriverDataModel;
+import com.dfc.agsolutions.model.FetchVendorDataModel;
+import com.dfc.agsolutions.model.FetchVehicleDataModel;
 import com.dfc.agsolutions.model.GarageDataModel;
 import com.dfc.agsolutions.model.MyResponseData;
 import com.dfc.agsolutions.model.OngoingTruckTypeModel;
@@ -25,15 +25,15 @@ import com.dfc.agsolutions.model.ProfileModel;
 import com.dfc.agsolutions.model.RequestBodyData;
 import com.dfc.agsolutions.model.ResponseArrayModel;
 import com.dfc.agsolutions.model.ResponseTodoCount;
-import com.dfc.agsolutions.model.ServiceFatchVhicalDataModel;
+import com.dfc.agsolutions.model.ServiceFetchVehicleDataModel;
 import com.dfc.agsolutions.model.ServiceStatusDataModel;
 import com.dfc.agsolutions.model.ServiceTypeDataModel;
-import com.dfc.agsolutions.model.ServicesubFinalModel;
+import com.dfc.agsolutions.model.ServiceSubFinalModel;
 import com.dfc.agsolutions.model.TodoListDataModel;
 import com.dfc.agsolutions.model.TripCurrantDataModel;
 import com.dfc.agsolutions.model.TruckTypeModel;
 import com.dfc.agsolutions.model.UpdateTripModel;
-import com.dfc.agsolutions.model.VhicaledetailsModel;
+import com.dfc.agsolutions.model.VehicleDetailsModel;
 import com.dfc.agsolutions.model.VoucherTypeDataModel;
 
 import retrofit2.Call;
@@ -44,7 +44,7 @@ import retrofit2.http.Query;
 public interface Api {
 
     @POST("check-mobile")
-    Call<CheckNomberModel> get_check_mobail(@Query("mobile") String mobail);
+    Call<CheckNumberModel> get_check_mobail(@Query("mobile") String mobail);
 
     @POST("login")
     Call<MyResponseData> get_login(@Query("mobile") String mobail, @Query("password") String password);
@@ -74,7 +74,7 @@ public interface Api {
 
 
     @POST("fetch-remaing-trip-vehicle")
-    Call<FatchVhicalDataModel> get_fatchvhiclelist(@Query("branch_name") String branch_name);
+    Call<FetchVehicleDataModel> get_fatchvhiclelist(@Query("branch_name") String branch_name);
 
 
     @POST("fetch-driver-trip-history")
@@ -105,7 +105,7 @@ public interface Api {
 
 
     @POST("create-service-sub-temp")
-    Call<CreatServicaeListDataModel> get_getServicesubType(@Query("service_ref") String service_date,
+    Call<CreateServiceListDataModel> get_getServicesubType(@Query("service_ref") String service_date,
                                                            @Query("temp_service_sub_type") String service_year,
                                                            @Query("temp_service_sub_amount") String service_truck_no);
 
@@ -147,25 +147,25 @@ public interface Api {
     Call<DriverListDataModel> get_driverlist(@Query("branch_name") String branch_name);
 
     @POST("fetch-service-vehicle")
-    Call<ServiceFatchVhicalDataModel> get_servicefatchvhiclelist(@Query("branch_name") String branch_name);
+    Call<ServiceFetchVehicleDataModel> get_servicefatchvhiclelist(@Query("branch_name") String branch_name);
 
     @POST("fetch-drivers")
-    Call<FatchDriverDataModel> get_fatchdriver(@Query("branch_name") String branch_name);
+    Call<FetchDriverDataModel> get_fatchdriver(@Query("branch_name") String branch_name);
 
     @POST("fetch-vendors")
-    Call<FatchVendorDataModel> get_fatchaggent(@Query("branch_name") String branch_name, @Query("vendor_type") String vendor_type);
+    Call<FetchVendorDataModel> get_fatchaggent(@Query("branch_name") String branch_name, @Query("vendor_type") String vendor_type);
 
     @POST("fetch-agency")
-    Call<FatchAggencyDataModel> get_fetch_agency(@Query("branch_name") String branch_name);
+    Call<FetchAgencyDataModel> get_fetch_agency(@Query("branch_name") String branch_name);
 
     @POST("fetch-vehicle-bhsd")
-    Call<FatchBHSDDataModel> get_fetch_bhsd(@Query("trip_vehicle") String trip_vehicle);
+    Call<FetchBHSDDataModel> get_fetch_bhsd(@Query("trip_vehicle") String trip_vehicle);
 
     @POST("fetch-vehicle-list")
     Call<OngoingTruckTypeModel> get_vhiclelistongoing(@Query("branch_name") String branch_name, @Query("truck_type") String truck_type);
 
     @POST("fetch-all-vehicle-list")
-    Call<FatchAllVhicalDataModel> get_allvhicleList(@Query("branch_name") String branch_name);
+    Call<FetchAllVehicleDataModel> get_allvhicleList(@Query("branch_name") String branch_name);
 
 
     @POST("create-trip")
@@ -189,19 +189,19 @@ public interface Api {
                                           @Query("trip_remarks") String trip_remarks);
 
     @POST("fetch-vehicle-details")
-    Call<VhicaledetailsModel>
+    Call<VehicleDetailsModel>
     get_v_details(@Query("reg_no") String reg_no);
 
 
     @POST("fetch-service-final")
-    Call<ServicesubFinalModel> Service_final(@Query("service_type") String service_type);
+    Call<ServiceSubFinalModel> Service_final(@Query("service_type") String service_type);
 
     @POST("delete-service-type")
     Call<DeleteModel> delete_ServiceType(@Query("service_type") String service_type,
                                          @Query("branch_name") String branch_name);
 
     @POST("edit-service-type")
-    Call<CreatServicaeListDataModel> Edit_ServiceType(
+    Call<CreateServiceListDataModel> Edit_ServiceType(
             @Query("service_type") String service_type,
             @Query("branch_name") String branch_name,
             @Query("service_type_name") String service_type_name,

@@ -61,16 +61,8 @@ public class OnGoingTripFragment extends Fragment {
     SharedPreferences.Editor ed;
     Activity activity;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OnGoingTripFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static OnGoingTripFragment newInstance(String param1, String param2) {
+    public static OnGoingTripFragment newInstance(String param1,
+                                                  String param2) {
         OnGoingTripFragment fragment = new OnGoingTripFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -90,12 +82,15 @@ public class OnGoingTripFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View inflatedView = inflater.inflate(R.layout.fragment_on_going_trip, container, false);
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        View inflatedView = inflater.inflate(R.layout.fragment_on_going_trip,
+                container,
+                false);
 
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_on_going_trip, container, false);
-
 
         swipeRefreshLayout = inflatedView.findViewById(R.id.swipeRefreshLayout);
 
@@ -121,7 +116,8 @@ public class OnGoingTripFragment extends Fragment {
         return inflatedView;
     }
 
-    public void get_trip(String selectedBranch, Activity activity) {
+    public void get_trip(String selectedBranch,
+                         Activity activity) {
 /*//        ProgressDialog  dialog = new ProgressDialog(activity);
 //        dialog.setMessage("Loading...");
 //        dialog.setCancelable(false);*/
@@ -136,7 +132,8 @@ public class OnGoingTripFragment extends Fragment {
             httpClient.addInterceptor(chain -> {
                 Request original = chain.request();
                 Request.Builder requestBuilder = original.newBuilder()
-                        .header("Authorization", "Bearer " + sp.getString("token", ""))
+                        .header("Authorization", "Bearer " +
+                                sp.getString("token", ""))
                         .method(original.method(), original.body());
                 Request request = requestBuilder.build();
                 return chain.proceed(request);
@@ -167,14 +164,17 @@ public class OnGoingTripFragment extends Fragment {
                         } else {
                             lav_no_data.setVisibility(View.GONE);
                             rv_shop.setVisibility(View.VISIBLE);
-                            HomeTodayListAdapter home_today_list_adapter = new HomeTodayListAdapter(requireActivity(), response.body().getData());
+                            HomeTodayListAdapter home_today_list_adapter = new HomeTodayListAdapter(requireActivity(),
+                                    response.body().getData());
                             rv_shop.setAdapter(home_today_list_adapter);
                             rv_shop.setItemAnimator(new DefaultItemAnimator());
                             rv_shop.setHasFixedSize(true);
                         }
 
                     } else {
-                        Toast.makeText(requireActivity(), "Network Error!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireActivity(),
+                                "Network Error!!",
+                                Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
                     swipeRefreshLayout.setRefreshing(false);
@@ -360,7 +360,8 @@ public class OnGoingTripFragment extends Fragment {
         return new OkHttpClient.Builder();
     }
 
-    public void onGoingCount(String status, String id) {
+    public void onGoingCount(String status,
+                             String id) {
 /*//        ProgressDialog  dialog = new ProgressDialog(activity);
 //        dialog.setMessage("Loading...");
 //        dialog.setCancelable(false);*/
@@ -376,7 +377,8 @@ public class OnGoingTripFragment extends Fragment {
             httpClient.addInterceptor(chain -> {
                 Request original = chain.request();
                 Request.Builder requestBuilder = original.newBuilder()
-                        .header("Authorization", "Bearer " + sp.getString("token", ""))
+                        .header("Authorization", "Bearer " +
+                                sp.getString("token", ""))
                         .method(original.method(), original.body());
                 Request request = requestBuilder.build();
                 return chain.proceed(request);

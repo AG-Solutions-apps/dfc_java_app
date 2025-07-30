@@ -2,17 +2,17 @@ package com.dfc.agsolutions.model;
 
 import java.util.ArrayList;
 
-public class FatchVhicalDataModel {
-    public ArrayList<FatchVhicalDataModel> getData() {
+public class FetchVehicleDataModel {
+
+    public ArrayList<FetchVehicleDataModel> getData() {
         return data;
     }
 
-    public void setData(ArrayList<FatchVhicalDataModel> data) {
+    public void setData(ArrayList<FetchVehicleDataModel> data) {
         this.data = data;
     }
 
-    private ArrayList<FatchVhicalDataModel> data;
-
+    private ArrayList<FetchVehicleDataModel> data;
 
     public String getCode() {
         return code;

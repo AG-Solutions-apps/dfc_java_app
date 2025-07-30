@@ -2,11 +2,9 @@ package com.dfc.agsolutions.model;
 
 import java.util.ArrayList;
 
-public class ServiceFatchVhicalDataModel {
+public class ServiceFetchVehicleDataModel {
 
-
-    private ArrayList<ServiceFatchVhicalDataModel> data;
-
+    private ArrayList<ServiceFetchVehicleDataModel> data;
 
     public String getCode() {
         return code;
@@ -18,11 +16,11 @@ public class ServiceFatchVhicalDataModel {
 
     String code;
 
-    public ArrayList<ServiceFatchVhicalDataModel> getData() {
+    public ArrayList<ServiceFetchVehicleDataModel> getData() {
         return data;
     }
 
-    public void setData(ArrayList<ServiceFatchVhicalDataModel> data) {
+    public void setData(ArrayList<ServiceFetchVehicleDataModel> data) {
         this.data = data;
     }
 
@@ -35,8 +33,5 @@ public class ServiceFatchVhicalDataModel {
     }
 
     String reg_no;
-
-
-
 
 }

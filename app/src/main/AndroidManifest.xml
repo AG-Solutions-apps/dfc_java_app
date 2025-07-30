@@ -32,7 +32,7 @@
         </activity>
 
         <activity
-            android:name=".activity.VhicletripHistoryActivity"
+            android:name=".activity.VehicleTripHistoryActivity"
             android:exported="false" />
 
         <activity

@@ -22,8 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.dfc.agsolutions.model.FatchAllVhicalDataModel;
-import com.dfc.agsolutions.model.VhicaledetailsModel;
+import com.dfc.agsolutions.model.FetchAllVehicleDataModel;
+import com.dfc.agsolutions.model.VehicleDetailsModel;
 import com.dfc.agsolutions.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -113,10 +113,10 @@ public class Allvhicale_list_activity extends AppCompatActivity {
                 .client(httpClient.build())
                 .build();
         Api loginservice = retrofit.create(Api.class);
-        Call<FatchAllVhicalDataModel> call = loginservice.get_allvhicleList(sp.getString("userBranch", ""));
-        call.enqueue(new Callback<FatchAllVhicalDataModel>() {
+        Call<FetchAllVehicleDataModel> call = loginservice.get_allvhicleList(sp.getString("userBranch", ""));
+        call.enqueue(new Callback<FetchAllVehicleDataModel>() {
             @Override
-            public void onResponse(Call<FatchAllVhicalDataModel> call, Response<FatchAllVhicalDataModel> response) {
+            public void onResponse(Call<FetchAllVehicleDataModel> call, Response<FetchAllVehicleDataModel> response) {
                 Log.e("responce..", "" + response.toString());
 
                 if (response.body().getCode().equalsIgnoreCase("200")) {
@@ -142,7 +142,7 @@ public class Allvhicale_list_activity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<FatchAllVhicalDataModel> call, Throwable t) {
+            public void onFailure(Call<FetchAllVehicleDataModel> call, Throwable t) {
                 Log.e("sdfsd", "" + t.toString());
                 dialog.dismiss();
                 nodata.setVisibility(View.VISIBLE);
@@ -156,9 +156,9 @@ public class Allvhicale_list_activity extends AppCompatActivity {
 
     public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
         private Context context;
-        ArrayList<FatchAllVhicalDataModel> data;
+        ArrayList<FetchAllVehicleDataModel> data;
 
-        public Home_Today_list_Adapter(Context context, ArrayList<FatchAllVhicalDataModel> data) {
+        public Home_Today_list_Adapter(Context context, ArrayList<FetchAllVehicleDataModel> data) {
             this.context = context;
             this.data = data;
         }
@@ -191,15 +191,12 @@ public class Allvhicale_list_activity extends AppCompatActivity {
 
                     }
                 });
-                holder.trips.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-//                        v_nmae
-                        Intent intent = new Intent(context, VhicletripHistoryActivity.class);
-                        intent.putExtra("v_nmae",data.get(position).getReg_no());
-                        startActivity(intent);
+                holder.trips.setOnClickListener(v -> {
+//                        v_name
+                    Intent intent = new Intent(context, VehicleTripHistoryActivity.class);
+                    intent.putExtra("v_name",data.get(position).getReg_no());
+                    startActivity(intent);
 
-                    }
                 });
 
             } catch (Exception e) {
@@ -254,10 +251,10 @@ public class Allvhicale_list_activity extends AppCompatActivity {
                 .client(httpClient.build())
                 .build();
         Api loginservice = retrofit.create(Api.class);
-        Call<VhicaledetailsModel> call = loginservice.get_v_details(reg_no);
-        call.enqueue(new Callback<VhicaledetailsModel>() {
+        Call<VehicleDetailsModel> call = loginservice.get_v_details(reg_no);
+        call.enqueue(new Callback<VehicleDetailsModel>() {
             @Override
-            public void onResponse(Call<VhicaledetailsModel> call, Response<VhicaledetailsModel> response) {
+            public void onResponse(Call<VehicleDetailsModel> call, Response<VehicleDetailsModel> response) {
                 Log.e("responce..", "" + response.toString());
 
                 if (response.body().getCode() == 200) {
@@ -276,7 +273,7 @@ public class Allvhicale_list_activity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<VhicaledetailsModel> call, Throwable t) {
+            public void onFailure(Call<VehicleDetailsModel> call, Throwable t) {
                 Log.e("sdfsd", "" + t.toString());
                 dialog.dismiss();
 
@@ -286,7 +283,7 @@ public class Allvhicale_list_activity extends AppCompatActivity {
 
     }
 
-    private void countryDialoglogout(VhicaledetailsModel.DataModel data) {
+    private void countryDialoglogout(VehicleDetailsModel.DataModel data) {
 
         if (data == null) {
             Toast.makeText(this, "Vehicle data is not available.", Toast.LENGTH_SHORT).show();

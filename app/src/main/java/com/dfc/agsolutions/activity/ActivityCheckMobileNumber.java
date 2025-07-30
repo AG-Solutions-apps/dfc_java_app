@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.dfc.agsolutions.app_utils.Myapplication;
-import com.dfc.agsolutions.model.CheckNomberModel;
+import com.dfc.agsolutions.model.CheckNumberModel;
 import com.dfc.agsolutions.R;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import java.util.Objects;
@@ -171,16 +171,16 @@ public class ActivityCheckMobileNumber extends
                 .build();
             Api loginService = retrofit.create(Api.class);
             String userMobileNumber = edtMobile.getText().toString();
-            Call<CheckNomberModel> call = loginService.get_check_mobail(userMobileNumber);
-            call.enqueue(new Callback<CheckNomberModel>() {
+            Call<CheckNumberModel> call = loginService.get_check_mobail(userMobileNumber);
+            call.enqueue(new Callback<CheckNumberModel>() {
                 @Override
-                public void onResponse(@NonNull Call<CheckNomberModel> call,
-                    @NonNull Response<CheckNomberModel> response) {
+                public void onResponse(@NonNull Call<CheckNumberModel> call,
+                    @NonNull Response<CheckNumberModel> response) {
 
-                    CheckNomberModel apiResponse = response.body();
+                    CheckNumberModel apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getCode() == 200) {
 
-                        CheckNomberModel.UserData userData = apiResponse.getData();
+                        CheckNumberModel.UserData userData = apiResponse.getData();
                         if (userData != null) {
                             String mobileNumber = userData.getMobile();
                             String userBranch = userData.getUser_branch();
@@ -209,7 +209,7 @@ public class ActivityCheckMobileNumber extends
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<CheckNomberModel> call,
+                public void onFailure(@NonNull Call<CheckNumberModel> call,
                     @NonNull Throwable t) {
                     dialog.dismiss();
                     Toast.makeText(ActivityCheckMobileNumber.this, "Something went wrong", Toast.LENGTH_SHORT).show();

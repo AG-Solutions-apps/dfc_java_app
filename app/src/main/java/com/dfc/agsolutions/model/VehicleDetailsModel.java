@@ -2,7 +2,8 @@ package com.dfc.agsolutions.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class VhicaledetailsModel {
+public class VehicleDetailsModel {
+
     @SerializedName("code")
     private Integer code;
     @SerializedName("data")
@@ -20,7 +21,9 @@ public class VhicaledetailsModel {
         this.data = data;
     }
 
-    public class DataModel {
+    public static class DataModel {
+        @SerializedName("id")
+        private Integer id;
         @SerializedName("vehicle_branch")
         private String vehicleBranch;
         @SerializedName("vehicle_company")
@@ -39,11 +42,22 @@ public class VhicaledetailsModel {
         private String vehicleMileage;
         @SerializedName("reg_no")
         private String regNo;
+        @SerializedName("vehicle_name")
+        private String vehicleName;
+
+        public Integer getId() { return id; }
+        public void setId(Integer id) { this.id = id; }
         public String getRegNo() {
             return regNo;
         }
         public void setRegNo(String regNo) {
             this.regNo = regNo;
+        }
+        public String getVehicleName() {
+            return vehicleName;
+        }
+        public void setVehicleName(String vehicleName) {
+            this.vehicleName = vehicleName;
         }
         public String getFcDue() {
             return fcDue;
@@ -93,6 +107,7 @@ public class VhicaledetailsModel {
         public void setPermitDue(String permitDue) {
             this.permitDue = permitDue;
         }
+
     }
 
 }

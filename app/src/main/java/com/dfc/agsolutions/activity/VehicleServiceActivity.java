@@ -1,5 +1,6 @@
 package com.dfc.agsolutions.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -9,12 +10,13 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,7 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfc.agsolutions.model.GarageDataModel;
-import com.dfc.agsolutions.model.ServiceFatchVhicalDataModel;
+import com.dfc.agsolutions.model.ServiceFetchVehicleDataModel;
 import com.dfc.agsolutions.model.ServiceStatusDataModel;
 import com.dfc.agsolutions.R;
 
@@ -40,27 +42,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VehicleServiceActivity extends AppCompatActivity {
 
-    String selectedItem, selectedItem1, selectedDate;
+    String selectedDate;
 
     TextView date;
 
-    EditText tamount, km, description;
+    EditText tAmount, km, description;
 
     SharedPreferences sp;
 
     SharedPreferences.Editor ed;
 
-    String vhical;
-
     Spinner spinner, spinner1;
 
     ProgressDialog dialog;
 
-    ImageView nextbtn;
+    ImageView iv_next_btn;
 
-    String edate,evehicle,pump,totalamount,ekm,edescription;
-    String Brance = "BPC DHARWAD";
-    String Brance1 = "HPC Mangalore";
+    String eDate, eVehicle, pump, totalAmount, ekm, eDescription;
+//    String branch = "BPC DHARWAD";
+    String branch1 = "HPC Mangalore";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +70,9 @@ public class VehicleServiceActivity extends AppCompatActivity {
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();
 
-//        ed.putString("userbranch", );
-//        ed.commit();
-
-        nextbtn = findViewById(R.id.iv_next_btn);
+        iv_next_btn = findViewById(R.id.iv_next_btn);
         date = findViewById(R.id.date);
-        tamount = findViewById(R.id.et_total_amount);
+        tAmount = findViewById(R.id.et_total_amount);
         km = findViewById(R.id.km);
         description = findViewById(R.id.description);
 
@@ -84,65 +82,43 @@ public class VehicleServiceActivity extends AppCompatActivity {
 
         LinearLayout date1 = findViewById(R.id.date_picker);
 
-        date1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        date1.setOnClickListener(v -> {
 
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+            // Create DatePickerDialog and show it
+            DatePickerDialog datePickerDialog = new DatePickerDialog(VehicleServiceActivity.this,
+                    (datePicker, selectedYear, selectedMonth, selectedDay) -> {
+                        // Do something with the selected date
+                        // selectedYear, selectedMonth, and selectedDay are the selected date values
+                        selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
+                        String setSelectDate1 = selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
 
-                final Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                        date.setText(setSelectDate1);
 
-                // Create DatePickerDialog and show it
-                DatePickerDialog datePickerDialog = new DatePickerDialog(VehicleServiceActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                                // Do something with the selected date
-                                // selectedYear, selectedMonth, and selectedDay are the selected date values
-                                selectedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
-                                String setselectdate1 = selectedDay + "-" + (selectedMonth + 1) + "-" + selectedYear;
+                    }, year, month, day);
 
-//                                 selectedDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
-                                date.setText(setselectdate1);
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 
-                            }
-                        }, year, month, day);
-
-
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-
-                datePickerDialog.show();
-            }
+            datePickerDialog.show();
         });
 
         spinner = findViewById(R.id.spinner);
         spinner1 = findViewById(R.id.spinner1);
-        spinner.getBackground().setColorFilter(getResources().getColor(R.color.black1), PorterDuff.Mode.SRC_ATOP);
-        spinner1.getBackground().setColorFilter(getResources().getColor(R.color.black1), PorterDuff.Mode.SRC_ATOP);
 
-
-//        spinner = findViewById(R.id.spinner);
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.spinner_items, R.layout.spinnritam);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(adapter);
-
-//        spinner1 = findViewById(R.id.spinner1);
-//        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.spinner_items1, R.layout.spinnritam);
-//        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner1.setAdapter(adapter1);
+        spinner.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.black1),
+                PorterDuff.Mode.SRC_ATOP);
+        spinner1.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.black1),
+                PorterDuff.Mode.SRC_ATOP);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // Handle the selected item here
-//                selectedItem = parentView.getItemAtPosition(position).toString();
-                evehicle = (String) parentView.getItemAtPosition(position);
-//                vhical = selectedBranch;
-//                vhical =
-                // Do something with the selected item
+                eVehicle = (String) parentView.getItemAtPosition(position);
             }
 
             @Override
@@ -151,10 +127,12 @@ public class VehicleServiceActivity extends AppCompatActivity {
             }
         });
 
-
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+            public void onItemSelected(AdapterView<?> parentView,
+                                       View selectedItemView,
+                                       int position,
+                                       long id) {
                 // Handle the selected item here
                 pump = parentView.getItemAtPosition(position).toString();
                 // Do something with the selected item
@@ -166,65 +144,59 @@ public class VehicleServiceActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.back).setOnClickListener(v -> {
-            finish();
-        });
+        findViewById(R.id.back).setOnClickListener(v -> finish());
 
-        get_vehicle();
+        getVehicle();
 
-        vhicalarray.add("Select Vehicle");
-        garag.add("Select Garage");
+        vehicleArray.add("Select Vehicle");
+        garage.add("Select Garage");
 
-        get_garag();
+        getGarage();
 
-        nextbtn.setOnClickListener(v -> {
+        iv_next_btn.setOnClickListener(v -> {
 
-            edate = date.getText().toString().trim();
-            totalamount = tamount.getText().toString().trim();
+            eDate = date.getText().toString().trim();
+            totalAmount = tAmount.getText().toString().trim();
             ekm = km.getText().toString().trim();
-            edescription = description.getText().toString().trim();
+            eDescription = description.getText().toString().trim();
 
-            if(!totalamount.isEmpty() && !ekm.isEmpty() && !evehicle.isEmpty() && !pump.isEmpty() && !selectedDate.isEmpty()) {
-//                Creat_Payment();
+            if(!totalAmount.isEmpty() &&
+                    !ekm.isEmpty() &&
+                    !eVehicle.isEmpty() &&
+                    !pump.isEmpty() &&
+                    !selectedDate.isEmpty()) {
 
-                Creat_Service_Status(selectedDate,evehicle,pump,totalamount,ekm,edescription);
-//                startActivity(new Intent(VehicleServiceActivity.this,VehicleServiceAmountActivity.class).
-//                        putExtra("date",edate).
-//                        putExtra("vehicle",evehicle).
-//                        putExtra("garage",pump).
-//                        putExtra("amount",totalamount).
-//                        putExtra("km",ekm).
-//                        putExtra("description",edescription));
-            }else{
-//                startActivity(new Intent(VehicleServiceActivity.this,VehicleServiceAmountActivity.class));
-//                if (edate.isEmpty()) {
-//                    Toast.makeText(this, "Select Date", Toast.LENGTH_SHORT).show();
-                if (totalamount.isEmpty()) {
-                    tamount.setError("Enter Total Amount");
+                creatServiceStatus(selectedDate, eVehicle,pump, totalAmount,ekm, eDescription);
+
+            } else {
+
+                if (totalAmount.isEmpty()) {
+                    tAmount.setError("Enter Total Amount");
                 } if (ekm.isEmpty()) {
                     km.setError("Enter KM");
-                } if (edate.isEmpty()) {
+                } if (eDate.isEmpty()) {
                     date.setError("Enter Date");
-                }else {
+                } else {
                     Toast.makeText(this, "Enter Details", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
     }
 
-    //    ArrayList<ServiceFatchVhicalDataModel> vhicalarray;
-    List<String> vhicalarray = new ArrayList<>();
-    List<String> garag = new ArrayList<>();
+    List<String> vehicleArray = new ArrayList<>();
+    List<String> garage = new ArrayList<>();
 
-
-    public void Creat_Service_Status(String edate, String evehicle, String pump, String totalamount, String ekm, String edescription) {
-
-
+    public void creatServiceStatus(String eDate,
+                                   String eVehicle,
+                                   String pump,
+                                   String totalAmount,
+                                   String ekm,
+                                   String eDescription) {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -233,25 +205,25 @@ public class VehicleServiceActivity extends AppCompatActivity {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
 
+        Api loginService = retrofit.create(Api.class);
 
+        Call<ServiceStatusDataModel> call = loginService.get_getServiceStatus(eDate,"2023-24",
+                eVehicle,pump,ekm,totalAmount,eDescription);
 
-
-        Call<ServiceStatusDataModel> call = loginservice.get_getServiceStatus(edate,"2023-24",evehicle,pump,ekm,totalamount,edescription);
-
-        call.enqueue(new Callback<ServiceStatusDataModel>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<ServiceStatusDataModel> call, Response<ServiceStatusDataModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<ServiceStatusDataModel> call,
+                                   @NonNull Response<ServiceStatusDataModel> response) {
+                Log.e("response..", response.toString());
 
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 
 
@@ -269,36 +241,32 @@ public class VehicleServiceActivity extends AppCompatActivity {
 
                     }
 
-                    Toast.makeText(VehicleServiceActivity.this, "" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
-//                    Log.e("responce..", "branches:-  " + branches.size());
-
+                    Toast.makeText(VehicleServiceActivity.this,
+                            response.body().getMsg(),
+                            Toast.LENGTH_SHORT).show();
 
                 } else {
-                    Toast.makeText(VehicleServiceActivity.this, "Network Error!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VehicleServiceActivity.this,
+                            "Network Error!!",
+                            Toast.LENGTH_SHORT).show();
                 }
-//                dialog.dismiss();
 
             }
 
             @Override
-            public void onFailure(Call<ServiceStatusDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
-//                dialog.dismiss();
+            public void onFailure(@NonNull Call<ServiceStatusDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("ServiceStatusDataModel", t.toString());
             }
         });
 
     }
 
-
-
-    public void get_vehicle() {
+    public void getVehicle() {
         dialog.show();
-//        vhicalarray.clear();
-//        milageaaray.clear();
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -307,35 +275,37 @@ public class VehicleServiceActivity extends AppCompatActivity {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<ServiceFatchVhicalDataModel> call = loginservice.get_servicefatchvhiclelist(sp.getString("userBranch", ""));
-        call.enqueue(new Callback<ServiceFatchVhicalDataModel>() {
-            @Override
-            public void onResponse(Call<ServiceFatchVhicalDataModel> call, Response<ServiceFatchVhicalDataModel> response) {
-                Log.e("responce..", "" + response.toString());
 
+        Api loginService = retrofit.create(Api.class);
+        Call<ServiceFetchVehicleDataModel> call = loginService.get_servicefatchvhiclelist(sp.getString("userBranch", ""));
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ServiceFetchVehicleDataModel> call,
+                                   @NonNull Response<ServiceFetchVehicleDataModel> response) {
+                Log.e("response..", "" + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 //
-                    ArrayList<ServiceFatchVhicalDataModel> branches = response.body().getData();
+                    ArrayList<ServiceFetchVehicleDataModel> branches = response.body().getData();
 
 
-                    for (ServiceFatchVhicalDataModel branch : branches) {
-                        vhicalarray.add(branch.getReg_no());
+                    for (ServiceFetchVehicleDataModel branch : branches) {
+                        vehicleArray.add(branch.getReg_no());
                         Log.e("getReg_no", "getReg_no: "+branch.getReg_no());
                     }
 //
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(VehicleServiceActivity.this, R.layout.simple_spinner_item1, vhicalarray);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(VehicleServiceActivity.this, R.layout.simple_spinner_item1, vehicleArray);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner.setAdapter(adapter);
 
-                    Log.e("responce..", "branches:-  " + branches.size());
+                    Log.e("response..", "branches:-  " + branches.size());
 
                 } else {
                     Toast.makeText(VehicleServiceActivity.this, "Network Error!!", Toast.LENGTH_SHORT).show();
@@ -345,23 +315,19 @@ public class VehicleServiceActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ServiceFatchVhicalDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<ServiceFetchVehicleDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("ServiceFetchVehicleDataModel", "" + t);
                 dialog.dismiss();
             }
         });
     }
 
-    String Diesel = "Diesel";
-
-    public void get_garag() {
+    public void getGarage() {
         dialog.show();
-//        garag.clear();
-//        milageaaray.clear();
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -370,69 +336,54 @@ public class VehicleServiceActivity extends AppCompatActivity {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.commn_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<GarageDataModel> call = loginservice.get_Garage(Brance1,"Garage");
-        call.enqueue(new Callback<GarageDataModel>() {
-            @Override
-            public void onResponse(Call<GarageDataModel> call, Response<GarageDataModel> response) {
-                Log.e("responce..", "" + response.toString());
 
+        Api loginService = retrofit.create(Api.class);
+        Call<GarageDataModel> call = loginService.get_Garage(branch1,"Garage");
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<GarageDataModel> call,
+                                   @NonNull Response<GarageDataModel> response) {
+                Log.e("response..", "" + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
-//
+
                     ArrayList<GarageDataModel> branches = response.body().getData();
 
-//response.body().getData().get(0).getReg_no();
-//                    for (GarageDataModel branch : branches) {
-//                        vhicalarray.add(branch.getReg_no());
-////                        vhicaldraiverarray.add(branch.getVehicle_driver());
-////                        milageaaray.add(branch.getVehicle_mileage());
-//                    }
                     for (GarageDataModel branch : branches) {
-                        garag.add(branch.getVendor_name());
+                        garage.add(branch.getVendor_name());
                     }
-//
-                    ArrayAdapter<String> adapter1 = new ArrayAdapter<>(VehicleServiceActivity.this, R.layout.simple_spinner_item1, garag);
+
+                    ArrayAdapter<String> adapter1 = new ArrayAdapter<>(VehicleServiceActivity.this,
+                            R.layout.simple_spinner_item1, garage);
                     adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner1.setAdapter(adapter1);
-//
-//                    ArrayAdapter<String> adapter1 = new ArrayAdapter<>(VehicleServiceActivity.this, R.layout.simple_spinner_item1, vhicalarray);
-//                    adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinner1.setAdapter(adapter1);
 
-//
-//                    ArrayAdapter<String> adapterdriver = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicaldraiverarray);
-//                    adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinnerdriver.setAdapter(adapterdriver);
-
-
-//                    setupSpinner(branchNames);
-                    Log.e("responce..", "branches:-  " + branches.size());
+                    Log.e("response..", "branches:-  " + branches.size());
 
                 } else {
-                    Toast.makeText(VehicleServiceActivity.this, "Network Error!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VehicleServiceActivity.this,
+                            "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
 
             }
 
             @Override
-            public void onFailure(Call<GarageDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<GarageDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("GarageDataModel", "" + t);
                 dialog.dismiss();
             }
+
         });
+
     }
-
-
-
-
-
 
 }

@@ -14,4 +14,20 @@ public class ServiceSubData {
         this.serviceSubType = serviceSubType;
         this.serviceSubAmount = serviceSubAmount;
     }
+    public String getServiceSubType() {
+        return serviceSubType;
+    }
+
+    public void setServiceSubType(String serviceSubType) {
+        this.serviceSubType = serviceSubType;
+    }
+
+    public String getServiceSubAmount() {
+        return serviceSubAmount;
+    }
+
+    public void setServiceSubAmount(String serviceSubAmount) {
+        this.serviceSubAmount = serviceSubAmount;
+    }
+
 }

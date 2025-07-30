@@ -3,6 +3,7 @@ package com.dfc.agsolutions.model;
 import com.google.gson.annotations.SerializedName;
 
 public class MyResponseData {
+
     @SerializedName("code")
     private int code;
 
@@ -84,4 +85,5 @@ public class MyResponseData {
 
         // Implement getters for other fields
     }
+
 }

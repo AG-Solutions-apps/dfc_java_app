@@ -119,7 +119,7 @@ public class CurrentMonthTripFragment extends Fragment {
                 .client(httpClient.build())
                 .build();
         Api loginservice = retrofit.create(Api.class);
-        Call<PreviousHistoryDataModel> call = loginservice.get_vhicleHistory("1", activity.getIntent().getStringExtra("v_nmae"));
+        Call<PreviousHistoryDataModel> call = loginservice.get_vhicleHistory("1", activity.getIntent().getStringExtra("v_name"));
         call.enqueue(new Callback<PreviousHistoryDataModel>() {
             @Override
             public void onResponse(Call<PreviousHistoryDataModel> call, Response<PreviousHistoryDataModel> response) {

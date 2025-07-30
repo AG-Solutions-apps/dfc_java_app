@@ -17,9 +17,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.dfc.agsolutions.model.FatchBHSDDataModel;
-import com.dfc.agsolutions.model.FatchDriverDataModel;
-import com.dfc.agsolutions.model.FatchVendorDataModel;
+import com.dfc.agsolutions.model.FetchBHSDDataModel;
+import com.dfc.agsolutions.model.FetchDriverDataModel;
+import com.dfc.agsolutions.model.FetchVendorDataModel;
 import com.dfc.agsolutions.model.OngoingTruckTypeModel;
 import com.dfc.agsolutions.model.UpdateTripModel;
 import com.dfc.agsolutions.R;
@@ -445,7 +445,7 @@ public class UpdateTripActivity extends AppCompatActivity {
         });*/
     }
 
-    ArrayList<FatchDriverDataModel> branchesdriver = new ArrayList<>();
+    ArrayList<FetchDriverDataModel> branchesdriver = new ArrayList<>();
 
     public void get_driver() {
 //        dialog.show();
@@ -618,17 +618,17 @@ public class UpdateTripActivity extends AppCompatActivity {
                 .client(httpClient.build())
                 .build();
         Api loginservice = retrofit.create(Api.class);
-        Call<FatchVendorDataModel> call = loginservice.get_fatchaggent(sp.getString("userBranch", ""), "Diesel");
-        call.enqueue(new Callback<FatchVendorDataModel>() {
+        Call<FetchVendorDataModel> call = loginservice.get_fatchaggent(sp.getString("userBranch", ""), "Diesel");
+        call.enqueue(new Callback<FetchVendorDataModel>() {
             @Override
-            public void onResponse(Call<FatchVendorDataModel> call, Response<FatchVendorDataModel> response) {
+            public void onResponse(Call<FetchVendorDataModel> call, Response<FetchVendorDataModel> response) {
                 Log.e("responce..", "" + response.toString());
 
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 
-                    ArrayList<FatchVendorDataModel> branches = response.body().getData();
+                    ArrayList<FetchVendorDataModel> branches = response.body().getData();
 
-                    for (FatchVendorDataModel branch : branches) {
+                    for (FetchVendorDataModel branch : branches) {
                         vendorrarray.add(branch.getVendor_name());
                     }
 //
@@ -653,7 +653,7 @@ public class UpdateTripActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<FatchVendorDataModel> call, Throwable t) {
+            public void onFailure(Call<FetchVendorDataModel> call, Throwable t) {
                 Log.e("sdfsd", "" + t.toString());
                 dialog.dismiss();
             }
@@ -684,17 +684,17 @@ public class UpdateTripActivity extends AppCompatActivity {
                 .client(httpClient.build())
                 .build();
         Api loginservice = retrofit.create(Api.class);
-        Call<FatchBHSDDataModel> call = loginservice.get_fetch_bhsd(vhnomber);
-        call.enqueue(new Callback<FatchBHSDDataModel>() {
+        Call<FetchBHSDDataModel> call = loginservice.get_fetch_bhsd(vhnomber);
+        call.enqueue(new Callback<FetchBHSDDataModel>() {
             @Override
-            public void onResponse(Call<FatchBHSDDataModel> call, Response<FatchBHSDDataModel> response) {
+            public void onResponse(Call<FetchBHSDDataModel> call, Response<FetchBHSDDataModel> response) {
                 Log.e("responce..", "" + response.toString());
 
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 
-                    ArrayList<FatchBHSDDataModel> branches = response.body().getData();
+                    ArrayList<FetchBHSDDataModel> branches = response.body().getData();
 
-                    for (FatchBHSDDataModel branch : branches) {
+                    for (FetchBHSDDataModel branch : branches) {
                         bhsd.setText("" + branch.getTrip_hsd() + " Ltr");
                         trip_bhsd = branch.getTrip_hsd();
                         trip_hsd = branch.getTrip_hsd();
@@ -715,7 +715,7 @@ public class UpdateTripActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<FatchBHSDDataModel> call, Throwable t) {
+            public void onFailure(Call<FetchBHSDDataModel> call, Throwable t) {
                 Log.e("sdfsd", "" + t.toString());
                 dialog.dismiss();
             }

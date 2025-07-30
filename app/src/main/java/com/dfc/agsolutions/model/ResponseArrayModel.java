@@ -3,6 +3,7 @@ package com.dfc.agsolutions.model;
 import java.util.List;
 
 public class ResponseArrayModel {
+
     private List<Branch> data;
 
     public List<Branch> getData() {

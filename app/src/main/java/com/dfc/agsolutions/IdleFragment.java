@@ -78,7 +78,8 @@ public class IdleFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
@@ -122,7 +123,8 @@ public class IdleFragment extends Fragment {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
-                    .header("Authorization", "Bearer " + sp.getString("token", ""))
+                    .header("Authorization", "Bearer " +
+                            sp.getString("token", ""))
                     .method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
@@ -200,6 +202,7 @@ public class IdleFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull final HomeTodayListAdapter.Holder holder,
                                      @SuppressLint("RecyclerView") final int position) {
+
             String status = "Status:- " + arrayListTopic.get(position).getVehicle_status();
             holder.status.setText(status);
             String v_number = arrayListTopic.get(position).getReg_no();
@@ -211,19 +214,21 @@ public class IdleFragment extends Fragment {
                 if (arrayListTopic.get(position).getTrip_date().isEmpty()) {
                     String daysText = "-" + " / " + "0" + "days";
                     holder.tripDate.setText(daysText);
-
                 } else {
 
                     long daysDifference;
+
                     try {
                         String givenDateString = arrayListTopic.get(position).getTrip_date();
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
+                                Locale.getDefault());
 
                         // Parse the given date string
                         Date givenDate = sdf.parse(givenDateString);
 
-                        SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy",
+                                Locale.getDefault());
                         String dateFormate = null;
                         if (givenDate != null) {
                             dateFormate = outputDateFormat.format(givenDate);
@@ -244,21 +249,22 @@ public class IdleFragment extends Fragment {
                         String dateFormat = dateFormate + " / " + daysDifference + " days";
                         holder.tripDate.setText(dateFormat);
 
-                        System.out.println("Days difference between " + givenDateString + " and today: " + daysDifference + " days");
+                        System.out.println("Days difference between " + givenDateString +
+                                " and today: " + daysDifference + " days");
                     } catch (ParseException e) {
+                        Log.e("IdleFragment", "$e.getMessage()");
                         //                e.printStackTrace();
                         String dateFormat = arrayListTopic.get(position).getTrip_date() + " / " + "0" + "days";
                         holder.tripDate.setText(dateFormat);
-
                     }
                     /*//            System.out.println("Last Trip Date: " + lastTripDateStr);
                     //            System.out.println("New Date (" + daysBeforeLastTrip + " days before last trip): " + formattedNewDate);*/
-
                 }
+
             } catch (Exception e) {
+                Log.e("IdleFragment", "$e.getMessage()");
 //                throw new RuntimeException(e);
             }
-
 
         }
 
@@ -269,7 +275,6 @@ public class IdleFragment extends Fragment {
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
-
 
                 status = itemView.findViewById(R.id.status);
                 v_number = itemView.findViewById(R.id.v_number);

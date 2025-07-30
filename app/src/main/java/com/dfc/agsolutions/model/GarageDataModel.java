@@ -6,7 +6,6 @@ public class GarageDataModel {
 
     private ArrayList<GarageDataModel> data;
 
-
     public String getCode() {
         return code;
     }
@@ -34,4 +33,5 @@ public class GarageDataModel {
     public void setVendor_name(String vendor_name) {
         this.vendor_name = vendor_name;
     }
+
 }

@@ -2,17 +2,17 @@ package com.dfc.agsolutions.model;
 
 import java.util.ArrayList;
 
-public class FatchAggencyDataModel {
-    public ArrayList<FatchAggencyDataModel> getData() {
+public class FetchAgencyDataModel {
+
+    public ArrayList<FetchAgencyDataModel> getData() {
         return data;
     }
 
-    public void setData(ArrayList<FatchAggencyDataModel> data) {
+    public void setData(ArrayList<FetchAgencyDataModel> data) {
         this.data = data;
     }
 
-    private ArrayList<FatchAggencyDataModel> data;
-
+    private ArrayList<FetchAgencyDataModel> data;
 
     public String getCode() {
         return code;
@@ -43,8 +43,5 @@ public class FatchAggencyDataModel {
     }
 
     String agency_rt_km;
-
-
-
 
 }

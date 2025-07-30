@@ -2,7 +2,6 @@ package com.dfc.agsolutions.model;
 
 public class ResponseTodoCount {
 
-
     public String getCode() {
         return code;
     }

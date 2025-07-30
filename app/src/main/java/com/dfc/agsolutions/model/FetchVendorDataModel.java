@@ -2,17 +2,17 @@ package com.dfc.agsolutions.model;
 
 import java.util.ArrayList;
 
-public class FatchVendorDataModel {
-    public ArrayList<FatchVendorDataModel> getData() {
+public class FetchVendorDataModel {
+
+    public ArrayList<FetchVendorDataModel> getData() {
         return data;
     }
 
-    public void setData(ArrayList<FatchVendorDataModel> data) {
+    public void setData(ArrayList<FetchVendorDataModel> data) {
         this.data = data;
     }
 
-    private ArrayList<FatchVendorDataModel> data;
-
+    private ArrayList<FetchVendorDataModel> data;
 
     public String getCode() {
         return code;
@@ -33,8 +33,5 @@ public class FatchVendorDataModel {
     }
 
     String vendor_name;
-
-
-
 
 }

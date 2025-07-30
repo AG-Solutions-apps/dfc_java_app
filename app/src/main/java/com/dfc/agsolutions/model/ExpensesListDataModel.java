@@ -97,4 +97,5 @@ public class ExpensesListDataModel {
     public void setPayment_details_amount(String payment_details_amount) {
         this.payment_details_amount = payment_details_amount;
     }
+
 }

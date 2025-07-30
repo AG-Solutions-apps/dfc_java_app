@@ -6,7 +6,6 @@ public class VoucherTypeDataModel {
 
     private ArrayList<VoucherTypeDataModel> data;
 
-
     public String getCode() {
         return code;
     }
@@ -34,4 +33,5 @@ public class VoucherTypeDataModel {
     public void setVoucher_type(String voucher_type) {
         this.voucher_type = voucher_type;
     }
+
 }

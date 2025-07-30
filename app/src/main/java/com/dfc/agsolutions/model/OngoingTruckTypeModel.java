@@ -3,6 +3,7 @@ package com.dfc.agsolutions.model;
 import java.util.ArrayList;
 
 public class OngoingTruckTypeModel {
+
     private ArrayList<OngoingTruckTypeModel> data;
 
     String id;
@@ -124,8 +125,6 @@ public class OngoingTruckTypeModel {
         this.trip_remarks = trip_remarks;
     }
 
-
-
     public ArrayList<OngoingTruckTypeModel> getData() {
         return data;
     }
@@ -133,9 +132,5 @@ public class OngoingTruckTypeModel {
     public void setData(ArrayList<OngoingTruckTypeModel> data) {
         this.data = data;
     }
-
-
-
-
 
 }

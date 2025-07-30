@@ -21,6 +21,4 @@ public class CreatePaymentDataModel {
         this.msg = msg;
     }
 
-
-
 }

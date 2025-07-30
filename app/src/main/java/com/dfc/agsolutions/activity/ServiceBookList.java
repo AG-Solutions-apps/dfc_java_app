@@ -27,10 +27,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfc.agsolutions.app_utils.Myapplication;
-import com.dfc.agsolutions.model.CreatServicaeListDataModel;
+import com.dfc.agsolutions.model.CreateServiceListDataModel;
 import com.dfc.agsolutions.model.DeleteModel;
 import com.dfc.agsolutions.model.ServiceTypeDataModel;
-import com.dfc.agsolutions.model.ServicesubFinalModel;
+import com.dfc.agsolutions.model.ServiceSubFinalModel;
 import com.dfc.agsolutions.R;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class ServiceBookList extends AppCompatActivity {
 
     ProgressDialog dialog;
     Spinner spinner;
-    private ArrayList<CreatServicaeListDataModel> data;
+    private ArrayList<CreateServiceListDataModel> data;
     RecyclerView service_sub_list;
 
     EditText amount, tamount, amount1;
@@ -270,10 +270,10 @@ public class ServiceBookList extends AppCompatActivity {
                 .client(httpClient.build())
                 .build();
         Api loginservice = retrofit.create(Api.class);
-        Call<CreatServicaeListDataModel> call = loginservice.get_getServicesubType(service_ref, fainalservicetype, amount.getText().toString());
-        call.enqueue(new Callback<CreatServicaeListDataModel>() {
+        Call<CreateServiceListDataModel> call = loginservice.get_getServicesubType(service_ref, fainalservicetype, amount.getText().toString());
+        call.enqueue(new Callback<CreateServiceListDataModel>() {
             @Override
-            public void onResponse(Call<CreatServicaeListDataModel> call, Response<CreatServicaeListDataModel> response) {
+            public void onResponse(Call<CreateServiceListDataModel> call, Response<CreateServiceListDataModel> response) {
                 Log.e("responce..", "" + response.toString());
 
                 if (response.body().getCode().equalsIgnoreCase("200")) {
@@ -289,7 +289,7 @@ public class ServiceBookList extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CreatServicaeListDataModel> call, Throwable t) {
+            public void onFailure(Call<CreateServiceListDataModel> call, Throwable t) {
                 Log.e("sdfsd", "" + t.toString());
                 dialog.dismiss();
             }
@@ -319,10 +319,10 @@ public class ServiceBookList extends AppCompatActivity {
                 .client(httpClient.build())
                 .build();
         Api loginservice = retrofit.create(Api.class);
-        Call<ServicesubFinalModel> call = loginservice.Service_final(fainalservicetype);
-        call.enqueue(new Callback<ServicesubFinalModel>() {
+        Call<ServiceSubFinalModel> call = loginservice.Service_final(fainalservicetype);
+        call.enqueue(new Callback<ServiceSubFinalModel>() {
             @Override
-            public void onResponse(Call<ServicesubFinalModel> call, Response<ServicesubFinalModel> response) {
+            public void onResponse(Call<ServiceSubFinalModel> call, Response<ServiceSubFinalModel> response) {
                 Log.e("responce..", "" + response.toString());
 
                 if (response.body().getCode().equalsIgnoreCase("200")) {
@@ -344,7 +344,7 @@ public class ServiceBookList extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ServicesubFinalModel> call, Throwable t) {
+            public void onFailure(Call<ServiceSubFinalModel> call, Throwable t) {
                 Log.e("sdfsd", "" + t.toString());
                 dialog.dismiss();
             }
@@ -431,10 +431,10 @@ public class ServiceBookList extends AppCompatActivity {
                 .client(httpClient.build())
                 .build();
         Api loginservice = retrofit.create(Api.class);
-        Call<CreatServicaeListDataModel> call = loginservice.Edit_ServiceType(idd, fainalservicetype, sType, amm);
-        call.enqueue(new Callback<CreatServicaeListDataModel>() {
+        Call<CreateServiceListDataModel> call = loginservice.Edit_ServiceType(idd, fainalservicetype, sType, amm);
+        call.enqueue(new Callback<CreateServiceListDataModel>() {
             @Override
-            public void onResponse(Call<CreatServicaeListDataModel> call, Response<CreatServicaeListDataModel> response) {
+            public void onResponse(Call<CreateServiceListDataModel> call, Response<CreateServiceListDataModel> response) {
                 Log.e("responce..", "" + response.toString());
 
                 if (response.body().getCode().equalsIgnoreCase("200")) {
@@ -442,7 +442,7 @@ public class ServiceBookList extends AppCompatActivity {
                     Toast.makeText(ServiceBookList.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     home_today_list_adapter.adddata(response.body().getData());
 
-                    ArrayList<CreatServicaeListDataModel> branches = response.body().getData();
+                    ArrayList<CreateServiceListDataModel> branches = response.body().getData();
 //                    for (CreatServicaeListDataModel branch : branches) {
 //
 //
@@ -466,7 +466,7 @@ public class ServiceBookList extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CreatServicaeListDataModel> call, Throwable t) {
+            public void onFailure(Call<CreateServiceListDataModel> call, Throwable t) {
                 Log.e("sdfsd", "" + t.toString());
                 dialog.dismiss();
             }
@@ -483,7 +483,7 @@ public class ServiceBookList extends AppCompatActivity {
     public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
         private Activity context;
 
-        List<CreatServicaeListDataModel> arrayListTopic = new ArrayList<>();
+        List<CreateServiceListDataModel> arrayListTopic = new ArrayList<>();
 
         public Home_Today_list_Adapter(Activity context) {
             this.context = context;
@@ -494,14 +494,14 @@ public class ServiceBookList extends AppCompatActivity {
         }
 
 
-        public void adddata(ArrayList<CreatServicaeListDataModel> arrayListTopics) {
+        public void adddata(ArrayList<CreateServiceListDataModel> arrayListTopics) {
             arrayListTopic.clear();
             arrayListTopic.addAll(arrayListTopics);
             Log.e("arrayListTopics", "arrayListTopics: " + arrayListTopics);
             notifyDataSetChanged();
         }
 
-        public void refresh(ArrayList<CreatServicaeListDataModel> arrayListTopics) {
+        public void refresh(ArrayList<CreateServiceListDataModel> arrayListTopics) {
             arrayListTopic.clear();
             arrayListTopic.addAll(arrayListTopics);
             Log.e("arrayListTopics", "arrayListTopics: " + arrayListTopics);

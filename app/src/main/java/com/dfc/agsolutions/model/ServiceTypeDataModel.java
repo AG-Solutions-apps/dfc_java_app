@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 public class ServiceTypeDataModel {
 
-
     private ArrayList<ServiceTypeDataModel> data;
-
 
     public String getCode() {
         return code;
@@ -35,4 +33,5 @@ public class ServiceTypeDataModel {
     public void setService_types(String service_types) {
         this.service_types = service_types;
     }
+    
 }

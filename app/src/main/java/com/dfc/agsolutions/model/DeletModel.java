@@ -2,7 +2,6 @@ package com.dfc.agsolutions.model;
 
 public class DeletModel {
 
-
     public String getCode() {
         return code;
     }
@@ -12,10 +11,5 @@ public class DeletModel {
     }
 
     String code;
-
-
-
-
-
 
 }

@@ -3,8 +3,8 @@ package com.dfc.agsolutions.model;
 import java.util.ArrayList;
 
 public class TruckTypeModel {
-    private ArrayList<TruckTypeModel> data;
 
+    private ArrayList<TruckTypeModel> data;
 
     public String getCode() {
         return code;
@@ -44,7 +44,6 @@ public class TruckTypeModel {
 
     String vehicle_status;
 
-
     public ArrayList<TruckTypeModel> getData() {
         return data;
     }
@@ -52,9 +51,5 @@ public class TruckTypeModel {
     public void setData(ArrayList<TruckTypeModel> data) {
         this.data = data;
     }
-
-
-
-
 
 }

@@ -2,7 +2,6 @@ package com.dfc.agsolutions.model;
 
 public class CreatTripModel {
 
-
     public String getCode() {
         return code;
     }
@@ -22,10 +21,5 @@ public class CreatTripModel {
     }
 
     String msg;
-
-
-
-
-
 
 }

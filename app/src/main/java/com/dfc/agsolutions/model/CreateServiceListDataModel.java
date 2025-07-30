@@ -2,9 +2,9 @@ package com.dfc.agsolutions.model;
 
 import java.util.ArrayList;
 
-public class CreatServicaeListDataModel {
+public class CreateServiceListDataModel {
 
-    private ArrayList<CreatServicaeListDataModel> data;
+    private ArrayList<CreateServiceListDataModel> data;
     String id;
 
     public String getCode() {
@@ -28,11 +28,11 @@ public class CreatServicaeListDataModel {
     String temp_service_sub_ref;
     String temp_service_sub_type;
 
-    public ArrayList<CreatServicaeListDataModel> getData() {
+    public ArrayList<CreateServiceListDataModel> getData() {
         return data;
     }
 
-    public void setData(ArrayList<CreatServicaeListDataModel> data) {
+    public void setData(ArrayList<CreateServiceListDataModel> data) {
         this.data = data;
     }
 

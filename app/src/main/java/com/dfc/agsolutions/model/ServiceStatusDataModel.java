@@ -23,7 +23,6 @@ public class ServiceStatusDataModel {
         this.msg = msg;
     }
 
-
     public UserData getData() {
         return data;
     }
@@ -34,7 +33,6 @@ public class ServiceStatusDataModel {
 
     @SerializedName("data")
     private ServiceStatusDataModel.UserData data;
-
 
     public static class UserData {
 
@@ -61,4 +59,5 @@ public class ServiceStatusDataModel {
         String service_ref;
 
     }
+    
 }

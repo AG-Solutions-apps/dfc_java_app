@@ -2,7 +2,8 @@ package com.dfc.agsolutions.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CheckNomberModel {
+public class CheckNumberModel {
+
     public int getCode() {
         return code;
     }

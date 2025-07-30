@@ -2,17 +2,17 @@ package com.dfc.agsolutions.model;
 
 import java.util.ArrayList;
 
-public class FatchBHSDDataModel {
-    public ArrayList<FatchBHSDDataModel> getData() {
+public class FetchBHSDDataModel {
+
+    public ArrayList<FetchBHSDDataModel> getData() {
         return data;
     }
 
-    public void setData(ArrayList<FatchBHSDDataModel> data) {
+    public void setData(ArrayList<FetchBHSDDataModel> data) {
         this.data = data;
     }
 
-    private ArrayList<FatchBHSDDataModel> data;
-
+    private ArrayList<FetchBHSDDataModel> data;
 
     public String getCode() {
         return code;
@@ -43,9 +43,5 @@ public class FatchBHSDDataModel {
     }
 
     String trip_hsd_supplied;
-
-
-
-
 
 }

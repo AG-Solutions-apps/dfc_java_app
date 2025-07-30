@@ -2,16 +2,17 @@ package com.dfc.agsolutions.model;
 
 import java.util.ArrayList;
 
-public class FatchDriverDataModel {
-    public ArrayList<FatchDriverDataModel> getData() {
+public class FetchDriverDataModel {
+
+    public ArrayList<FetchDriverDataModel> getData() {
         return data;
     }
 
-    public void setData(ArrayList<FatchDriverDataModel> data) {
+    public void setData(ArrayList<FetchDriverDataModel> data) {
         this.data = data;
     }
 
-    private ArrayList<FatchDriverDataModel> data;
+    private ArrayList<FetchDriverDataModel> data;
 
 
     public String getCode() {

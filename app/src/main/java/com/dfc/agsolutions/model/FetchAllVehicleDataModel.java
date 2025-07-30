@@ -2,7 +2,8 @@ package com.dfc.agsolutions.model;
 
 import java.util.ArrayList;
 
-public class FatchAllVhicalDataModel {
+public class FetchAllVehicleDataModel {
+    
     public String getCode() {
         return code;
     }
@@ -220,12 +221,12 @@ public class FatchAllVhicalDataModel {
         this.vehicle_trip_status_date_amount_km = vehicle_trip_status_date_amount_km;
     }
     String vehicle_trip_status_date_amount_km;
-    public ArrayList<FatchAllVhicalDataModel> getData() {
+    public ArrayList<FetchAllVehicleDataModel> getData() {
         return data;
     }
-    public void setData(ArrayList<FatchAllVhicalDataModel> data) {
+    public void setData(ArrayList<FetchAllVehicleDataModel> data) {
         this.data = data;
     }
-    ArrayList<FatchAllVhicalDataModel> data;
+    ArrayList<FetchAllVehicleDataModel> data;
 
 }

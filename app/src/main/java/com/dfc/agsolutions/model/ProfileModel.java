@@ -25,7 +25,6 @@ public class ProfileModel {
     @SerializedName("data")
     private ProfileModel.Profile data;
 
-
     public static class Profile{
 
         String full_name;
@@ -38,7 +37,6 @@ public class ProfileModel {
         String hazard_lice_no;
         String hazard_lice_expiry;
         String user_image;
-
 
         public String getFull_name() {
             return full_name;
@@ -119,6 +117,7 @@ public class ProfileModel {
         public void setUser_image(String user_image) {
             this.user_image = user_image;
         }
+
     }
 
 }

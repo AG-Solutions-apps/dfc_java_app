@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -37,14 +36,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 public class PreviousMonthTripFragment extends Fragment {
 
-
-    // TODO: Rename and change types and number of parameters
     public static PreviousMonthTripFragment newInstance() {
-        PreviousMonthTripFragment fragment = new PreviousMonthTripFragment();
-        return fragment;
+        return new PreviousMonthTripFragment();
     }
 
     @Override
@@ -61,47 +56,50 @@ public class PreviousMonthTripFragment extends Fragment {
     ProgressDialog dialog;
 
     SwipeRefreshLayout swipeRefreshLayout;
-    LottieAnimationView nodata;
+    LottieAnimationView noData;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View inflatedView = inflater.inflate(R.layout.fragment_previous_month_trip, container, false);
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        activity = getActivity();
+        View inflatedView = inflater.inflate(R.layout.fragment_previous_month_trip,
+                container,
+                false);
 
-        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        activity = requireActivity();
+
+        sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
         ed = sp.edit();
 
-        dialog = new ProgressDialog(getActivity());
+        dialog = new ProgressDialog(requireActivity());
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
 
         swipeRefreshLayout = inflatedView.findViewById(R.id.swipeRefreshLayout);
 
-        nodata = inflatedView.findViewById(R.id.lav_no_data);
+        noData = inflatedView.findViewById(R.id.lav_no_data);
         rv = inflatedView.findViewById(R.id.rv);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                nodata.setVisibility(View.VISIBLE);
-                rv.setVisibility(View.GONE);
-                Expenses_List();
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            noData.setVisibility(View.VISIBLE);
+            rv.setVisibility(View.GONE);
+            Expenses_List();
         });
         Expenses_List();
-
 
         return inflatedView;
     }
 
+    private OkHttpClient.Builder createHttpClient() {
+        return new OkHttpClient.Builder();
+    }
 
     public void Expenses_List() {
 
         dialog.show();
 
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        OkHttpClient.Builder httpClient = createHttpClient();
 
 //        if (token != null) {
         httpClient.addInterceptor(chain -> {
@@ -120,67 +118,60 @@ public class PreviousMonthTripFragment extends Fragment {
                 .client(httpClient.build())
                 .build();
 
-        Api loginservice = retrofit.create(Api.class);
-        Call<PreviousHistoryDataModel> call = loginservice.get_vhicleHistory( "2", activity.getIntent().getStringExtra("v_nmae"));
+        Api loginService = retrofit.create(Api.class);
+        Call<PreviousHistoryDataModel> call = loginService.get_vhicleHistory( "2",
+                activity.getIntent().getStringExtra("v_name"));
 
-        call.enqueue(new Callback<PreviousHistoryDataModel>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<PreviousHistoryDataModel> call, Response<PreviousHistoryDataModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<PreviousHistoryDataModel> call,
+                                   @NonNull Response<PreviousHistoryDataModel> response) {
 
-                if (response.body().getCode().equalsIgnoreCase("200")) {
+                Log.e("response..", "" + response);
 
-                    nodata.setVisibility(View.GONE);
+                if (response.body() != null &&
+                        response.body().getCode().equalsIgnoreCase("200")) {
+
+                    noData.setVisibility(View.GONE);
                     rv.setVisibility(View.VISIBLE);
                     ArrayList<PreviousHistoryDataModel> arr = response.body().getData();
-                    PreviousMonthTripFragment.Home_Today_list_Adapter adapter = new PreviousMonthTripFragment.Home_Today_list_Adapter(activity, arr);
+                    HomeTodayListAdapter adapter = new HomeTodayListAdapter(arr);
                     rv.setAdapter(adapter);
 
-                    if (arr.size() == 0) {
-                        nodata.setVisibility(View.VISIBLE);
+                    if (arr.isEmpty()) {
+                        noData.setVisibility(View.VISIBLE);
                         rv.setVisibility(View.GONE);
                     }
 
-//                    Log.e("responce..", "branches:-  " + branches.size());
+//                    Log.e("response..", "branches:-  " + branches.size());
 
-                } else {
-                    nodata.setVisibility(View.VISIBLE);
-                    rv.setVisibility(View.GONE);
-                    Toast.makeText(activity, "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
                 swipeRefreshLayout.setRefreshing(false);
 
-
             }
 
             @Override
-            public void onFailure(Call<PreviousHistoryDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<PreviousHistoryDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("PreviousHistoryDataModel", "" + t);
                 dialog.dismiss();
-                nodata.setVisibility(View.VISIBLE);
+                noData.setVisibility(View.VISIBLE);
                 rv.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
-
             }
         });
 
     }
 
-    public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
-        private Activity activity;
+    public static class HomeTodayListAdapter extends
+            RecyclerView.Adapter<HomeTodayListAdapter.Holder> {
 
         ArrayList<PreviousHistoryDataModel> data;
 
-//        public Home_Today_list_Adapter(Activity context, ArrayList<OngoingTruckTypeModel> data) {
-//
-//        }
-
-        public Home_Today_list_Adapter(Activity activity, ArrayList<PreviousHistoryDataModel> data) {
-            this.activity = activity;
+        public HomeTodayListAdapter(ArrayList<PreviousHistoryDataModel> data) {
             this.data = data;
         }
-
 
         @Override
         public int getItemCount() {
@@ -189,21 +180,34 @@ public class PreviousMonthTripFragment extends Fragment {
 
         @NonNull
         @Override
-        public Home_Today_list_Adapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_v_trip_list, parent, false);
-            return new Home_Today_list_Adapter.Holder(view);
+        public HomeTodayListAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_v_trip_list,
+                    parent,
+                    false);
+            return new Holder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final Home_Today_list_Adapter.Holder holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(@NonNull final HomeTodayListAdapter.Holder
+                                             holder,
+                                     @SuppressLint("RecyclerView") final int position) {
 
+            String status = "Status: " + data.get(position).getTrip_status();
+            holder.status.setText(status);
 
-            holder.status.setText("Status: " + data.get(position).getTrip_status());
-            holder.carname.setText("" + data.get(position).getTrip_vehicle());
-            holder.loacation.setText(" " + data.get(position).getTrip_agency());
+            String carName = " " + data.get(position).getTrip_vehicle();
+            holder.carName.setText(carName);
+
+            String location = " " + data.get(position).getTrip_agency();
+            holder.location.setText(location);
+
 //            holder.date.setText("Date : " + data.get(position).getTrip_date());
-            holder.driver.setText("" + data.get(position).getTrip_driver());
-            holder.distance.setText("" + data.get(position).getTrip_km() + " Km");
+
+            String driver = " " + data.get(position).getTrip_driver();
+            holder.driver.setText(driver);
+
+            String distance = " " + data.get(position).getTrip_km() + " Km";
+            holder.distance.setText(distance);
 
             String date1 = data.get(position).getTrip_date();
             try {
@@ -211,41 +215,42 @@ public class PreviousMonthTripFragment extends Fragment {
                 Date date = inputDateFormat.parse(date1);
 
                 SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                String datefiormate = outputDateFormat.format(date);
+                String dateFormate = null;
+                if (date != null) {
+                    dateFormate = outputDateFormat.format(date);
+                }
 
-                holder.date.setText("Date : " + datefiormate);
+                dateFormate = "Date : " + dateFormate;
+                holder.date.setText(dateFormate);
 
             } catch (ParseException e) {
-                holder.date.setText("Date : " + date1);
+                String date = "Date : " + date1;
+                holder.date.setText(date);
+                Log.e("error", "" + e);
             }
 
-//            System.out.println("Last Trip Date: " + lastTripDateStr);
-//            System.out.println("New Date (" + daysBeforeLastTrip + " days before last trip): " + formattedNewDate);
-
+/*//            System.out.println("Last Trip Date: " + lastTripDateStr);
+//            System.out.println("New Date (" + daysBeforeLastTrip + " days before last trip): " + formattedNewDate);*/
 
         }
 
-        class Holder extends RecyclerView.ViewHolder {
+        static class Holder extends RecyclerView.ViewHolder {
 
-            TextView status, loacation, date, driver, distance, carname;
+            TextView status, location, date, driver, distance, carName;
 //            LinearLayout click;
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
-
-
                 status = itemView.findViewById(R.id.status);
-                loacation = itemView.findViewById(R.id.tv_location);
+                location = itemView.findViewById(R.id.tv_location);
                 date = itemView.findViewById(R.id.date);
                 driver = itemView.findViewById(R.id.ll_drivers);
                 distance = itemView.findViewById(R.id.distance);
-                carname = itemView.findViewById(R.id.tv_car_name);
-
+                carName = itemView.findViewById(R.id.tv_car_name);
             }
+
         }
 
-
     }
-
 
 }

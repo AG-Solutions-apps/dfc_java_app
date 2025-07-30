@@ -2,6 +2,7 @@ package com.dfc.agsolutions.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
@@ -44,20 +45,17 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class VehicleServiceAmountActivity extends AppCompatActivity {
+public class VehicleServiceAmountActivity extends
+        AppCompatActivity {
 
     ImageView back;
 
-    String Date, Vehicle, Garage, TotalAmount, Km, Description;
-
-//    EditText tamount;
+    String date, vehicle, garage, totalAmountText, km_, description_;
 
     SharedPreferences sp;
     SharedPreferences.Editor ed;
 
-    TextView totalamount, amount, tamount;
-
-    int ta;
+    TextView amount, totalAmount;
 
     FloatingActionButton floating_action_button;
     ImageView save;
@@ -73,49 +71,46 @@ public class VehicleServiceAmountActivity extends AppCompatActivity {
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();
 
-
-        Date = getIntent().getStringExtra("date");
-        Vehicle = getIntent().getStringExtra("vehicle");
-        Garage = getIntent().getStringExtra("garage");
-        TotalAmount = getIntent().getStringExtra("amount");
-        Km = getIntent().getStringExtra("km");
-        Description = getIntent().getStringExtra("description");
-
-
+        date = getIntent().getStringExtra("date");
+        vehicle = getIntent().getStringExtra("vehicle");
+        garage = getIntent().getStringExtra("garage");
+        totalAmountText = getIntent().getStringExtra("amount");
+        km_ = getIntent().getStringExtra("km");
+        description_ = getIntent().getStringExtra("description");
 
         back = findViewById(R.id.back);
         spin = findViewById(R.id.spin);
         floating_action_button = findViewById(R.id.floating_action_button);
         amount = findViewById(R.id.amount);
-        tamount = findViewById(R.id.et_total_amount);
+        totalAmount = findViewById(R.id.et_total_amount);
 
-        int color = getResources().getColor(R.color.white);// Replace with your color code
+        int color = ContextCompat.getColor(this, R.color.white);
         floating_action_button.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
-//        totalamount = findViewById(R.id.totalamount);
-//        tamount = findViewById(R.id.tamount);
         save = findViewById(R.id.save);
 
         back.setOnClickListener(v -> finish());
 
-        tamount.setText(TotalAmount);
+        totalAmount.setText(totalAmountText);
 
+        Log.e("TotalAmount", "TotalAmount=============: " + totalAmountText);
 
-        Log.e("TotalAmount", "TotalAmount=============: " + TotalAmount);
-
-
-        get_Service_type();
+        getServiceType();
 
         serviceType.add("Service Type");
 
     }
 
     List<String> serviceType = new ArrayList<>();
-    ArrayAdapter<String> adapterdriver;
-    public void get_Service_type() {
+    ArrayAdapter<String> adapterDriver;
 
+    private OkHttpClient.Builder createHttpClient() {
+        return new OkHttpClient.Builder();
+    }
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    public void getServiceType() {
+
+        OkHttpClient.Builder httpClient = createHttpClient();
 
 //        if (token != null) {
         httpClient.addInterceptor(chain -> {
@@ -133,52 +128,53 @@ public class VehicleServiceAmountActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<ServiceTypeDataModel> call = loginservice.get_getServiceType();
-        call.enqueue(new Callback<ServiceTypeDataModel>() {
-            @Override
-            public void onResponse(Call<ServiceTypeDataModel> call, Response<ServiceTypeDataModel> response) {
-                Log.e("responce..", "" + response.toString());
 
+        Api loginService = retrofit.create(Api.class);
+        Call<ServiceTypeDataModel> call = loginService.get_getServiceType();
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ServiceTypeDataModel> call,
+                                   @NonNull Response<ServiceTypeDataModel> response) {
+
+                Log.e("response..", " " + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 //
                     ArrayList<ServiceTypeDataModel> branches = response.body().getData();
 
                     for (ServiceTypeDataModel branch : branches) {
                         serviceType.add(branch.getService_types());
-                        Log.e("getVoucher_type", "getVoucher_type================: " + branch.getService_types());
+                        Log.e("getVoucher_type", "getVoucher_type================: "
+                                + branch.getService_types());
 //                        s = branch.getVoucher_type();
                     }
 //                    get_Debit(String.valueOf();
 //
-                    adapterdriver = new ArrayAdapter<>(VehicleServiceAmountActivity.this, R.layout.simple_spinner_item1, serviceType);
-                    adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    adapterDriver = new ArrayAdapter<>(VehicleServiceAmountActivity.this,
+                            R.layout.simple_spinner_item1,
+                            serviceType);
+                    adapterDriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                    Home_Today_list_Adapter adapter = new Home_Today_list_Adapter(VehicleServiceAmountActivity.this, response.body().getData());
+                    HomeTodayListAdapter adapter = new HomeTodayListAdapter(VehicleServiceAmountActivity.this, response.body().getData());
                     spin.setAdapter(adapter);
-////
-//                    ArrayAdapter<String> adapter1 = new ArrayAdapter<>(PaymentActivity.this, R.layout.simple_spinner_item1, vhicalarray);
-//                    adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinner1.setAdapter(adapter1);
 
-//
-//                    ArrayAdapter<String> adapterdriver = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicaldraiverarray);
-//                    adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spinnerdriver.setAdapter(adapterdriver);
-
-//                    setupSpinner(branchNames);
-                    Log.e("responce..", "branches:-  " + branches.size());
+                    Log.e("response..", "branches:-  " + branches.size());
 
                 } else {
-                    Toast.makeText(VehicleServiceAmountActivity.this, "Network Error!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VehicleServiceAmountActivity.this,
+                            "Network Error!!",
+                            Toast.LENGTH_SHORT).show();
                 }
 //                dialog.dismiss();
 
             }
 
             @Override
-            public void onFailure(Call<ServiceTypeDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<ServiceTypeDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("ServiceTypeDataModel", " " + t);
 //                dialog.dismiss();
             }
         });
@@ -188,22 +184,7 @@ public class VehicleServiceAmountActivity extends AppCompatActivity {
 
     public void Creat_Service_Status() {
 
-//        dialog.show();
-//        fullname.clear();
-//        mobile.clear();
-//        dl_expiry.clear();
-//        user_status.clear();
-//        user_image.clear();
-//        milageaaray.clear();
-
-//        Date = getIntent().getStringExtra("date");
-//        Vehicle = getIntent().getStringExtra("vehicle");
-//        Garage = getIntent().getStringExtra("garage");
-//        TotalAmount = getIntent().getStringExtra("amount");
-//        Km = getIntent().getStringExtra("km");
-//        Description = getIntent().getStringExtra("description");
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        OkHttpClient.Builder httpClient = createHttpClient();
 
 //        if (token != null) {
         httpClient.addInterceptor(chain -> {
@@ -221,18 +202,19 @@ public class VehicleServiceAmountActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
 
-String size = String.valueOf(serviceSubDataList.size());
+        Api loginService = retrofit.create(Api.class);
+
+        String size = String.valueOf(serviceSubDataList.size());
         RequestBodyData requestBody = new RequestBodyData(
-                Date,
+                date,
                 "2023-24",
-                Vehicle,
-                Garage,
-                Km,
-                TotalAmount,
+                vehicle,
+                garage,
+                km_,
+                totalAmountText,
                 size,
-                Description,
+                description_,
                 serviceSubDataList
         );
         Gson gson = new Gson();
@@ -241,92 +223,47 @@ String size = String.valueOf(serviceSubDataList.size());
 // Log the request body
         Log.e("RequestLog", "Request Body: " + requestBodyJson);
 
+        Call<ServiceStatusDataModel> call = loginService.get_getServiceStatus(requestBody);
 
-
-
-        Call<ServiceStatusDataModel> call = loginservice.get_getServiceStatus(requestBody);
-//
-//        Call<ServiceStatusDataModel> call = loginservice.get_getServiceStatus(Date,
-//                "2023-24",
-//                Vehicle,
-//                Garage,
-//                Km,
-//                TotalAmount,
-//                "2",
-//                Description,
-//                new Map[]{serviceSubDataList});
-
-        call.enqueue(new Callback<ServiceStatusDataModel>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<ServiceStatusDataModel> call, Response<ServiceStatusDataModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<ServiceStatusDataModel> call,
+                                   @NonNull Response<ServiceStatusDataModel> response) {
+                Log.e("response..", "" + response);
 
                 Log.e("selectedItems..", "selectedItems---------------------------" + selectedItems);
-                Log.e("selectedamount..", "selectedamount---------------------------" + selectedamount);
+                Log.e("selectedAmount..", "selectedAmount---------------------------" + selectedAmount);
 
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
-//
-//                    ArrayList<DriverListDataModel> branches = response.body().getData();
-////                    for (DriverListDataModel branch : branches) {
-////
-                    Toast.makeText(VehicleServiceAmountActivity.this, "" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
-////                        fullname.add(branch.getFull_name());
-////                        mobile.add(branch.getMobile());
-////                        dl_expiry.add(branch.getDl_expiry());
-////                        user_status.add(branch.getUser_status());
-////                        user_image.add(branch.getUser_image());
-////
-////                    }
+
+                    Toast.makeText(VehicleServiceAmountActivity.this,
+                            " " + response.body().getMsg(),
+                            Toast.LENGTH_SHORT).show();
 
                     startActivity(new Intent(VehicleServiceAmountActivity.this, HomeActivity.class));
 
-//                    DriverListActivity.Home_Today_list_Adapter adapter = new DriverListActivity.Home_Today_list_Adapter(DriverListActivity.this,response.body().getData());
-//                    driverlist.setAdapter(adapter);
-//
-////
-//////response.body().getData().get(0).getReg_no();
-//////                    for (ServiceFatchVhicalDataModel branch : branches) {
-//////                        vhicalarray.add(branch.getReg_no());
-////////                        vhicaldraiverarray.add(branch.getVehicle_driver());
-////////                        milageaaray.add(branch.getVehicle_mileage());
-//////                    }
-////                    for (ServiceFatchVhicalDataModel branch : branches) {
-////                        vhicalarray.add(branch.getReg_no());
-////                    }
-//////
-////                    ArrayAdapter<String> adapter = new ArrayAdapter<>(DriverListActivity.this, R.layout.simple_spinner_item, vhicalarray);
-////                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-////                    spinner.setAdapter(adapter);
-//
-////
-////                    ArrayAdapter<String> adapterdriver = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, vhicaldraiverarray);
-////                    adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-////                    spinnerdriver.setAdapter(adapterdriver);
-//
-//
-////                    setupSpinner(branchNames);
-//                    Log.e("responce..", "branches:-  " + branches.size());
-
                 } else {
-                    Toast.makeText(VehicleServiceAmountActivity.this, "Network Error!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VehicleServiceAmountActivity.this,
+                            "Network Error!!",
+                            Toast.LENGTH_SHORT).show();
                 }
-//                dialog.dismiss();
 
             }
 
             @Override
-            public void onFailure(Call<ServiceStatusDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
-//                dialog.dismiss();
+            public void onFailure(@NonNull Call<ServiceStatusDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("ServiceStatusDataModel", " " + t);
             }
         });
 
     }
-//    ServiceData serviceData;
+    //    ServiceData serviceData;
     public Map<Integer, String> selectedItems = new HashMap<>();
-    public ArrayList<String> selectedamount = new ArrayList<>();
+    public ArrayList<String> selectedAmount = new ArrayList<>();
 
-//    Map<String, String> serviceSubDataList = new HashMap<>();
+    //    Map<String, String> serviceSubDataList = new HashMap<>();
     ArrayList<ServiceSubData> serviceSubDataList = new ArrayList<>();
     String selectedItem;
 
@@ -334,29 +271,16 @@ String size = String.valueOf(serviceSubDataList.size());
 
     public String serviceSubAmount;
 
-    public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
+    public class HomeTodayListAdapter extends
+            RecyclerView.Adapter<HomeTodayListAdapter.Holder> {
+
         VehicleServiceAmountActivity context;
         ArrayList<ServiceTypeDataModel> data;
-//        Map<Integer, String> selectedItems;
-//        ArrayList<String> selectedamount;
 
-        //        public Home_Today_list_Adapter(VehicleServiceAmountActivity context, ArrayList<ServiceTypeDataModel> data, Map<Integer, String> selectedItems, ArrayList<String> selectedamount) {
-//
-//            this.selectedItems = new HashMap<>();
-//            this.selectedamount = new ArrayList<>();
-//        }
-//
         private int itemCount = 1;
-//
-//        public Home_Today_list_Adapter() {
-//            VehicleServiceAmountActivity context;
-//            ArrayList<ServiceTypeDataModel> data;
-//            Map<Integer, String> selectedItems;
-//            ArrayList<String> selectedamount;
-//        }
 
-
-        public Home_Today_list_Adapter(VehicleServiceAmountActivity context, ArrayList<ServiceTypeDataModel> data) {
+        public HomeTodayListAdapter(VehicleServiceAmountActivity context,
+                                    ArrayList<ServiceTypeDataModel> data) {
             this.context = context;
             this.data = data;
         }
@@ -368,33 +292,29 @@ String size = String.valueOf(serviceSubDataList.size());
 
         public void incrementItemCount() {
             itemCount++;
-//            notifyDataSetChanged();
         }
 
         private int getItemCountInternal() {
             return itemCount;
         }
 
-        int count = 0;
-
         @NonNull
         @Override
-        public Home_Today_list_Adapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_srvice, parent, false);
-            return new Home_Today_list_Adapter.Holder(view);
+        public HomeTodayListAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                              int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_srvice,
+                    parent,
+                    false);
+            return new HomeTodayListAdapter.Holder(view);
         }
 
-        //        int abcd = 0;
-//        int a;
         int b;
 
-
         @Override
-        public void onBindViewHolder(@NonNull final Home_Today_list_Adapter.Holder holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(@NonNull final HomeTodayListAdapter.Holder holder,
+                                     @SuppressLint("RecyclerView") final int position) {
 
-//            ArrayAdapter<String> adapterdriver = new ArrayAdapter<>(context, R.layout.simple_spinner_item1, serviceType);
-//            adapterdriver.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            holder.spinner.setAdapter(adapterdriver);
+            holder.spinner.setAdapter(adapterDriver);
 
             holder.plush.setOnClickListener(v -> {
                 incrementItemCount();
@@ -406,35 +326,28 @@ String size = String.valueOf(serviceSubDataList.size());
 
             floating_action_button.setOnClickListener(v -> {
 
-                if(holder.getAmountValue() == 0 || adapterdriver.getPosition(selectedItems.get(position))==0)
-                {
-                    if(holder.getAmountValue() == 0)
-                    {
+                if(holder.getAmountValue() == 0 ||
+                        adapterDriver.getPosition(selectedItems.get(position))==0) {
+
+                    if(holder.getAmountValue() == 0) {
                         Toast.makeText(context, "Enter Amount", Toast.LENGTH_SHORT).show();
-                    }else if(adapterdriver.getPosition(selectedItems.get(position))==0)
-                    {
+                    } else if(adapterDriver.getPosition(selectedItems.get(position))==0) {
                         Toast.makeText(context, "Select Type", Toast.LENGTH_SHORT).show();
-                    }else{
+                    } else{
                         Toast.makeText(context, "Fill Select Type And Amount", Toast.LENGTH_SHORT).show();
                     }
-                }else {
-
+                } else {
 
                     enteredValue += (holder.getAmountValue());
 
                     amount.setText(String.valueOf(enteredValue));
                     Log.e("enteredValue", "enteredValue: " + enteredValue);
+
                     if (selectedItems.containsKey(position)) {
-                        int selectedItemPosition = adapterdriver.getPosition(selectedItems.get(position));
+                        int selectedItemPosition = adapterDriver.getPosition(selectedItems.get(position));
                         holder.spinner.setSelection(selectedItemPosition);
 
-//                        ServiceSubData engineOilChange = new ServiceSubData();
-//                        serviceSubDataList.put(selectedItems.get(position), String.valueOf(holder.getAmountValue()));
-//                        serviceData = new ServiceData(Date, Vehicle, Garage, TotalAmount, Km, Description, (List<Map<String, String>>) serviceSubDataList);
-//                        Log.e("engineOilChange", "engineOilChange--------------------------------: "+ engineOilChange);
-
                         serviceType = Collections.singletonList(selectedItem);
-
 
                         serviceSubAmount = String.valueOf(holder.getAmountValue());
 
@@ -444,12 +357,14 @@ String size = String.valueOf(serviceSubDataList.size());
 
                         Log.e("selectedItems", "selectedItems: " + selectedItems);
                     }
-                    selectedamount.add(String.valueOf(holder.getAmountValue()));
-                    Log.e("selectedamount", "selectedamount: " + selectedamount);
+                    selectedAmount.add(String.valueOf(holder.getAmountValue()));
+                    Log.e("selectedAmount", "selectedAmount: " + selectedAmount);
 
                     if (amount != null) {
-                        String ta = tamount.getText().toString();
+
+                        String ta = totalAmount.getText().toString();
                         String am = amount.getText().toString();
+
                         if (Integer.parseInt(ta) == Integer.parseInt(am)) {
                             Toast.makeText(context, "Match Your Amount", Toast.LENGTH_SHORT).show();
                             save.setVisibility(View.VISIBLE);
@@ -458,16 +373,15 @@ String size = String.valueOf(serviceSubDataList.size());
                         } else {
                             incrementItemCount();
                         }
+
                     }
-
-
 
                 }
             });
 
             save.setOnClickListener(v -> {
                 if (b == 1) {
-                    String ta = tamount.getText().toString();
+                    String ta = totalAmount.getText().toString();
                     String am = amount.getText().toString();
                     if (Integer.parseInt(ta) <= Integer.parseInt(am)) {
                         Creat_Service_Status();
@@ -480,19 +394,22 @@ String size = String.valueOf(serviceSubDataList.size());
                     enteredValue += (holder.getAmountValue());
                     amount.setText(String.valueOf(enteredValue));
                     if (selectedItems.containsKey(position)) {
-                        int selectedItemPosition = adapterdriver.getPosition(selectedItems.get(position));
+                        int selectedItemPosition = adapterDriver.getPosition(selectedItems.get(position));
                         holder.spinner.setSelection(selectedItemPosition);
 
                         Log.e("selectedItems", "selectedItems: " + selectedItems);
                     }
-                    selectedamount.add(String.valueOf(holder.getAmountValue()));
-                    Log.e("selectedamount", "selectedamount: " + selectedamount);
+                    selectedAmount.add(String.valueOf(holder.getAmountValue()));
+                    Log.e("selectedAmount", "selectedAmount: " + selectedAmount);
                 }
             });
 
             holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int selectedPosition, long id) {
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
+                                           int selectedPosition,
+                                           long id) {
+
                     selectedItem = (String) parentView.getItemAtPosition(selectedPosition);
                     selectedItems.put(position, selectedItem);
 
@@ -504,24 +421,8 @@ String size = String.valueOf(serviceSubDataList.size());
                 public void onNothingSelected(AdapterView<?> parentView) {
 
                 }
-            });
 
-//            holder.amount.addTextChangedListener(new TextWatcher() {
-//                @Override
-//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//                }
-//
-//                @Override
-//                public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                }
-//
-//                @Override
-//                public void afterTextChanged(Editable s) {
-//
-//                }
-//            });
+            });
 
         }
 
@@ -539,16 +440,18 @@ String size = String.valueOf(serviceSubDataList.size());
                 plush = itemView.findViewById(R.id.plush);
 
             }
+
             public int getAmountValue() {
                 String amountText = amount.getText().toString();
                 try {
                     return Integer.parseInt(amountText);
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
+                    Log.e("NumberFormatException", e.toString());
                     return 0;
                 }
             }
         }
 
     }
+
 }

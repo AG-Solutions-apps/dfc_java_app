@@ -90,4 +90,5 @@ public class PreviousHistoryDataModel {
     public void setTrip_km(String trip_km) {
         this.trip_km = trip_km;
     }
+
 }

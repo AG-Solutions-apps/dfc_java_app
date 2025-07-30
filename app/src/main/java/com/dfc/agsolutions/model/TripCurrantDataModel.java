@@ -3,6 +3,7 @@ package com.dfc.agsolutions.model;
 import com.google.gson.annotations.SerializedName;
 
 public class TripCurrantDataModel {
+
     public int getCode() {
         return code;
     }
@@ -25,6 +26,7 @@ public class TripCurrantDataModel {
     private TripCurrantDataModel.UserData1 data;
 
     public static class UserData1 {
+
         String id;
         String trip_vehicle;
         String trip_status;
@@ -88,6 +90,7 @@ public class TripCurrantDataModel {
         public void setTrip_km(String trip_km) {
             this.trip_km = trip_km;
         }
+
     }
 
 }

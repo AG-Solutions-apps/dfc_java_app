@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class RequestBodyData {
+
     @SerializedName("service_date")
     private String serviceDate;
 
@@ -41,8 +42,7 @@ public class RequestBodyData {
             String serviceAmount,
             String serviceCount,
             String serviceRemarks,
-            ArrayList<ServiceSubData> serviceSubData
-    ) {
+            ArrayList<ServiceSubData> serviceSubData) {
         this.serviceDate = serviceDate;
         this.serviceYear = serviceYear;
         this.serviceTruckNo = serviceTruckNo;
@@ -53,4 +53,5 @@ public class RequestBodyData {
         this.serviceRemarks = serviceRemarks;
         this.serviceSubData = serviceSubData;
     }
+
 }

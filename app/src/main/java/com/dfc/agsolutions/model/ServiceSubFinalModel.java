@@ -2,11 +2,11 @@ package com.dfc.agsolutions.model;
 
 import java.util.ArrayList;
 
-public class ServicesubFinalModel {
+public class ServiceSubFinalModel {
 
     private String code;
     private String msg;
-    private ArrayList<CreatServicaeListDataModel> data;
+    private ArrayList<CreateServiceListDataModel> data;
     private String status;
     private String error;
     private String error_code;
@@ -27,10 +27,10 @@ public class ServicesubFinalModel {
     public void setMsg(String msg) {
         this.msg = msg;
     }
-    public ArrayList<CreatServicaeListDataModel> getData() {
+    public ArrayList<CreateServiceListDataModel> getData() {
         return data;
     }
-    public void setData(ArrayList<CreatServicaeListDataModel> data) {
+    public void setData(ArrayList<CreateServiceListDataModel> data) {
         this.data = data;
     }
     public String getStatus() {

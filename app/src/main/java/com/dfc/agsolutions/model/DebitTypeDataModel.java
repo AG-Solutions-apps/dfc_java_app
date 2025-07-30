@@ -6,7 +6,6 @@ public class DebitTypeDataModel {
 
     private ArrayList<DebitTypeDataModel> data;
 
-
     public String getCode() {
         return code;
     }
@@ -34,4 +33,5 @@ public class DebitTypeDataModel {
     public void setCommon_name(String common_name) {
         this.common_name = common_name;
     }
+
 }
