@@ -145,21 +145,24 @@ public class AdminTripActivity extends
         int[] navLabels = {R.string.ongoing, R.string.ideal};
 
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            RelativeLayout tab2 = (RelativeLayout) LayoutInflater.from(AdminTripActivity.this).inflate(R.layout.custom_tablayout,
-                    new LinearLayout(this));
-            tv_tab_label = tab2.findViewById(R.id.text1);
-            tv_total_todo = tab2.findViewById(R.id.tv_total_todo);
+            View customTab = LayoutInflater.from(this).inflate(R.layout.custom_tablayout, null);
+            TextView tvTabLabel = customTab.findViewById(R.id.text1);
+            TextView tvTotalTodo = customTab.findViewById(R.id.tv_total_todo);
+
+            tvTabLabel.setText(navLabels[i]);
+
             if (i == 0) {
-                tv_tab_label.setText(navLabels[i]);
-                tv_total_todo.setText(String.valueOf(onGoingVehicleCount));
+                tvTotalTodo.setText(String.valueOf(onGoingVehicleCount));
             } else {
-                tv_tab_label.setText(navLabels[i]);
-                tv_total_todo.setText(String.valueOf(idleVehicleCount));
+                tvTotalTodo.setText(String.valueOf(idleVehicleCount));
             }
 
-            Objects.requireNonNull(tabLayout.getTabAt(i)).setCustomView(tab2);
-            dialog.dismiss();
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) {
+                tab.setCustomView(customTab);
+            }
         }
+        dialog.dismiss(); // should be outside the loop
 
     }
 
@@ -219,7 +222,7 @@ public class AdminTripActivity extends
             });
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(AdminTripActivity.this.getString(R.string.commn_url))
+                    .baseUrl(AdminTripActivity.this.getString(R.string.common_url))
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build())
                     .build();
@@ -278,7 +281,7 @@ public class AdminTripActivity extends
             });
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(AdminTripActivity.this.getString(R.string.commn_url))
+                    .baseUrl(AdminTripActivity.this.getString(R.string.common_url))
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build())
                     .build();
@@ -405,7 +408,7 @@ public class AdminTripActivity extends
             public Holder(@NonNull View itemView) {
                 super(itemView);
 
-                tv_status = itemView.findViewById(R.id.status);
+                tv_status = itemView.findViewById(R.id.tv_status);
                 tv_v_number = itemView.findViewById(R.id.v_number);
                 tv_trip_date = itemView.findViewById(R.id.tv_trip_date);
 

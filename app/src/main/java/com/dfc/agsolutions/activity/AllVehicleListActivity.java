@@ -95,7 +95,7 @@ public class AllVehicleListActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -220,7 +220,7 @@ public class AllVehicleListActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

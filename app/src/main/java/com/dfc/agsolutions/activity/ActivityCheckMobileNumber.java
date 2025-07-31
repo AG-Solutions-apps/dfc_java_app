@@ -17,7 +17,7 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.dfc.agsolutions.app_utils.Myapplication;
+import com.dfc.agsolutions.app_utils.NetworkCheck;
 import com.dfc.agsolutions.model.CheckNumberModel;
 import com.dfc.agsolutions.R;
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -74,10 +74,10 @@ public class ActivityCheckMobileNumber extends
                     } else if (edtPassword.getText().toString().trim().length() < 6) {
                         Toast.makeText(ActivityCheckMobileNumber.this, "Valid Password required!!", Toast.LENGTH_SHORT).show();
                     } else*/ {
-                        if (Myapplication.isNetworkAvailable()) {
+                        if (NetworkCheck.isNetworkAvailable(this)) {
                             getCheckMobile();
                         } else {
-                            Myapplication.noInternet(ActivityCheckMobileNumber.this);
+                            NetworkCheck.noInternet(ActivityCheckMobileNumber.this);
                         }
                     }
                 } else {
@@ -130,7 +130,7 @@ public class ActivityCheckMobileNumber extends
             dialog.show();
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(getString(R.string.commn_url))
+                    .baseUrl(getString(R.string.common_url))
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
@@ -169,7 +169,9 @@ public class ActivityCheckMobileNumber extends
                         }
 
                     } else {
-                        Toast.makeText(ActivityCheckMobileNumber.this, "Mobile Number is Not Registered", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityCheckMobileNumber.this,
+                                "Mobile Number is Not Registered",
+                                Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
                 }
@@ -178,11 +180,15 @@ public class ActivityCheckMobileNumber extends
                 public void onFailure(@NonNull Call<CheckNumberModel> call,
                                       @NonNull Throwable t) {
                     dialog.dismiss();
-                    Toast.makeText(ActivityCheckMobileNumber.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityCheckMobileNumber.this,
+                            "Something went wrong",
+                            Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
-            Toast.makeText(ActivityCheckMobileNumber.this, e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityCheckMobileNumber.this,
+                    e.toString(),
+                    Toast.LENGTH_SHORT).show();
         }
 
     }

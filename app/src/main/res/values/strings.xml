@@ -1,13 +1,13 @@
 <resources>
 
   <string name="app_name">DFC Group</string>
-  <string name="commn_url">https://dfcgroup.in/crmapi/public/api/</string>
+  <string name="common_url">https://dfcgroup.in/crmapi/public/api/</string>
   <string name="ongoing">Ongoing Trips</string>
   <string name="ideal">Ideal Vehicles</string>
   <string name="currant">Currant Month</string>
   <string name="previous">Previous Month</string>
-  <string name="pendingtask">Pending Tasks</string>
-  <string name="completetask">Complete Tasks</string>
+  <string name="pending_task">Pending Tasks</string>
+  <string name="complete_task">Complete Tasks</string>
   <string name="account_deactivated">Account Deactivated</string>
   <string name="your_account_is_deactivated">Your Account is Deactivated</string>
   <string name="ok">OK</string>
@@ -162,9 +162,9 @@
   <string name="balance_colon">Balance:</string>
   <string name="driver_list">Driver List</string>
   <string name="vehicle_list___">Vehicle list -</string>
-  <string name="are_you_sure_you_want_to_delete_your_account">Are you sure you want to delete your account? This action cannot be undone.</string>
-  <string name="are_you_sure_you_want_to_logut">Are you sure you want to logout ?</string>
-  <string name="return">Return</string>
+  <string name="are_you_sure_you_want_to_delete_your_account">Are you sure you want to delete your account?
+    This action cannot be undone.</string>
+  <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout ?</string>
   <string name="reached">Reached</string>
 
 </resources>

@@ -104,7 +104,7 @@ public class DriverListActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -252,7 +252,7 @@ public class DriverListActivity extends AppCompatActivity {
 
                 tv_name = itemView.findViewById(R.id.name);
                 iv_mobile = itemView.findViewById(R.id.mobile);
-                tv_date = itemView.findViewById(R.id.date);
+                tv_date = itemView.findViewById(R.id.tv_date);
                 tv_active_status = itemView.findViewById(R.id.Active);
                 iv_profile = itemView.findViewById(R.id.profile);
                 iv_call = itemView.findViewById(R.id.call);

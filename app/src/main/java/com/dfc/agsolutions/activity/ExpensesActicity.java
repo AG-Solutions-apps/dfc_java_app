@@ -97,7 +97,7 @@ public class ExpensesActicity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -234,7 +234,7 @@ public class ExpensesActicity extends AppCompatActivity {
             public Holder(@NonNull View itemView) {
                 super(itemView);
 
-                tv_date = itemView.findViewById(R.id.date);
+                tv_date = itemView.findViewById(R.id.tv_date);
                 tv_money = itemView.findViewById(R.id.money);
                 tv_voucher = itemView.findViewById(R.id.voucher);
                 tv_debit = itemView.findViewById(R.id.debit);

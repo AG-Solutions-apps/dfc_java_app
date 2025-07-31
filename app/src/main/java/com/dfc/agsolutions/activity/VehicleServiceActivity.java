@@ -71,7 +71,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
         ed = sp.edit();
 
         iv_next_btn = findViewById(R.id.iv_next_btn);
-        date = findViewById(R.id.date);
+        date = findViewById(R.id.tv_date);
         tAmount = findViewById(R.id.et_total_amount);
         km = findViewById(R.id.km);
         description = findViewById(R.id.description);
@@ -207,7 +207,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -277,7 +277,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -338,7 +338,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

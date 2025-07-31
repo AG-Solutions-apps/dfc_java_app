@@ -141,7 +141,7 @@ public class OnGoingTripFragment extends Fragment {
 //        }
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(activity.getString(R.string.commn_url))
+                    .baseUrl(activity.getString(R.string.common_url))
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build())
                     .build();
@@ -344,11 +344,11 @@ public class OnGoingTripFragment extends Fragment {
                 tvSHSDValue = itemView.findViewById(R.id.tvSHSDValue);
                 tvADVValue = itemView.findViewById(R.id.tvADVValue);
 
-                status = itemView.findViewById(R.id.status);
+                status = itemView.findViewById(R.id.tv_status);
                 location = itemView.findViewById(R.id.tv_location);
-                date = itemView.findViewById(R.id.date);
+                date = itemView.findViewById(R.id.tv_date);
                 driver = itemView.findViewById(R.id.ll_drivers);
-                distance = itemView.findViewById(R.id.distance);
+                distance = itemView.findViewById(R.id.tv_distance);
                 carName = itemView.findViewById(R.id.tv_car_name);
 
             }
@@ -386,7 +386,7 @@ public class OnGoingTripFragment extends Fragment {
 //        }
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(requireActivity().getString(R.string.commn_url))
+                    .baseUrl(requireActivity().getString(R.string.common_url))
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build())
                     .build();

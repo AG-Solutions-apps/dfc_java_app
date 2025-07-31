@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfc.agsolutions.app_utils.Myapplication;
+import com.dfc.agsolutions.app_utils.NetworkCheck;
 import com.dfc.agsolutions.model.CreateServiceListDataModel;
 import com.dfc.agsolutions.model.DeleteModel;
 import com.dfc.agsolutions.model.ServiceTypeDataModel;
@@ -96,10 +97,10 @@ public class ServiceBookList extends
 
         et_total_amount.setText(totalAmount);
         amount1.setText(String.valueOf(amountOne));
-        if (Myapplication.isNetworkAvailable()) {
+        if (NetworkCheck.isNetworkAvailable(this)) {
             get_Service_type();
         } else {
-            Myapplication.noInternet(ServiceBookList.this);
+            NetworkCheck.noInternet(ServiceBookList.this);
         }
 
         home_today_list_adapter = new HomeTodayListAdapter(ServiceBookList.this);
@@ -122,7 +123,7 @@ public class ServiceBookList extends
 
         findViewById(R.id.continues).setOnClickListener(v -> {
             int plu;
-            if (Myapplication.isNetworkAvailable()) {
+            if (NetworkCheck.isNetworkAvailable(this)) {
 
                 if (!finalServiceType.equals("Service Type") && !amount.getText().toString().isEmpty()) {
 
@@ -153,7 +154,7 @@ public class ServiceBookList extends
 
 
             } else {
-                Myapplication.noInternet(ServiceBookList.this);
+                NetworkCheck.noInternet(ServiceBookList.this);
 
             }
 
@@ -199,7 +200,7 @@ public class ServiceBookList extends
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -264,7 +265,7 @@ public class ServiceBookList extends
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -323,7 +324,7 @@ public class ServiceBookList extends
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -378,7 +379,7 @@ public class ServiceBookList extends
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -439,7 +440,7 @@ public class ServiceBookList extends
         Log.e("TAG", "edit_service: " + idd + " : " + finaleServiceType + " : " + amm + " : " + sType);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

@@ -114,7 +114,7 @@ public class CurrentMonthTripFragment extends Fragment {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -231,11 +231,11 @@ public class CurrentMonthTripFragment extends Fragment {
                 super(itemView);
 
 
-                status = itemView.findViewById(R.id.status);
+                status = itemView.findViewById(R.id.tv_status);
                 loacation = itemView.findViewById(R.id.tv_location);
-                date = itemView.findViewById(R.id.date);
+                date = itemView.findViewById(R.id.tv_date);
                 driver = itemView.findViewById(R.id.ll_drivers);
-                distance = itemView.findViewById(R.id.distance);
+                distance = itemView.findViewById(R.id.tv_distance);
                 carname = itemView.findViewById(R.id.tv_car_name);
 
             }

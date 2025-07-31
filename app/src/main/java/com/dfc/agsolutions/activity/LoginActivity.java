@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfc.agsolutions.app_utils.Myapplication;
+import com.dfc.agsolutions.app_utils.NetworkCheck;
 import com.dfc.agsolutions.model.MyResponseData;
 import com.dfc.agsolutions.R;
 import com.google.firebase.FirebaseException;
@@ -79,8 +80,8 @@ public class LoginActivity extends AppCompatActivity {
                         "Please enter valid otp",
                         Toast.LENGTH_SHORT).show();
             } else {
-                if (!Myapplication.isNetworkAvailable()) {
-                    Myapplication.noInternet(LoginActivity.this);
+                if (!NetworkCheck.isNetworkAvailable(this)) {
+                    NetworkCheck.noInternet(LoginActivity.this);
                 } else {
                     getLogin();
                 }
@@ -184,8 +185,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signInWithCredential(PhoneAuthCredential credential) {
-        if (!Myapplication.isNetworkAvailable()) {
-            Myapplication.noInternet(LoginActivity.this);
+        if (!NetworkCheck.isNetworkAvailable(this)) {
+            NetworkCheck.noInternet(LoginActivity.this);
         } else {
             mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
@@ -204,8 +205,8 @@ public class LoginActivity extends AppCompatActivity {
 
     // method to send otp to provided number
     private void sendVerificationCode(String number) {
-        if (!Myapplication.isNetworkAvailable()) {
-            Myapplication.noInternet(LoginActivity.this);
+        if (!NetworkCheck.isNetworkAvailable(this)) {
+            NetworkCheck.noInternet(LoginActivity.this);
         } else {
 
             // show progress dialog
@@ -229,7 +230,7 @@ public class LoginActivity extends AppCompatActivity {
         showProgressDialog();
 
         Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(getString(R.string.commn_url))
+            .baseUrl(getString(R.string.common_url))
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

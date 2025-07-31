@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.dfc.agsolutions.app_utils.Myapplication;
 import com.dfc.agsolutions.R;
+import com.dfc.agsolutions.app_utils.NetworkCheck;
 
 public class HomeActivity extends
         AppCompatActivity {
@@ -49,8 +50,8 @@ public class HomeActivity extends
         rl_profile = findViewById(R.id.profile);
         rl_logout = findViewById(R.id.logout);
 
-        if (!Myapplication.isNetworkAvailable()) {
-            Myapplication.noInternet(HomeActivity.this);
+        if (!NetworkCheck.isNetworkAvailable(this)) {
+            NetworkCheck.noInternet(HomeActivity.this);
         }
 
         user_type = sp.getString("userType", "");
@@ -228,7 +229,7 @@ public class HomeActivity extends
         // Show alert dialog to confirm deletion
         new AlertDialog.Builder(HomeActivity.this)
                 .setTitle(getString(R.string.logout))
-                .setMessage(getString(R.string.are_you_sure_you_want_to_logut))
+                .setMessage(getString(R.string.are_you_sure_you_want_to_logout))
                 .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
                     ed.clear();
                     ed.commit();

@@ -68,7 +68,7 @@
                     tools:ignore="UselessParent">
 
                     <TextView
-                        android:id="@+id/date"
+                        android:id="@+id/tv_date"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="15dp"

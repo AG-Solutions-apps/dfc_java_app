@@ -25,7 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.dfc.agsolutions.app_utils.Myapplication;
+
+import com.dfc.agsolutions.app_utils.NetworkCheck;
 import com.dfc.agsolutions.model.CreatePaymentDataModel;
 import com.dfc.agsolutions.model.DebitTypeDataModel;
 import com.dfc.agsolutions.model.VoucherTypeDataModel;
@@ -76,10 +77,10 @@ public class PaymentActivity extends AppCompatActivity {
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();
 
-        if (Myapplication.isNetworkAvailable()) {
+        if (NetworkCheck.isNetworkAvailable(this)) {
             getVoucher();
         } else {
-            Myapplication.noInternet(PaymentActivity.this);
+            NetworkCheck.noInternet(PaymentActivity.this);
         }
 
         iv_back = findViewById(R.id.iv_back);
@@ -89,7 +90,7 @@ public class PaymentActivity extends AppCompatActivity {
         edt_advance = findViewById(R.id.et_advance);
         edt_transaction = findViewById(R.id.et_transaction);
         edt_narration = findViewById(R.id.et_narration);
-        tv_date = findViewById(R.id.date);
+        tv_date = findViewById(R.id.tv_date);
         date_cd = findViewById(R.id.date_cd);
         iv_create_trip = findViewById(R.id.ic_creat_trip);
         tv_transaction1 = findViewById(R.id.tv_transaction1);
@@ -107,7 +108,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         date_cd.setOnClickListener(v -> {
 
-            tv_date = findViewById(R.id.date);
+            tv_date = findViewById(R.id.tv_date);
             et_amount = findViewById(R.id.et_total_amount);
             et_km = findViewById(R.id.km);
             et_description = findViewById(R.id.description);
@@ -334,7 +335,7 @@ public class PaymentActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -405,7 +406,7 @@ public class PaymentActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -465,7 +466,7 @@ public class PaymentActivity extends AppCompatActivity {
         Log.e("TAG", "Creat_Payment-------------------------------------------: " + selectDate1 + payment_mode + payment_voucher + payment_debit + advance_ + transaction_ + narration);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

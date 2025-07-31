@@ -89,10 +89,10 @@ public class HomeScreenDriver extends Fragment {
 
         iv_logout = view.findViewById(R.id.logout);
         tv_location = view.findViewById(R.id.tv_location);
-        tv_date = view.findViewById(R.id.date);
-        tv_distance = view.findViewById(R.id.distance);
+        tv_date = view.findViewById(R.id.tv_date);
+        tv_distance = view.findViewById(R.id.tv_distance);
         tv_car_name = view.findViewById(R.id.tv_car_name);
-        tv_status = view.findViewById(R.id.status);
+        tv_status = view.findViewById(R.id.tv_status);
         tv_accept = view.findViewById(R.id.tv_text_accept);
 
         tv_user_name = view.findViewById(R.id.username);
@@ -166,7 +166,7 @@ public class HomeScreenDriver extends Fragment {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -222,7 +222,7 @@ public class HomeScreenDriver extends Fragment {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -295,7 +295,7 @@ public class HomeScreenDriver extends Fragment {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

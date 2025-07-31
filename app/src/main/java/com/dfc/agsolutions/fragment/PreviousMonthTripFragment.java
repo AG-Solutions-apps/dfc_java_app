@@ -36,7 +36,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class PreviousMonthTripFragment extends Fragment {
+public class PreviousMonthTripFragment extends
+        Fragment {
 
     public static PreviousMonthTripFragment newInstance() {
         return new PreviousMonthTripFragment();
@@ -45,7 +46,6 @@ public class PreviousMonthTripFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     RecyclerView rv;
@@ -101,7 +101,6 @@ public class PreviousMonthTripFragment extends Fragment {
 
         OkHttpClient.Builder httpClient = createHttpClient();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -110,10 +109,9 @@ public class PreviousMonthTripFragment extends Fragment {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -142,8 +140,6 @@ public class PreviousMonthTripFragment extends Fragment {
                         noData.setVisibility(View.VISIBLE);
                         rv.setVisibility(View.GONE);
                     }
-
-//                    Log.e("response..", "branches:-  " + branches.size());
 
                 }
                 dialog.dismiss();
@@ -193,21 +189,19 @@ public class PreviousMonthTripFragment extends Fragment {
                                      @SuppressLint("RecyclerView") final int position) {
 
             String status = "Status: " + data.get(position).getTrip_status();
-            holder.status.setText(status);
+            holder.tv_status.setText(status);
 
             String carName = " " + data.get(position).getTrip_vehicle();
-            holder.carName.setText(carName);
+            holder.tv_carName.setText(carName);
 
             String location = " " + data.get(position).getTrip_agency();
-            holder.location.setText(location);
-
-//            holder.date.setText("Date : " + data.get(position).getTrip_date());
+            holder.tv_location.setText(location);
 
             String driver = " " + data.get(position).getTrip_driver();
-            holder.driver.setText(driver);
+            holder.tv_driver.setText(driver);
 
             String distance = " " + data.get(position).getTrip_km() + " Km";
-            holder.distance.setText(distance);
+            holder.tv_distance.setText(distance);
 
             String date1 = data.get(position).getTripDate();
             try {
@@ -221,32 +215,29 @@ public class PreviousMonthTripFragment extends Fragment {
                 }
 
                 dateFormate = "Date : " + dateFormate;
-                holder.date.setText(dateFormate);
+                holder.tv_date.setText(dateFormate);
 
             } catch (ParseException e) {
                 String date = "Date : " + date1;
-                holder.date.setText(date);
+                holder.tv_date.setText(date);
                 Log.e("error", "" + e);
             }
 
-/*//            System.out.println("Last Trip Date: " + lastTripDateStr);
-//            System.out.println("New Date (" + daysBeforeLastTrip + " days before last trip): " + formattedNewDate);*/
-
         }
 
-        static class Holder extends RecyclerView.ViewHolder {
+        static class Holder extends
+                RecyclerView.ViewHolder {
 
-            TextView status, location, date, driver, distance, carName;
-//            LinearLayout click;
+            TextView tv_status, tv_location, tv_date, tv_driver, tv_distance, tv_carName;
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
-                status = itemView.findViewById(R.id.status);
-                location = itemView.findViewById(R.id.tv_location);
-                date = itemView.findViewById(R.id.date);
-                driver = itemView.findViewById(R.id.ll_drivers);
-                distance = itemView.findViewById(R.id.distance);
-                carName = itemView.findViewById(R.id.tv_car_name);
+                tv_status = itemView.findViewById(R.id.tv_status);
+                tv_location = itemView.findViewById(R.id.tv_location);
+                tv_date = itemView.findViewById(R.id.tv_date);
+                tv_driver = itemView.findViewById(R.id.tv_drivers);
+                tv_distance = itemView.findViewById(R.id.tv_distance);
+                tv_carName = itemView.findViewById(R.id.tv_car_name);
             }
 
         }

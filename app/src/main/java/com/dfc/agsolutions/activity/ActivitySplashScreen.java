@@ -51,7 +51,7 @@ public class ActivitySplashScreen extends AppCompatActivity {
     public void getLogin() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Api loginService = retrofit.create(Api.class);

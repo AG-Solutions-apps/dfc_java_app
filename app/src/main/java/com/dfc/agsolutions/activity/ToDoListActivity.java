@@ -76,7 +76,7 @@ public class ToDoListActivity extends AppCompatActivity {
         TextView tabLabel;
         TextView totalToDo;
 
-        int[] navLabels = {R.string.pendingtask, R.string.completetask
+        int[] navLabels = {R.string.pending_task, R.string.complete_task
 
         };
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
@@ -150,7 +150,7 @@ public class ToDoListActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -209,7 +209,7 @@ public class ToDoListActivity extends AppCompatActivity {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

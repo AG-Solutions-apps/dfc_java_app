@@ -176,7 +176,7 @@ public class HomeScreen extends Fragment {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -233,7 +233,7 @@ public class HomeScreen extends Fragment {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -348,7 +348,7 @@ public class HomeScreen extends Fragment {
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
-                status = itemView.findViewById(R.id.status);
+                status = itemView.findViewById(R.id.tv_status);
                 click = itemView.findViewById(R.id.click);
 
             }

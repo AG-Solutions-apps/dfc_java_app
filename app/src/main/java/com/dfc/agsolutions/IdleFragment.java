@@ -132,7 +132,7 @@ public class IdleFragment extends Fragment {
 //        }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(activity.getString(R.string.commn_url))
+                .baseUrl(activity.getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -276,7 +276,7 @@ public class IdleFragment extends Fragment {
             public Holder(@NonNull View itemView) {
                 super(itemView);
 
-                status = itemView.findViewById(R.id.status);
+                status = itemView.findViewById(R.id.tv_status);
                 v_number = itemView.findViewById(R.id.v_number);
                 tripDate = itemView.findViewById(R.id.tv_trip_date);
 

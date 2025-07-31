@@ -95,7 +95,7 @@ public class PreviousHistory extends Fragment {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.commn_url))
+                .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -210,11 +210,11 @@ public class PreviousHistory extends Fragment {
             public Holder(@NonNull View itemView) {
                 super(itemView);
 
-                tv_status = itemView.findViewById(R.id.status);
+                tv_status = itemView.findViewById(R.id.tv_status);
                 tv_location = itemView.findViewById(R.id.tv_location);
-                tv_date = itemView.findViewById(R.id.date);
+                tv_date = itemView.findViewById(R.id.tv_date);
                 tv_driver = itemView.findViewById(R.id.ll_drivers);
-                tv_distance = itemView.findViewById(R.id.distance);
+                tv_distance = itemView.findViewById(R.id.tv_distance);
                 tv_car_name = itemView.findViewById(R.id.tv_car_name);
 
             }

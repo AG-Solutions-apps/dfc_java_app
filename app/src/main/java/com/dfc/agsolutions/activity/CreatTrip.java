@@ -385,7 +385,7 @@ public class CreatTrip extends
             return chain.proceed(request);
         });
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.common_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
         Api loginService = retrofit.create(Api.class);
 
         Call<FetchVehicleDataModel> call = loginService.fetchVehicleList(sp.getString("userBranch", ""));
@@ -451,7 +451,7 @@ public class CreatTrip extends
             return chain.proceed(request);
         });
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.common_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
         Api loginService = retrofit.create(Api.class);
 
         Call<FetchDriverDataModel> call = loginService.fetchDriver(sp.getString("userBranch", ""));
@@ -503,7 +503,7 @@ public class CreatTrip extends
             return chain.proceed(request);
         });
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.common_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
 
         Api loginService = retrofit.create(Api.class);
 
@@ -559,7 +559,7 @@ public class CreatTrip extends
             return chain.proceed(request);
         });
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.common_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
         Api loginService = retrofit.create(Api.class);
 
         Call<FetchVendorDataModel> call = loginService.fetchAgent(sp.getString("userBranch", ""), "Diesel");
@@ -617,7 +617,7 @@ public class CreatTrip extends
             return chain.proceed(request);
         });
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.common_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
         Api loginService = retrofit.create(Api.class);
 
         Call<FetchBHSDDataModel> call = loginService.fetchVehicleBHSD(vehicleNumber);
@@ -670,7 +670,7 @@ public class CreatTrip extends
             return chain.proceed(request);
         });
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.commn_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.common_url)).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build();
         Api loginService = retrofit.create(Api.class);
 
         Log.e("rahul..", "strDate:-  " + strDate);
