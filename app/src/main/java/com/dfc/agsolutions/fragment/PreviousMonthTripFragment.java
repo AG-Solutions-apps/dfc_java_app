@@ -130,13 +130,13 @@ public class PreviousMonthTripFragment extends
                 if (response.body() != null &&
                         response.body().getCode().equalsIgnoreCase("200")) {
 
-                    noData.setVisibility(View.GONE);
-                    rv.setVisibility(View.VISIBLE);
                     ArrayList<PreviousHistoryDataModel> arr = response.body().getData();
-                    HomeTodayListAdapter adapter = new HomeTodayListAdapter(arr);
-                    rv.setAdapter(adapter);
-
-                    if (arr.isEmpty()) {
+                    if (arr != null && !arr.isEmpty()) {
+                        noData.setVisibility(View.GONE);
+                        rv.setVisibility(View.VISIBLE);
+                        HomeTodayListAdapter adapter = new HomeTodayListAdapter(arr);
+                        rv.setAdapter(adapter);
+                    } else {
                         noData.setVisibility(View.VISIBLE);
                         rv.setVisibility(View.GONE);
                     }

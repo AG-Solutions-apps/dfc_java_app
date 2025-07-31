@@ -14,6 +14,7 @@ import android.os.Handler;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -80,11 +81,13 @@ public class ToDoListActivity extends AppCompatActivity {
 
         };
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            RelativeLayout tab2 = (RelativeLayout) LayoutInflater.from(ToDoListActivity.this)
-                    .inflate(R.layout.custom_tablayout, new LinearLayout(this));
 
-            tabLabel = tab2.findViewById(R.id.text1);
-            totalToDo = tab2.findViewById(R.id.tv_total_todo);
+            View tabView = LayoutInflater.from(this).inflate(R.layout.custom_tablayout,
+                    new LinearLayout(this),
+                    false);
+
+            tabLabel = tabView.findViewById(R.id.text1);
+            totalToDo = tabView.findViewById(R.id.tv_total_todo);
             if(i==0) {
                 tabLabel.setText(navLabels[i]);
                 totalToDo.setText(String.valueOf(count));
@@ -93,7 +96,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 totalToDo.setText(String.valueOf(pos));
             }
 
-            Objects.requireNonNull(tabLayout.getTabAt(i)).setCustomView(tab2);
+            Objects.requireNonNull(tabLayout.getTabAt(i)).setCustomView(tabView);
             dialog.dismiss();
         }
 

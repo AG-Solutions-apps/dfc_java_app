@@ -40,11 +40,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CurrentMonthTripFragment extends Fragment {
 
-
-    // TODO: Rename and change types and number of parameters
     public static CurrentMonthTripFragment newInstance() {
-        CurrentMonthTripFragment fragment = new CurrentMonthTripFragment();
-        return fragment;
+        return new CurrentMonthTripFragment();
     }
 
     @Override
@@ -60,49 +57,42 @@ public class CurrentMonthTripFragment extends Fragment {
     ProgressDialog dialog;
 
     SwipeRefreshLayout swipeRefreshLayout;
-    LottieAnimationView nodata;
+    LottieAnimationView lav_no_data;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View inflatedView = inflater.inflate(R.layout.fragment_current_month_trip, container, false);
 
-        activity = getActivity();
+        activity = requireActivity();
 
-        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
         ed = sp.edit();
 
-        dialog = new ProgressDialog(getActivity());
+        dialog = new ProgressDialog(requireActivity());
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
 
         swipeRefreshLayout = inflatedView.findViewById(R.id.swipeRefreshLayout);
 
-        nodata = inflatedView.findViewById(R.id.lav_no_data);
+        lav_no_data = inflatedView.findViewById(R.id.lav_no_data);
         rv = inflatedView.findViewById(R.id.rv);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                nodata.setVisibility(View.VISIBLE);
-                rv.setVisibility(View.GONE);
-                Expenses_List();
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            lav_no_data.setVisibility(View.VISIBLE);
+            rv.setVisibility(View.GONE);
+            expensesList();
         });
-        Expenses_List();
-
+        expensesList();
 
         return inflatedView;
     }
 
-
-    public void Expenses_List() {
+    public void expensesList() {
 
         dialog.show();
 
-
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-//        if (token != null) {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
@@ -111,73 +101,71 @@ public class CurrentMonthTripFragment extends Fragment {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-//        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.common_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<PreviousHistoryDataModel> call = loginservice.getVehicleHistory("1", activity.getIntent().getStringExtra("v_name"));
-        call.enqueue(new Callback<PreviousHistoryDataModel>() {
+
+        Api loginService = retrofit.create(Api.class);
+
+        Call<PreviousHistoryDataModel> call = loginService.getVehicleHistory("1",
+                activity.getIntent().getStringExtra("v_name"));
+
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<PreviousHistoryDataModel> call, Response<PreviousHistoryDataModel> response) {
-                Log.e("responce..", "" + response.toString());
+            public void onResponse(@NonNull Call<PreviousHistoryDataModel> call,
+                                   @NonNull Response<PreviousHistoryDataModel> response) {
 
+                Log.e("response..", "" + response);
+
+                assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
-
-                    nodata.setVisibility(View.GONE);
-                    rv.setVisibility(View.VISIBLE);
                     ArrayList<PreviousHistoryDataModel> arr = response.body().getData();
-                    Home_Today_list_Adapter adapter = new Home_Today_list_Adapter(activity, arr);
-                    rv.setAdapter(adapter);
 
-                    if (arr.size() == 0) {
-                        nodata.setVisibility(View.VISIBLE);
+                    if (arr != null && !arr.isEmpty()) {
+                        lav_no_data.setVisibility(View.GONE);
+                        rv.setVisibility(View.VISIBLE);
+                        HomeTodayListAdapter adapter = new HomeTodayListAdapter(arr);
+                        rv.setAdapter(adapter);
+                    } else {
+                        lav_no_data.setVisibility(View.VISIBLE);
                         rv.setVisibility(View.GONE);
                     }
 
-//                    Log.e("responce..", "branches:-  " + branches.size());
-
                 } else {
-                    nodata.setVisibility(View.VISIBLE);
+                    lav_no_data.setVisibility(View.VISIBLE);
                     rv.setVisibility(View.GONE);
                     Toast.makeText(activity, "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
+
                 dialog.dismiss();
                 swipeRefreshLayout.setRefreshing(false);
-
 
             }
 
             @Override
-            public void onFailure(Call<PreviousHistoryDataModel> call, Throwable t) {
-                Log.e("sdfsd", "" + t.toString());
+            public void onFailure(@NonNull Call<PreviousHistoryDataModel> call,
+                                  @NonNull Throwable t) {
+                Log.e("PreviousHistoryDataModel: ", "" + t);
                 dialog.dismiss();
-                nodata.setVisibility(View.VISIBLE);
+                lav_no_data.setVisibility(View.VISIBLE);
                 rv.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
-
             }
         });
 
     }
 
-    public class Home_Today_list_Adapter extends RecyclerView.Adapter<Home_Today_list_Adapter.Holder> {
-        private Activity activity;
+    public static class HomeTodayListAdapter extends
+            RecyclerView.Adapter<HomeTodayListAdapter.Holder> {
 
         ArrayList<PreviousHistoryDataModel> data;
 
-//        public Home_Today_list_Adapter(Activity context, ArrayList<OngoingTruckTypeModel> data) {
-//
-//        }
-
-        public Home_Today_list_Adapter(Activity activity, ArrayList<PreviousHistoryDataModel> data) {
-            this.activity = activity;
+        public HomeTodayListAdapter(ArrayList<PreviousHistoryDataModel> data) {
             this.data = data;
         }
-
 
         @Override
         public int getItemCount() {
@@ -186,63 +174,71 @@ public class CurrentMonthTripFragment extends Fragment {
 
         @NonNull
         @Override
-        public Home_Today_list_Adapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_v_trip_list, parent, false);
-            return new Home_Today_list_Adapter.Holder(view);
+        public HomeTodayListAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                              int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_v_trip_list,
+                    parent,
+                    false);
+            return new Holder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final Home_Today_list_Adapter.Holder holder, @SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(@NonNull final HomeTodayListAdapter.Holder holder,
+                                     @SuppressLint("RecyclerView") final int position) {
 
-
-            holder.status.setText("Status: " + data.get(position).getTrip_status());
-            holder.carname.setText("" + data.get(position).getTrip_vehicle());
-            holder.loacation.setText(" " + data.get(position).getTrip_agency());
-//            holder.date.setText("Date : " + data.get(position).getTrip_date());
-            holder.driver.setText("" + data.get(position).getTrip_driver());
-            holder.distance.setText("" + data.get(position).getTrip_km() + " Km");
+            String status = "Status: " + data.get(position).getTrip_status();
+            holder.tv_status.setText(status);
+            String carName = " " + data.get(position).getTrip_vehicle();
+            holder.tv_car_name.setText(carName);
+            String location = " " + data.get(position).getTrip_agency();
+            holder.tv_location.setText(location);
+            String driver = " " + data.get(position).getTrip_driver();
+            holder.tv_driver.setText(driver);
+            String distance = " " + data.get(position).getTrip_km() + " Km";
+            holder.tv_distance.setText(distance);
 
             String date1 = data.get(position).getTripDate();
             try {
-                SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd",
+                        Locale.getDefault());
                 Date date = inputDateFormat.parse(date1);
 
-                SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                String datefiormate = outputDateFormat.format(date);
+                SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy",
+                        Locale.getDefault());
 
-                holder.date.setText("Date : " + datefiormate);
+                String dateFormated;
+                if (date != null) {
+                    dateFormated = outputDateFormat.format(date);
+
+                    String dateStr = "Date : " + dateFormated;
+                    holder.tv_date.setText(dateStr);
+                }
 
             } catch (ParseException e) {
-                holder.date.setText("Date : " + date1);
+                String dateStr = "Date : " + date1;
+                holder.tv_date.setText(dateStr);
             }
-
-//            System.out.println("Last Trip Date: " + lastTripDateStr);
-//            System.out.println("New Date (" + daysBeforeLastTrip + " days before last trip): " + formattedNewDate);
-
 
         }
 
-        class Holder extends RecyclerView.ViewHolder {
+        static class Holder extends
+                RecyclerView.ViewHolder {
 
-            TextView status, loacation, date, driver, distance, carname;
-//            LinearLayout click;
+            TextView tv_status, tv_location, tv_date, tv_driver, tv_distance, tv_car_name;
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
 
-
-                status = itemView.findViewById(R.id.tv_status);
-                loacation = itemView.findViewById(R.id.tv_location);
-                date = itemView.findViewById(R.id.tv_date);
-                driver = itemView.findViewById(R.id.ll_drivers);
-                distance = itemView.findViewById(R.id.tv_distance);
-                carname = itemView.findViewById(R.id.tv_car_name);
+                tv_status = itemView.findViewById(R.id.tv_status);
+                tv_location = itemView.findViewById(R.id.tv_location);
+                tv_date = itemView.findViewById(R.id.tv_date);
+                tv_driver = itemView.findViewById(R.id.ll_drivers);
+                tv_distance = itemView.findViewById(R.id.tv_distance);
+                tv_car_name = itemView.findViewById(R.id.tv_car_name);
 
             }
         }
 
-
     }
-
 
 }

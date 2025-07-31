@@ -237,7 +237,7 @@ public class CompleteTask extends Fragment {
 
             holder.btn.setOnClickListener(v -> {
                 updateToDoList(data.get(position).getId());
-                data.notify();
+                notifyDataSetChanged();
             });
 
         }

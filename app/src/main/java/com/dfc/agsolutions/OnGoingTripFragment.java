@@ -235,7 +235,7 @@ public class OnGoingTripFragment extends Fragment {
 
             holder.llEdit.setOnClickListener(v -> {
                 Intent intent=new Intent(context, UpdateTripActivity.class);
-                intent.putExtra("pass_data", (Serializable) ongoingTruckTypeModel);
+                intent.putExtra("pass_data", ongoingTruckTypeModel);
                 context.startActivity(intent);
             });
             String status = ": " + arrayListTopic.get(position).getTrip_status();
@@ -244,7 +244,7 @@ public class OnGoingTripFragment extends Fragment {
             holder.carName.setText(carName);
             String location = ": " + arrayListTopic.get(position).getTrip_agency();
             holder.location.setText(location);
-//            holder.date.setText("Date : " + arrayListTopic.get(position).getTrip_date());
+
             String driver = ": " + arrayListTopic.get(position).getTrip_driver();
             holder.driver.setText(driver);
             String distance = ": " + arrayListTopic.get(position).getTrip_km() + " Km";
