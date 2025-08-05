@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,24 +111,24 @@ public class PreviousHistory extends Fragment {
                 Log.e("response..", "" + response);
 
                 assert response.body() != null;
-//                if (response.body().getCode().equalsIgnoreCase("200")) {
-//                    ArrayList<PreviousHistoryDataModel> branches = response.body().getData();
-//
-//                    if(response.body().getData().isEmpty()) {
-//                        lav_no_data.setVisibility(View.VISIBLE);
-//                        rv.setVisibility(View.GONE);
-//                    } else {
-//                        lav_no_data.setVisibility(View.GONE);
-//                        rv.setVisibility(View.VISIBLE);
-//                        HomeTodayListAdapter adapter = new HomeTodayListAdapter(response.body().getData());
-//                        rv.setAdapter(adapter);
-//                    }
-//
-//                    Log.e("response..", "branches:-  " + branches.size());
-//
-//                } else {
-//                    Toast.makeText(requireActivity(),  "Network Error!!", Toast.LENGTH_SHORT).show();
-//                }
+                if (response.body().getCode().equalsIgnoreCase("200")) {
+                    ArrayList<PreviousHistoryDataModel> branches = response.body().getData();
+
+                    if(response.body().getData().isEmpty()) {
+                        lav_no_data.setVisibility(View.VISIBLE);
+                        rv.setVisibility(View.GONE);
+                    } else {
+                        lav_no_data.setVisibility(View.GONE);
+                        rv.setVisibility(View.VISIBLE);
+                        HomeTodayListAdapter adapter = new HomeTodayListAdapter(response.body().getData());
+                        rv.setAdapter(adapter);
+                    }
+
+                    Log.e("response..", "branches:-  " + branches.size());
+
+                } else {
+                    Toast.makeText(requireActivity(),  "Network Error!!", Toast.LENGTH_SHORT).show();
+                }
                 dialog.dismiss();
 
             }
@@ -169,43 +170,45 @@ public class PreviousHistory extends Fragment {
         public void onBindViewHolder(@NonNull final HomeTodayListAdapter.Holder holder,
                                      @SuppressLint("RecyclerView") final int position) {
 
-//            String status = "Status:- " + data.get(position).getTrip_status();
-//            holder.tv_status.setText(status);
-//
-//            String carName = " " + data.get(position).getTrip_vehicle();
-//            holder.tv_car_name.setText(carName);
-//
-//            String location = "Destination : " + data.get(position).getTrip_agency();
-//            holder.tv_location.setText(location);
-//
-//            String driver = "Driver : " + data.get(position).getTrip_driver();
-//            holder.tv_driver.setText(driver);
-//
-//            String distance = "Distance : " + data.get(position).getTrip_km() + " Km";
-//            holder.tv_distance.setText(distance);
-//
-//            String date1 = data.get(position).getTripDate();
-//            try {
-//                SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-//                Date date = inputDateFormat.parse(date1);
-//
-//                SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-//                assert date != null;
-//                String dateFormate = outputDateFormat.format(date);
-//
-//                String dateStr = "Date : " + dateFormate;
-//                holder.tv_date.setText(dateStr);
-//
-//            } catch (ParseException e) {
-//                String date = "Date : " + date1;
-//                holder.tv_date.setText(date);
-//            }
+            String status = "Status:- " + data.get(position).getTrip_status();
+            holder.tv_status.setText(status);
+
+            String carName = " " + data.get(position).getTrip_vehicle();
+            holder.tv_car_name.setText(carName);
+
+            String location = "Destination : " + data.get(position).getTrip_agency();
+            holder.tv_location.setText(location);
+
+            String driver = "Driver : " + data.get(position).getTrip_driver();
+            holder.tv_driver.setText(driver);
+
+            String distance = "Distance : " + data.get(position).getTrip_km() + " Km";
+            holder.tv_distance.setText(distance);
+
+            String date1 = data.get(position).getTripDate();
+            try {
+                SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date date = inputDateFormat.parse(date1);
+
+                SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                assert date != null;
+                String dateFormate = outputDateFormat.format(date);
+
+                String dateStr = "Date : " + dateFormate;
+                holder.tv_date.setText(dateStr);
+
+            } catch (ParseException e) {
+                String date = "Date : " + date1;
+                holder.tv_date.setText(date);
+            }
 
         }
 
         static class Holder extends RecyclerView.ViewHolder {
 
             TextView tv_status, tv_location, tv_date, tv_driver, tv_distance, tv_car_name;
+            LinearLayout ll_bhsd_fhsd_shsd_adv;
+            LinearLayout llEdit;
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
@@ -216,6 +219,10 @@ public class PreviousHistory extends Fragment {
                 tv_driver = itemView.findViewById(R.id.ll_drivers);
                 tv_distance = itemView.findViewById(R.id.tv_distance);
                 tv_car_name = itemView.findViewById(R.id.tv_car_name);
+                ll_bhsd_fhsd_shsd_adv = itemView.findViewById(R.id.ll_bhsd_fhsd_shsd_adv);
+                llEdit = itemView.findViewById(R.id.llEdit);
+                llEdit.setVisibility(View.GONE);
+                ll_bhsd_fhsd_shsd_adv.setVisibility(View.GONE);
 
             }
 

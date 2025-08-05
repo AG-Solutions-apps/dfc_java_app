@@ -1,21 +1,20 @@
 package com.dfc.agsolutions.activity;
 
 import com.dfc.agsolutions.model.CheckNumberModel;
-import com.dfc.agsolutions.model.CreateServiceListDataModel;
 import com.dfc.agsolutions.model.CreatTripModel;
 import com.dfc.agsolutions.model.CreatePaymentDataModel;
+import com.dfc.agsolutions.model.CreateServiceListDataModel;
 import com.dfc.agsolutions.model.CurrantTripDataModel;
 import com.dfc.agsolutions.model.DebitTypeDataModel;
 import com.dfc.agsolutions.model.DeletModel;
-import com.dfc.agsolutions.model.DeleteModel;
 import com.dfc.agsolutions.model.DriverListDataModel;
 import com.dfc.agsolutions.model.ExpensesListDataModel;
 import com.dfc.agsolutions.model.FetchAgencyDataModel;
 import com.dfc.agsolutions.model.FetchAllVehicleDataModel;
 import com.dfc.agsolutions.model.FetchBHSDDataModel;
 import com.dfc.agsolutions.model.FetchDriverDataModel;
-import com.dfc.agsolutions.model.FetchVendorDataModel;
 import com.dfc.agsolutions.model.FetchVehicleDataModel;
+import com.dfc.agsolutions.model.FetchVendorDataModel;
 import com.dfc.agsolutions.model.GarageDataModel;
 import com.dfc.agsolutions.model.MyResponseData;
 import com.dfc.agsolutions.model.OngoingTruckTypeModel;
@@ -26,21 +25,18 @@ import com.dfc.agsolutions.model.ResponseArrayModel;
 import com.dfc.agsolutions.model.ResponseTodoCount;
 import com.dfc.agsolutions.model.ServiceFetchVehicleDataModel;
 import com.dfc.agsolutions.model.ServiceStatusDataModel;
-import com.dfc.agsolutions.model.ServiceTypeDataModel;
 import com.dfc.agsolutions.model.ServiceSubFinalModel;
+import com.dfc.agsolutions.model.ServiceTypeDataModel;
 import com.dfc.agsolutions.model.TodoListDataModel;
 import com.dfc.agsolutions.model.TripCurrantDataModel;
 import com.dfc.agsolutions.model.TruckTypeModel;
 import com.dfc.agsolutions.model.UpdateTripModel;
-import com.dfc.agsolutions.model.VehicleDetailsModel;
-import com.dfc.agsolutions.model.VehicleHistoryResponse;
 import com.dfc.agsolutions.model.VoucherTypeDataModel;
 import com.google.gson.JsonObject;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -73,7 +69,7 @@ public interface Api {
     Call<FetchVehicleDataModel> fetchVehicleList(@Query("branch_name") String branch_name);
 
     @POST("fetch-driver-trip-history")
-    Call<PreviousHistoryDataModel> getPreviousHistory(@Query("trip_type") String branch_name);
+    Call<PreviousHistoryDataModel> getPreviousHistory(@Query("trip_type") String trip_type);
 
     @POST("fetch-todo")
     Call<TodoListDataModel> getToDoList(@Query("branch_name") String branch_name,
@@ -192,10 +188,6 @@ public interface Api {
 
     @POST("create-service-sub")
     Call<ServiceSubFinalModel> fetchServiceFinal(@Query("service_ref") String service_ref);
-
-    @POST("delete-service-type")
-    Call<DeleteModel> deleteServiceType(@Query("service_type") String service_type,
-                                        @Query("branch_name") String branch_name);
 
     @POST("delete-service-sub-temp")
     Call<JsonObject> deleteServiceSubType(
