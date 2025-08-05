@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,11 +26,16 @@ import com.dfc.agsolutions.R;
 import com.dfc.agsolutions.model.FetchAllVehicleDataModel;
 import com.dfc.agsolutions.model.VehicleDetailsModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -224,103 +230,121 @@ public class AllVehicleListActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
-        Api loginservice = retrofit.create(Api.class);
-        Call<VehicleDetailsModel> call = loginservice.getVehicleDetails(reg_no);
+
+        Api retrofitService = retrofit.create(Api.class);
+
+        Call<ResponseBody> call = retrofitService.getVehicleDetails(reg_no);
         call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(@NonNull Call<VehicleDetailsModel> call,
-                                   @NonNull Response<VehicleDetailsModel> response) {
-                Log.e("response..", "" + response);
+            public void onResponse(@NonNull Call<ResponseBody> call,
+                                   @NonNull Response<ResponseBody> response) {
+                try {
+                    if (response.isSuccessful() && response.body() != null) {
+                        String jsonString = response.body().string();
+                        JSONObject json = new JSONObject(jsonString);
 
-                assert response.body() != null;
-                if (response.body().getCode() == 200) {
-
-                    countryDialogLogout(response.body().getData());
-
-                } else {
+                        JSONObject vehicle = json.getJSONObject("data");
+                        // show vehicle detail
+                        showVehicleDetailsDialog(vehicle);
+                    } else {
+                        Toast.makeText(AllVehicleListActivity.this,
+                                "Network Error!!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Log.e("VehicleDetailsError", "Exception: " + e.getMessage(), e);
                     Toast.makeText(AllVehicleListActivity.this,
-                            "Network Error!!",
+                            "Parsing error occurred.",
                             Toast.LENGTH_SHORT).show();
+                } finally {
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
-
             }
 
             @Override
-            public void onFailure(@NonNull Call<VehicleDetailsModel> call,
+            public void onFailure(@NonNull Call<ResponseBody> call,
                                   @NonNull Throwable t) {
-                Log.e("VehicleDetailsModel: ", "" + t);
+                Log.e("VehicleDetailsError", "Failure: " + t.getMessage(), t);
+                Toast.makeText(AllVehicleListActivity.this,
+                        "Request failed: " + t.getMessage(),
+                        Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
 
     }
 
-    private void countryDialogLogout(VehicleDetailsModel.DataModel data) {
+    private void showVehicleDetailsDialog(JSONObject vehicleData) {
 
-        if (data == null) {
+        if (vehicleData == null) {
             Toast.makeText(this, "Vehicle data is not available.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(AllVehicleListActivity.this,
-                R.style.SheetDialog);
-        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
-        bottomSheetDialog.show();
+        try {
 
-        TextView tv_firm_name = bottomSheetDialog.findViewById(R.id.Firm_Name);
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(AllVehicleListActivity.this,
+                    R.style.SheetDialog);
+            bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
+            bottomSheetDialog.show();
 
-        String firmName = ": " + data.getVehicleBranch();
-        if (tv_firm_name != null) {
-            tv_firm_name.setText(firmName);
-        }
+            TextView tv_branch_name = bottomSheetDialog.findViewById(R.id.tv_branch_name);
 
-        TextView tv_mobile = bottomSheetDialog.findViewById(R.id.Mobile);
-        String mobile = ": " + data.getVehicleCompany();
-        if (tv_mobile != null) {
-            tv_mobile.setText(mobile);
-        }
+            String vehicleBranch = ": " + vehicleData.getString("vehicle_branch");
+            if (tv_branch_name != null) {
+                tv_branch_name.setText(vehicleBranch);
+            }
 
-        TextView tv_email = bottomSheetDialog.findViewById(R.id.Email);
-        String email = ": " + data.getVehicleType();
-        if (tv_email != null) {
-            tv_email.setText(email);
-        }
+            TextView tv_vehicle_company = bottomSheetDialog.findViewById(R.id.tv_vehicle_company);
+            String mobile = ": " + vehicleData.getString("vehicle_company");
+            if (tv_vehicle_company != null) {
+                tv_vehicle_company.setText(mobile);
+            }
 
-        TextView tv_dob = bottomSheetDialog.findViewById(R.id.DOB);
-        String dob = ": " + data.getManufacturingYear();
-        if (tv_dob != null) {
-            tv_dob.setText(dob);
-        }
+            TextView tv_vehicle_type = bottomSheetDialog.findViewById(R.id.tv_vehicle_type);
+            String email = ": " + vehicleData.getString("vehicle_type");
+            if (tv_vehicle_type != null) {
+                tv_vehicle_type.setText(email);
+            }
 
-        TextView tv_anniversary = bottomSheetDialog.findViewById(R.id.Anniversary);
-        String anniversary = ": " + data.getInsuranceDue();
-        if (tv_anniversary != null) {
-            tv_anniversary.setText(anniversary);
-        }
+            TextView tv_mfg_year = bottomSheetDialog.findViewById(R.id.tv_mfg_year);
+            String dob = ": " + vehicleData.getString("mfg_year");
+            if (tv_mfg_year != null) {
+                tv_mfg_year.setText(dob);
+            }
 
-        TextView tv_category = bottomSheetDialog.findViewById(R.id.Category);
-        String category = ": " + data.getPermitDue();
-        if (tv_category != null) {
-            tv_category.setText(category);
-        }
+            TextView tv_ins_due = bottomSheetDialog.findViewById(R.id.tv_ins_due);
+            String anniversary = ": " + vehicleData.getString("ins_due");
+            if (tv_ins_due != null) {
+                tv_ins_due.setText(anniversary);
+            }
 
-        TextView tv_product = bottomSheetDialog.findViewById(R.id.Product);
-        String product = ": " + data.getFcDue();
-        if (tv_product != null) {
-            tv_product.setText(product);
-        }
+            TextView tv_permit_due = bottomSheetDialog.findViewById(R.id.tv_permit_due);
+            String category = ": " + vehicleData.getString("permit_due");
+            if (tv_permit_due != null) {
+                tv_permit_due.setText(category);
+            }
 
-        TextView tv_address = bottomSheetDialog.findViewById(R.id.Address);
-        String address = ": " + data.getVehicleMileage();
-        if (tv_address != null) {
-            tv_address.setText(address);
-        }
+            TextView tv_fc_due = bottomSheetDialog.findViewById(R.id.tv_fc_due);
+            String product = ": " + vehicleData.getString("fc_due");
+            if (tv_fc_due != null) {
+                tv_fc_due.setText(product);
+            }
 
-        TextView tv_car_name = bottomSheetDialog.findViewById(R.id.tv_car_name);
-        String carName = ": " + data.getRegNo();
-        if (tv_car_name != null) {
-            tv_car_name.setText(carName);
+            TextView tv_vehicle_mileage = bottomSheetDialog.findViewById(R.id.tv_vehicle_mileage);
+            String address = ": " + vehicleData.getString("vehicle_mileage");
+            if (tv_vehicle_mileage != null) {
+                tv_vehicle_mileage.setText(address);
+            }
+
+            TextView tv_vehicle_number = bottomSheetDialog.findViewById(R.id.tv_vehicle_number);
+            String carName = ": " + vehicleData.getString("reg_no");
+            if (tv_vehicle_number != null) {
+                tv_vehicle_number.setText(carName);
+            }
+
+        } catch (Exception e) {
+            Log.e("VehicleDetailsError", "Exception: " + e.getMessage(), e);
         }
 
     }

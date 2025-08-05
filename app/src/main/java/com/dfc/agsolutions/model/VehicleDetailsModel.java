@@ -5,109 +5,129 @@ import com.google.gson.annotations.SerializedName;
 public class VehicleDetailsModel {
 
     @SerializedName("code")
-    private Integer code;
+    private int code;
+
     @SerializedName("data")
-    private DataModel data;
-    public Integer getCode() {
+    private VehicleData data;
+
+    // Getter and Setter
+    public int getCode() {
         return code;
     }
-    public void setCode(Integer code) {
+
+    public void setCode(int code) {
         this.code = code;
     }
-    public DataModel getData() {
+
+    public VehicleData getData() {
         return data;
     }
-    public void setData(DataModel data) {
+
+    public void setData(VehicleData data) {
         this.data = data;
     }
 
-    public static class DataModel {
-        @SerializedName("id")
-        private Integer id;
-        @SerializedName("vehicle_branch")
-        private String vehicleBranch;
-        @SerializedName("vehicle_company")
-        private String vehicleCompany;
-        @SerializedName("vehicle_type")
-        private String vehicleType;
-        @SerializedName("manufacturing_year")
-        private String manufacturingYear;
-        @SerializedName("insurance_due")
-        private String insuranceDue;
-        @SerializedName("permit_due")
-        private String permitDue;
-        @SerializedName("fc_due")
-        private String fcDue;
-        @SerializedName("vehicle_mileage")
-        private String vehicleMileage;
+    public static class VehicleData {
+
         @SerializedName("reg_no")
         private String regNo;
-        @SerializedName("vehicle_name")
-        private String vehicleName;
 
-        public Integer getId() { return id; }
-        public void setId(Integer id) { this.id = id; }
+        @SerializedName("vehicle_branch")
+        private String vehicleBranch;
+
+        @SerializedName("vehicle_company")
+        private String vehicleCompany;
+
+        @SerializedName("vehicle_type")
+        private String vehicleType;
+
+        @SerializedName("mfg_year")
+        private String mfgYear;
+
+        @SerializedName("ins_due")
+        private String insDue;
+
+        @SerializedName("permit_due")
+        private String permitDue;
+
+        @SerializedName("fc_due")
+        private String fcDue;
+
+        @SerializedName("vehicle_mileage")
+        private double vehicleMileage;
+
+        // Getters and Setters
         public String getRegNo() {
             return regNo;
         }
+
         public void setRegNo(String regNo) {
             this.regNo = regNo;
         }
-        public String getVehicleName() {
-            return vehicleName;
-        }
-        public void setVehicleName(String vehicleName) {
-            this.vehicleName = vehicleName;
-        }
-        public String getFcDue() {
-            return fcDue;
-        }
-        public void setFcDue(String fcDue) {
-            this.fcDue = fcDue;
-        }
-        public String getVehicleMileage() {
-            return vehicleMileage;
-        }
-        public void setVehicleMileage(String vehicleMileage) {
-            this.vehicleMileage = vehicleMileage;
-        }
+
         public String getVehicleBranch() {
             return vehicleBranch;
         }
+
         public void setVehicleBranch(String vehicleBranch) {
             this.vehicleBranch = vehicleBranch;
         }
+
         public String getVehicleCompany() {
             return vehicleCompany;
         }
+
         public void setVehicleCompany(String vehicleCompany) {
             this.vehicleCompany = vehicleCompany;
         }
+
         public String getVehicleType() {
             return vehicleType;
         }
+
         public void setVehicleType(String vehicleType) {
             this.vehicleType = vehicleType;
         }
-        public String getManufacturingYear() {
-            return manufacturingYear;
+
+        public String getMfgYear() {
+            return mfgYear;
         }
-        public void setManufacturingYear(String manufacturingYear) {
-            this.manufacturingYear = manufacturingYear;
+
+        public void setMfgYear(String mfgYear) {
+            this.mfgYear = mfgYear;
         }
-        public String getInsuranceDue() {
-            return insuranceDue;
+
+        public String getInsDue() {
+            return insDue;
         }
-        public void setInsuranceDue(String insuranceDue) {
-            this.insuranceDue = insuranceDue;
+
+        public void setInsDue(String insDue) {
+            this.insDue = insDue;
         }
+
         public String getPermitDue() {
             return permitDue;
         }
+
         public void setPermitDue(String permitDue) {
             this.permitDue = permitDue;
         }
 
+        public String getFcDue() {
+            return fcDue;
+        }
+
+        public void setFcDue(String fcDue) {
+            this.fcDue = fcDue;
+        }
+
+        public double getVehicleMileage() {
+            return vehicleMileage;
+        }
+
+        public void setVehicleMileage(double vehicleMileage) {
+            this.vehicleMileage = vehicleMileage;
+        }
     }
 
 }

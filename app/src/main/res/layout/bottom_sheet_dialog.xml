@@ -21,7 +21,7 @@
             tools:ignore="UselessParent">
 
             <TextView
-                android:id="@+id/tv_car_name"
+                android:id="@+id/tv_vehicle_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -68,7 +68,7 @@
                         android:textSize="@dimen/_13sdp" />
 
                     <TextView
-                        android:id="@+id/Firm_Name"
+                        android:id="@+id/tv_branch_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.1"
@@ -100,7 +100,7 @@
                         android:textSize="@dimen/_13sdp" />
 
                     <TextView
-                        android:id="@+id/Mobile"
+                        android:id="@+id/tv_vehicle_company"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.1"
@@ -132,7 +132,7 @@
                         android:textSize="@dimen/_13sdp" />
 
                     <TextView
-                        android:id="@+id/Email"
+                        android:id="@+id/tv_vehicle_type"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.1"
@@ -170,7 +170,7 @@
                             android:textSize="@dimen/_13sdp" />
 
                         <TextView
-                            android:id="@+id/DOB"
+                            android:id="@+id/tv_mfg_year"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.1"
@@ -202,7 +202,7 @@
                             android:textSize="@dimen/_13sdp" />
 
                         <TextView
-                            android:id="@+id/Anniversary"
+                            android:id="@+id/tv_ins_due"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.1"
@@ -234,7 +234,7 @@
                             android:textSize="@dimen/_13sdp" />
 
                         <TextView
-                            android:id="@+id/Category"
+                            android:id="@+id/tv_permit_due"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.1"
@@ -266,7 +266,7 @@
                             android:textSize="@dimen/_13sdp" />
 
                         <TextView
-                            android:id="@+id/Product"
+                            android:id="@+id/tv_fc_due"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.1"
@@ -298,7 +298,7 @@
                             android:textSize="@dimen/_13sdp" />
 
                         <TextView
-                            android:id="@+id/Address"
+                            android:id="@+id/tv_vehicle_mileage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.1"

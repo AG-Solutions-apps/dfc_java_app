@@ -37,8 +37,10 @@ import com.dfc.agsolutions.model.VehicleHistoryResponse;
 import com.dfc.agsolutions.model.VoucherTypeDataModel;
 import com.google.gson.JsonObject;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -190,7 +192,7 @@ public interface Api {
                                      @Query("trip_remarks") String trip_remarks);
 
     @POST("fetch-vehicle-details")
-    Call<VehicleDetailsModel> getVehicleDetails(@Query("reg_no") String reg_no);
+    Call<ResponseBody> getVehicleDetails(@Query("vehicle_no") String reg_no);
 
 
     @POST("fetch-service-final")
