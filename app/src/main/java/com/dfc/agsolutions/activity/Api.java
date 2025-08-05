@@ -33,7 +33,9 @@ import com.dfc.agsolutions.model.TripCurrantDataModel;
 import com.dfc.agsolutions.model.TruckTypeModel;
 import com.dfc.agsolutions.model.UpdateTripModel;
 import com.dfc.agsolutions.model.VehicleDetailsModel;
+import com.dfc.agsolutions.model.VehicleHistoryResponse;
 import com.dfc.agsolutions.model.VoucherTypeDataModel;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -213,10 +215,10 @@ public interface Api {
             @Query("trip_status") String trip_status
     );
 
-    @POST("fetch-vehicle-details")
-    Call<PreviousHistoryDataModel> getVehicleHistory(
+    @POST("fetch-vehicle-trip-history")
+    Call<JsonObject> getVehicleHistory(
             @Query("trip_type") String trip_type,
-            @Query("trip_vehicle") String trip_vehicle
+            @Query("vehicle_no") String trip_vehicle
     );
 
 }

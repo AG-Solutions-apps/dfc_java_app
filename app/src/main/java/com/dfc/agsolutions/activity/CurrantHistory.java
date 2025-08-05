@@ -111,27 +111,27 @@ public class CurrantHistory extends Fragment {
                 Log.e("response..", "" + response);
 
                 assert response.body() != null;
-                if (response.body().getCode().equalsIgnoreCase("200")) {
-
-                    ArrayList<PreviousHistoryDataModel> branches = response.body().getData();
-
-                    Log.e("Response---------", "onResponse: "+response.body().getData().size());
-
-                    if(response.body().getData().isEmpty()) {
-                        lav_no_data.setVisibility(View.VISIBLE);
-                        rv.setVisibility(View.GONE);
-                    } else {
-                        lav_no_data.setVisibility(View.GONE);
-                        rv.setVisibility(View.VISIBLE);
-                        HomeTodayListAdapter adapter = new HomeTodayListAdapter(response.body().getData());
-                        rv.setAdapter(adapter);
-                    }
-
-                    Log.e("response..", "branches:-  " + branches.size());
-
-                } else {
-                    Toast.makeText(requireActivity(),  "Network Error!!", Toast.LENGTH_SHORT).show();
-                }
+//                if (response.body().getCode().equalsIgnoreCase("200")) {
+//
+//                    ArrayList<PreviousHistoryDataModel> branches = response.body().getData();
+//
+//                    Log.e("Response---------", "onResponse: "+response.body().getData().size());
+//
+//                    if(response.body().getData().isEmpty()) {
+//                        lav_no_data.setVisibility(View.VISIBLE);
+//                        rv.setVisibility(View.GONE);
+//                    } else {
+//                        lav_no_data.setVisibility(View.GONE);
+//                        rv.setVisibility(View.VISIBLE);
+//                        HomeTodayListAdapter adapter = new HomeTodayListAdapter(response.body().getData());
+//                        rv.setAdapter(adapter);
+//                    }
+//
+//                    Log.e("response..", "branches:-  " + branches.size());
+//
+//                } else {
+//                    Toast.makeText(requireActivity(),  "Network Error!!", Toast.LENGTH_SHORT).show();
+//                }
                 dialog.dismiss();
 
             }
@@ -175,38 +175,38 @@ public class CurrantHistory extends Fragment {
         public void onBindViewHolder(@NonNull final Holder holder,
                                      @SuppressLint("RecyclerView") final int position) {
 
-            String status = "Status:- " + data.get(position).getTrip_status();
-            holder.tv_status.setText(status);
-
-            String carName = " " + data.get(position).getTrip_vehicle();
-            holder.tv_car_name.setText(carName);
-
-            String location = "Destination : " + data.get(position).getTrip_agency();
-            holder.tv_location.setText(location);
-
-            String driver = "Driver : " + data.get(position).getTrip_driver();
-            holder.tv_driver.setText(driver);
-
-            String distance = "Distance : " + data.get(position).getTrip_km() + " Km";
-            holder.tv_distance.setText(distance);
-            String date1 = data.get(position).getTripDate();
-
-            try {
-                SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                Date date = inputDateFormat.parse(date1);
-
-                SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                String dateFormated;
-                if (date != null) {
-                    dateFormated = outputDateFormat.format(date);
-                    String date_ = "Date : " + dateFormated;
-                    holder.tv_date.setText(date_);
-                }
-
-            } catch (ParseException e) {
-                String date_ = "Date : " + date1;
-                holder.tv_date.setText(date_);
-            }
+//            String status = "Status:- " + data.get(position).getTrip_status();
+//            holder.tv_status.setText(status);
+//
+//            String carName = " " + data.get(position).getTrip_vehicle();
+//            holder.tv_car_name.setText(carName);
+//
+//            String location = "Destination : " + data.get(position).getTrip_agency();
+//            holder.tv_location.setText(location);
+//
+//            String driver = "Driver : " + data.get(position).getTrip_driver();
+//            holder.tv_driver.setText(driver);
+//
+//            String distance = "Distance : " + data.get(position).getTrip_km() + " Km";
+//            holder.tv_distance.setText(distance);
+//            String date1 = data.get(position).getTripDate();
+//
+//            try {
+//                SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+//                Date date = inputDateFormat.parse(date1);
+//
+//                SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+//                String dateFormated;
+//                if (date != null) {
+//                    dateFormated = outputDateFormat.format(date);
+//                    String date_ = "Date : " + dateFormated;
+//                    holder.tv_date.setText(date_);
+//                }
+//
+//            } catch (ParseException e) {
+//                String date_ = "Date : " + date1;
+//                holder.tv_date.setText(date_);
+//            }
 
         }
 

@@ -5,13 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +12,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.airbnb.lottie.LottieAnimationView;
-import com.dfc.agsolutions.activity.Api;
-import com.dfc.agsolutions.model.PreviousHistoryDataModel;
 import com.dfc.agsolutions.R;
+import com.dfc.agsolutions.activity.Api;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -60,8 +59,12 @@ public class CurrentMonthTripFragment extends Fragment {
     LottieAnimationView lav_no_data;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View inflatedView = inflater.inflate(R.layout.fragment_current_month_trip, container, false);
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        View inflatedView = inflater.inflate(R.layout.fragment_current_month_trip,
+                container,
+                false);
 
         activity = requireActivity();
 
@@ -80,14 +83,14 @@ public class CurrentMonthTripFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             lav_no_data.setVisibility(View.VISIBLE);
             rv.setVisibility(View.GONE);
-            expensesList();
+            retrieveCurrentMonthVehicleHistory();
         });
-        expensesList();
+        retrieveCurrentMonthVehicleHistory();
 
         return inflatedView;
     }
 
-    public void expensesList() {
+    public void retrieveCurrentMonthVehicleHistory() {
 
         dialog.show();
 
@@ -110,45 +113,53 @@ public class CurrentMonthTripFragment extends Fragment {
 
         Api loginService = retrofit.create(Api.class);
 
-        Call<PreviousHistoryDataModel> call = loginService.getVehicleHistory("1",
-                activity.getIntent().getStringExtra("v_name"));
+        Call<JsonObject> call = loginService.getVehicleHistory(
+                "1", activity.getIntent().getStringExtra("v_name"));
 
         call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(@NonNull Call<PreviousHistoryDataModel> call,
-                                   @NonNull Response<PreviousHistoryDataModel> response) {
+            public void onResponse(@NonNull Call<JsonObject> call,
+                                   @NonNull Response<JsonObject> response) {
 
-                Log.e("response..", "" + response);
-
-                assert response.body() != null;
-                if (response.body().getCode().equalsIgnoreCase("200")) {
-                    ArrayList<PreviousHistoryDataModel> arr = response.body().getData();
-
-                    if (arr != null && !arr.isEmpty()) {
-                        lav_no_data.setVisibility(View.GONE);
-                        rv.setVisibility(View.VISIBLE);
-                        HomeTodayListAdapter adapter = new HomeTodayListAdapter(arr);
-                        rv.setAdapter(adapter);
+                if (response.isSuccessful()) {
+                    JsonObject json = response.body();
+                    if (json != null) {
+                        int code = json.get("code").getAsInt();
+                        if (code == 200) {
+                            JsonArray currentMonthVehicleHistoryArr = json.getAsJsonArray("data");
+                            if (currentMonthVehicleHistoryArr != null &&
+                                    !currentMonthVehicleHistoryArr.isEmpty()) {
+                                lav_no_data.setVisibility(View.GONE);
+                                rv.setVisibility(View.VISIBLE);
+                                // If your adapter expects a list, wrap it:
+                                HomeTodayListAdapter adapter = new HomeTodayListAdapter(currentMonthVehicleHistoryArr);
+                                rv.setAdapter(adapter);
+                            } else {
+                                lav_no_data.setVisibility(View.VISIBLE);
+                                rv.setVisibility(View.GONE);
+                            }
+                        } else {
+                            lav_no_data.setVisibility(View.VISIBLE);
+                            rv.setVisibility(View.GONE);
+                        }
                     } else {
+                        Toast.makeText(activity, "Response failure", Toast.LENGTH_SHORT).show();
                         lav_no_data.setVisibility(View.VISIBLE);
                         rv.setVisibility(View.GONE);
                     }
-
                 } else {
+                    Toast.makeText(activity, "Response failure", Toast.LENGTH_SHORT).show();
                     lav_no_data.setVisibility(View.VISIBLE);
                     rv.setVisibility(View.GONE);
-                    Toast.makeText(activity, "Network Error!!", Toast.LENGTH_SHORT).show();
                 }
-
                 dialog.dismiss();
                 swipeRefreshLayout.setRefreshing(false);
-
             }
 
             @Override
-            public void onFailure(@NonNull Call<PreviousHistoryDataModel> call,
+            public void onFailure(@NonNull Call<JsonObject> call,
                                   @NonNull Throwable t) {
-                Log.e("PreviousHistoryDataModel: ", "" + t);
+                Log.e("PreviousHistoryResponse: ", "" + t);
                 dialog.dismiss();
                 lav_no_data.setVisibility(View.VISIBLE);
                 rv.setVisibility(View.GONE);
@@ -161,15 +172,15 @@ public class CurrentMonthTripFragment extends Fragment {
     public static class HomeTodayListAdapter extends
             RecyclerView.Adapter<HomeTodayListAdapter.Holder> {
 
-        ArrayList<PreviousHistoryDataModel> data;
+        JsonArray currentMonthVehicleHistoryArr;
 
-        public HomeTodayListAdapter(ArrayList<PreviousHistoryDataModel> data) {
-            this.data = data;
+        public HomeTodayListAdapter(JsonArray currentMonthVehicleHistoryArr) {
+            this.currentMonthVehicleHistoryArr = currentMonthVehicleHistoryArr;
         }
 
         @Override
         public int getItemCount() {
-            return data.size();
+            return currentMonthVehicleHistoryArr.size();
         }
 
         @NonNull
@@ -186,18 +197,19 @@ public class CurrentMonthTripFragment extends Fragment {
         public void onBindViewHolder(@NonNull final HomeTodayListAdapter.Holder holder,
                                      @SuppressLint("RecyclerView") final int position) {
 
-            String status = "Status: " + data.get(position).getTrip_status();
+            JsonObject currentMonthVehicleHistory = currentMonthVehicleHistoryArr.get(position).getAsJsonObject();
+            String status = "Status: " + currentMonthVehicleHistory.get("trip_status").getAsString();
             holder.tv_status.setText(status);
-            String carName = " " + data.get(position).getTrip_vehicle();
+            String carName = " " + currentMonthVehicleHistory.get("trip_vehicle").getAsString();
             holder.tv_car_name.setText(carName);
-            String location = " " + data.get(position).getTrip_agency();
+            String location = " " + currentMonthVehicleHistory.get("trip_agency").getAsString();
             holder.tv_location.setText(location);
-            String driver = " " + data.get(position).getTrip_driver();
+            String driver = " " + currentMonthVehicleHistory.get("trip_driver").getAsString();
             holder.tv_driver.setText(driver);
-            String distance = " " + data.get(position).getTrip_km() + " Km";
+            String distance = " " + currentMonthVehicleHistory.get("trip_km").getAsInt() + " Km";
             holder.tv_distance.setText(distance);
 
-            String date1 = data.get(position).getTripDate();
+            String date1 = currentMonthVehicleHistory.get("trip_date").getAsString();
             try {
                 SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd",
                         Locale.getDefault());
@@ -232,7 +244,7 @@ public class CurrentMonthTripFragment extends Fragment {
                 tv_status = itemView.findViewById(R.id.tv_status);
                 tv_location = itemView.findViewById(R.id.tv_location);
                 tv_date = itemView.findViewById(R.id.tv_date);
-                tv_driver = itemView.findViewById(R.id.ll_drivers);
+                tv_driver = itemView.findViewById(R.id.tv_drivers);
                 tv_distance = itemView.findViewById(R.id.tv_distance);
                 tv_car_name = itemView.findViewById(R.id.tv_car_name);
 
