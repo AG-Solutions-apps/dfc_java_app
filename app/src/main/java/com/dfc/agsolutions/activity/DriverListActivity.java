@@ -3,6 +3,7 @@ package com.dfc.agsolutions.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
@@ -208,11 +209,24 @@ public class DriverListActivity extends AppCompatActivity {
                 holder.tv_date.setText(licExpiry);
             }
 
+            CircularProgressDrawable progressDrawable = new CircularProgressDrawable(DriverListActivity.this);
+            progressDrawable.setStrokeWidth(5f);
+            progressDrawable.setCenterRadius(30f);
+            progressDrawable.start();
+
+            String imageUrl;
+
             if (arrayListTopic.get(position).getUser_image() == null) {
-                Glide.with(DriverListActivity.this).load(Uri.parse("https://dfcgroup.in/crmapi/storage/app/public/profiles/no_profile.png")).error(R.drawable.no_profile).into(holder.iv_profile);
+                imageUrl = "https://dfcgroup.in/crmapi/storage/app/public/profiles/no_profile.png";
             } else {
-                Glide.with(DriverListActivity.this).load(Uri.parse("https://dfcgroup.in/crmapi/storage/app/public/profiles/" + arrayListTopic.get(position).getUser_image())).error(R.drawable.no_profile).into(holder.iv_profile);
+                imageUrl = "https://dfcgroup.in/crmapi/storage/app/public/profiles/" + arrayListTopic.get(position).getUser_image();
             }
+
+            Glide.with(DriverListActivity.this)
+                    .load(Uri.parse(imageUrl))
+                    .placeholder(progressDrawable)
+                    .error(R.drawable.driver_img)
+                    .into(holder.iv_profile);
 
             Log.e("TAG", "onBindViewHolder: " + arrayListTopic.get(position).getUser_image());
 
@@ -254,7 +268,7 @@ public class DriverListActivity extends AppCompatActivity {
                 iv_mobile = itemView.findViewById(R.id.mobile);
                 tv_date = itemView.findViewById(R.id.tv_date);
                 tv_active_status = itemView.findViewById(R.id.Active);
-                iv_profile = itemView.findViewById(R.id.profile);
+                iv_profile = itemView.findViewById(R.id.iv_profile);
                 iv_call = itemView.findViewById(R.id.call);
                 iv_whats_app = itemView.findViewById(R.id.whatsapp);
 
