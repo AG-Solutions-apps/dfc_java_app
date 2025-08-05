@@ -207,7 +207,7 @@
                             android:paddingStart="14dp"
                             android:paddingEnd="10dp"
                             android:singleLine="true"
-                            android:textColor="#9E9E9E"
+                            android:textColor="@color/black"
                             android:textColorHint="#9E9E9E"
                             android:textSize="13sp" />
 

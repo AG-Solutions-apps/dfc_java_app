@@ -1,10 +1,5 @@
 package com.dfc.agsolutions.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -12,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +20,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dfc.agsolutions.app_utils.Myapplication;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.dfc.agsolutions.R;
 import com.dfc.agsolutions.app_utils.NetworkCheck;
 import com.dfc.agsolutions.model.CreateServiceListDataModel;
-import com.dfc.agsolutions.model.DeleteModel;
-import com.dfc.agsolutions.model.ServiceTypeDataModel;
 import com.dfc.agsolutions.model.ServiceSubFinalModel;
-import com.dfc.agsolutions.R;
+import com.dfc.agsolutions.model.ServiceTypeDataModel;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,6 +119,10 @@ public class ServiceBookList extends
             }
         });
 
+        findViewById(R.id.iv_back).setOnClickListener(v -> {
+            finish();
+        });
+
 
         findViewById(R.id.continues).setOnClickListener(v -> {
             int plu;
@@ -160,7 +163,9 @@ public class ServiceBookList extends
 
         });
 
-        save.setOnClickListener(v -> creat_service(finalServiceType));
+        save.setOnClickListener(v ->
+                creat_service(service_ref)
+        );
 
     }
 
@@ -289,6 +294,7 @@ public class ServiceBookList extends
                             response.body().getMsg(),
                             Toast.LENGTH_SHORT).show();
                     home_today_list_adapter.addData(response.body().getData());
+                    home_today_list_adapter.notifyDataSetChanged();
 
                 } else {
                     Toast.makeText(ServiceBookList.this,
@@ -363,7 +369,9 @@ public class ServiceBookList extends
         });
     }
 
-    public void delete(String idd, String finalServiceType, int pos) {
+    public void deleteSelectedSubService(String idd,
+                                         String finalServiceType,
+                                         int pos) {
 
         dialog.show();
 
@@ -386,32 +394,34 @@ public class ServiceBookList extends
 
         Api loginService = retrofit.create(Api.class);
 
-        Call<DeleteModel> call = loginService.deleteServiceType(idd, finalServiceType);
+        Call<JsonObject> call = loginService.deleteServiceSubType(idd, finalServiceType);
         call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(@NonNull Call<DeleteModel> call,
-                                   @NonNull Response<DeleteModel> response) {
+            public void onResponse(@NonNull Call<JsonObject> call,
+                                   @NonNull Response<JsonObject> response) {
                 Log.e("response..", "" + response);
 
                 assert response.body() != null;
-                if (response.body().getCode().equalsIgnoreCase("200")) {
+                if (response.body().get("code").getAsString().equalsIgnoreCase("200")) {
                     Toast.makeText(ServiceBookList.this,
-                            response.body().getMsg(),
+                            response.body().get("msg").getAsString(),
                             Toast.LENGTH_SHORT).show();
                     home_today_list_adapter.remove(pos);
+                    home_today_list_adapter.notifyDataSetChanged();
                     int s = plushAmount -= positionalAmount;
                     setData(s);
                 } else {
                     Toast.makeText(ServiceBookList.this,
-                            response.body().getMsg(),
+                            response.body().get("msg").getAsString(),
                             Toast.LENGTH_SHORT).show();
                 }
+
                 dialog.dismiss();
 
             }
 
             @Override
-            public void onFailure(@NonNull Call<DeleteModel> call,
+            public void onFailure(@NonNull Call<JsonObject> call,
                                   @NonNull Throwable t) {
                 Log.e("DeleteModel: ", "" + t);
                 dialog.dismiss();
@@ -459,6 +469,7 @@ public class ServiceBookList extends
 
                     Toast.makeText(ServiceBookList.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     home_today_list_adapter.addData(response.body().getData());
+                    home_today_list_adapter.notifyDataSetChanged();
 
                     ArrayList<CreateServiceListDataModel> branches = response.body().getData();
 
@@ -510,13 +521,17 @@ public class ServiceBookList extends
             arrayListTopic.clear();
             arrayListTopic.addAll(arrayListTopics);
             Log.e("arrayListTopics", "arrayListTopics: " + arrayListTopics);
-            arrayListTopic.notify();
+            synchronized (arrayListTopic) {
+                arrayListTopic.notify();
+            }
         }
 
         public void remove(int pos) {
             arrayListTopic.remove(pos);
             Log.e("arrayListTopics", "arrayListTopics: " + pos);
-            arrayListTopic.notify();
+            synchronized (arrayListTopic) {
+                arrayListTopic.notify();
+            }
         }
 
         @Override
@@ -609,7 +624,8 @@ public class ServiceBookList extends
                 try {
                     int posi = count - 1;
                     id = arrayListTopic.get(position).getId();
-                    delete(id, finalServiceType, posi);
+                    // delete sub - service
+                    deleteSelectedSubService(id, finalServiceType, posi);
                     positionalAmount = Integer.parseInt(arrayListTopic.get(position).getTemp_service_sub_amount());
 
                 } catch (Exception e) {

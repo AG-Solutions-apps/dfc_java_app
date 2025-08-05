@@ -190,12 +190,18 @@ public interface Api {
     @POST("fetch-vehicle-details")
     Call<ResponseBody> getVehicleDetails(@Query("vehicle_no") String reg_no);
 
-    @POST("fetch-service-final")
-    Call<ServiceSubFinalModel> fetchServiceFinal(@Query("service_type") String service_type);
+    @POST("create-service-sub")
+    Call<ServiceSubFinalModel> fetchServiceFinal(@Query("service_ref") String service_ref);
 
     @POST("delete-service-type")
     Call<DeleteModel> deleteServiceType(@Query("service_type") String service_type,
                                         @Query("branch_name") String branch_name);
+
+    @POST("delete-service-sub-temp")
+    Call<JsonObject> deleteServiceSubType(
+            @Query("temp_service_sub_id") String temp_service_sub_id,
+            @Query("service_ref") String service_ref
+            );
 
     @POST("edit-service-type")
     Call<CreateServiceListDataModel> editServiceType(

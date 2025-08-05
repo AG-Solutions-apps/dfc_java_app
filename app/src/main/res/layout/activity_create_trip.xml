@@ -411,7 +411,7 @@
                 android:autofillHints="number"
                 android:singleLine="true"
                 android:textAlignment="textStart"
-                android:textColor="#9E9E9E"
+                android:textColor="@color/black"
                 android:textColorHint="#9E9E9E"
                 android:textSize="18sp" />
 
@@ -479,7 +479,7 @@
             android:autofillHints="number"
             android:singleLine="true"
             android:textAlignment="textStart"
-            android:textColor="#9E9E9E"
+            android:textColor="@color/black"
             android:textColorHint="#9E9E9E"
             android:textSize="18sp" />
 
@@ -507,7 +507,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:textAlignment="textStart"
-            android:textColor="#9E9E9E"
+            android:textColor="@color/black"
             android:textColorHint="#9E9E9E"
             android:textSize="18sp" />
 

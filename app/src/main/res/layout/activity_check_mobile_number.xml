@@ -134,7 +134,7 @@
                 android:singleLine="true"
                 android:text="@string/_91"
                 android:textAlignment="textStart"
-                android:textColor="#9E9E9E"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
 
             <View
@@ -201,7 +201,7 @@
                 android:singleLine="true"
                 android:text=""
                 android:textAlignment="textStart"
-                android:textColor="#9E9E9E"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
 
             <EditText
