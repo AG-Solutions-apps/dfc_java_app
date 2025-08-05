@@ -212,9 +212,9 @@ public class VehicleServiceActivity extends AppCompatActivity {
                 .client(httpClient.build())
                 .build();
 
-        Api loginService = retrofit.create(Api.class);
+        Api retrofitService = retrofit.create(Api.class);
 
-        Call<ServiceStatusDataModel> call = loginService.getServiceStatus(eDate,"2023-24",
+        Call<ServiceStatusDataModel> call = retrofitService.getServiceStatus(eDate,"2023-24",
                 eVehicle,pump,ekm,totalAmount,eDescription);
 
         call.enqueue(new Callback<>() {
@@ -226,7 +226,6 @@ public class VehicleServiceActivity extends AppCompatActivity {
                 assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
 
-
                     ServiceStatusDataModel apiResponse = response.body();
 
                     ServiceStatusDataModel.UserData userData = apiResponse.getData();
@@ -237,7 +236,6 @@ public class VehicleServiceActivity extends AppCompatActivity {
 
                         startActivity(new Intent(VehicleServiceActivity.this, ServiceBookList.class)
                                 .putExtra("amount",amount).putExtra("service_ref",service_ref));
-
 
                     }
 
@@ -292,7 +290,7 @@ public class VehicleServiceActivity extends AppCompatActivity {
 
                 assert response.body() != null;
                 if (response.body().getCode().equalsIgnoreCase("200")) {
-//
+
                     ArrayList<ServiceFetchVehicleDataModel> branches = response.body().getData();
 
 
@@ -300,15 +298,19 @@ public class VehicleServiceActivity extends AppCompatActivity {
                         vehicleArray.add(branch.getReg_no());
                         Log.e("getReg_no", "getReg_no: "+branch.getReg_no());
                     }
-//
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(VehicleServiceActivity.this, R.layout.simple_spinner_item1, vehicleArray);
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(VehicleServiceActivity.this,
+                            R.layout.simple_spinner_item1,
+                            vehicleArray);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner.setAdapter(adapter);
 
                     Log.e("response..", "branches:-  " + branches.size());
 
                 } else {
-                    Toast.makeText(VehicleServiceActivity.this, "Network Error!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VehicleServiceActivity.this,
+                            "Network Error!!",
+                            Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
 
@@ -331,7 +333,8 @@ public class VehicleServiceActivity extends AppCompatActivity {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             Request.Builder requestBuilder = original.newBuilder()
-                    .header("Authorization", "Bearer " + sp.getString("token", ""))
+                    .header("Authorization", "Bearer " +
+                            sp.getString("token", ""))
                     .method(original.method(), original.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);

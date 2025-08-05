@@ -219,7 +219,8 @@ public class DriverListActivity extends AppCompatActivity {
             if (arrayListTopic.get(position).getUser_image() == null) {
                 imageUrl = "https://dfcgroup.in/crmapi/storage/app/public/profiles/no_profile.png";
             } else {
-                imageUrl = "https://dfcgroup.in/crmapi/storage/app/public/profiles/" + arrayListTopic.get(position).getUser_image();
+                imageUrl = "https://dfcgroup.in/crmapi/storage/app/public/profiles/" +
+                        arrayListTopic.get(position).getUser_image();
             }
 
             Glide.with(DriverListActivity.this)
@@ -231,7 +232,6 @@ public class DriverListActivity extends AppCompatActivity {
             Log.e("TAG", "onBindViewHolder: " + arrayListTopic.get(position).getUser_image());
 
             holder.iv_call.setOnClickListener(v -> {
-
                 String phoneNumber = "tel:" + "+91 " + arrayListTopic.get(position).getMobile(); // replace with the actual phone number
                 Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
                 startActivity(dialIntent);

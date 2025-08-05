@@ -72,7 +72,6 @@ public interface Api {
     @POST("fetch-remaing-trip-vehicle")
     Call<FetchVehicleDataModel> fetchVehicleList(@Query("branch_name") String branch_name);
 
-
     @POST("fetch-driver-trip-history")
     Call<PreviousHistoryDataModel> getPreviousHistory(@Query("trip_type") String branch_name);
 
@@ -114,7 +113,6 @@ public interface Api {
     @POST("create-service")
     Call<ServiceStatusDataModel> getServiceStatus(@Body RequestBodyData requestBody);
 
-
     @POST("fetch-payment-debit")
     Call<DebitTypeDataModel> getDebitType(@Query("payment_details_voucher_type") String payment_details_voucher_type,
                                           @Query("branch_name") String branch_name);
@@ -134,7 +132,6 @@ public interface Api {
 
     @POST("fetch-payment-details")
     Call<ExpensesListDataModel> get_ExpensesList(@Query("branch_name") String branch_name);
-
 
     @POST("update-driver-current-trip")
     Call<TripCurrantDataModel> get_TripCurrant(@Query("trip_id") String trip_id,
@@ -170,7 +167,6 @@ public interface Api {
     @POST("fetch-all-vehicle-list")
     Call<FetchAllVehicleDataModel> getAllVehicleList(@Query("branch_name") String branch_name);
 
-
     @POST("create-trip")
     Call<CreatTripModel> createTrip(@Query("trip_year") String trip_year
             , @Query("trip_branch") String trip_branch,
@@ -193,7 +189,6 @@ public interface Api {
 
     @POST("fetch-vehicle-details")
     Call<ResponseBody> getVehicleDetails(@Query("vehicle_no") String reg_no);
-
 
     @POST("fetch-service-final")
     Call<ServiceSubFinalModel> fetchServiceFinal(@Query("service_type") String service_type);

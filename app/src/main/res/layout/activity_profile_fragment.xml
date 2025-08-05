@@ -493,7 +493,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1.9"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="@string/vehicle"
+                        android:text="@string/vehicle_type"
                         android:textColor="@color/txt_blue"
                         android:textSize="@dimen/_10sdp" />
 

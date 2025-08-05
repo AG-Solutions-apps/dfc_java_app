@@ -75,8 +75,8 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="@string/service_date"
-                        android:textColor="#9E9E9E"
-                        android:textSize="18sp" />
+                        android:textColor="#403E3E"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -189,9 +189,9 @@
                     android:paddingStart="14dp"
                     android:paddingEnd="10dp"
                     android:singleLine="true"
-                    android:textColor="#9E9E9E"
+                    android:textColor="#403E3E"
                     android:textColorHint="#9E9E9E"
-                    android:textSize="13sp" />
+                    android:textSize="14sp" />
 
             </RelativeLayout>
 
@@ -222,12 +222,12 @@
                     android:hint="@string/km"
                     android:inputType="phone"
                     android:maxLines="1"
-                    android:textColor="#9E9E9E"
+                    android:textColor="#403E3E"
                     android:textColorHint="#9E9E9E"
                     android:paddingStart="14dp"
                     android:paddingEnd="10dp"
                     android:singleLine="true"
-                    android:textSize="13sp" />
+                    android:textSize="14sp" />
 
             </RelativeLayout>
 
@@ -255,12 +255,13 @@
                     android:fontFamily="@font/poppins_regular"
                     android:hint="@string/description"
                     android:inputType="textMultiLine"
+                    android:maxLines="5"
                     android:autofillHints="name"
                     android:padding="10dp"
                     android:gravity="start|top"
-                    android:textColor="#9E9E9E"
+                    android:textColor="#403E3E"
                     android:textColorHint="#9E9E9E"
-                    android:textSize="13sp" />
+                    android:textSize="14sp" />
 
             </RelativeLayout>
 
@@ -283,7 +284,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
 
     </ScrollView>
 
