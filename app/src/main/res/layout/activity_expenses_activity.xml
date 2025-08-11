@@ -22,7 +22,6 @@
             android:layout_height="@dimen/_48sdp"
             android:padding="@dimen/_16sdp"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:contentDescription="@string/back"
             android:src="@drawable/ic_back_a" />

@@ -21,22 +21,19 @@
             android:layout_height="@dimen/_48sdp"
             android:padding="@dimen/_16sdp"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:contentDescription="@string/back"
             android:src="@drawable/ic_back_a" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="7dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:fontFamily="@font/poppins_semi_bold"
-            android:gravity="start|center_vertical"
             android:maxLines="1"
+            android:paddingTop="@dimen/_5sdp"
             android:singleLine="true"
             android:text="@string/all_vehicle_list"
-            android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="15sp" />
 

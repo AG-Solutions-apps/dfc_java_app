@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.dfc.agsolutions.app_utils.Myapplication;
 import com.dfc.agsolutions.R;
 import com.dfc.agsolutions.app_utils.NetworkCheck;
 
@@ -202,7 +201,7 @@ public class HomeActivity extends
 
             try {
 
-                ComingSoonActivity profileFragment = new ComingSoonActivity();
+                ComingSoonFragment profileFragment = new ComingSoonFragment();
                 FragmentManager fragmentManager1 = getSupportFragmentManager();
                 FragmentTransaction transaction1 = fragmentManager1.beginTransaction();
                 transaction1.replace(R.id.fragment_container, profileFragment);

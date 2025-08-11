@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import com.dfc.agsolutions.R;
 
-public class ComingSoonActivity extends
+public class ComingSoonFragment extends
         Fragment {
 
     TextView tv_top_text;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_comming_soon, container, false);
+        View view = inflater.inflate(R.layout.fragment_comming_soon, container, false);
 
         tv_top_text = view.findViewById(R.id.tv_top_text);
 

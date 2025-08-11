@@ -23,7 +23,6 @@
             android:padding="@dimen/_16sdp"
             android:contentDescription="@string/back"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:src="@drawable/ic_back_a" />
 

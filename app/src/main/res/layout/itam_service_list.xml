@@ -120,7 +120,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
                     android:contentDescription="@string/edit"
-                    android:src="@drawable/edt_btn" />
+                    android:src="@drawable/ic_edit" />
 
                 <ImageView
                     android:id="@+id/iv_delete"

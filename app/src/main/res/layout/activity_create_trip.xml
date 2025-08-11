@@ -21,7 +21,6 @@
         android:layout_height="@dimen/_48sdp"
         android:padding="@dimen/_16sdp"
         android:layout_gravity="center"
-        android:layout_marginStart="10dp"
         android:contentDescription="@string/back"
         android:src="@drawable/ic_back_a" />
 
@@ -104,7 +103,7 @@
               android:layout_gravity="center_vertical"
               android:layout_marginStart="10dp"
               android:foregroundGravity="center"
-              android:src="@drawable/ic_calendar"
+              android:src="@drawable/ic_date"
               android:contentDescription="@string/date"
               app:tint="@color/white" />
 

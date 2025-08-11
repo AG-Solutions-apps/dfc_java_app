@@ -56,7 +56,6 @@ public class HomeScreenDriver extends Fragment {
     String id;
 
     TextView tv_no_data1;
-    ImageView iv_rs;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -78,7 +77,7 @@ public class HomeScreenDriver extends Fragment {
         tv_fhsd = view.findViewById(R.id.fhsd);
         tv_shsd = view.findViewById(R.id.shsd);
         tv_advance_money = view.findViewById(R.id.advance_money);
-        iv_rs = view.findViewById(R.id.rs);
+
         tv_branch_name_admin = view.findViewById(R.id.tv_branch_name_admin);
 
         String branchName = " " + sp.getString("userBranch", "");
@@ -372,11 +371,6 @@ public class HomeScreenDriver extends Fragment {
 
                         String shsd = userData.getTrip_hsd_supplied() + " Ltr";
                         tv_shsd.setText(shsd);
-
-                        if (tv_advance_money !=null){
-                            iv_rs.setVisibility(View.GONE);
-                        }
-                        iv_rs.setVisibility(View.GONE);
 
                         String advanceMoney = "Advance: " + "  ₹ "+ userData.getTrip_advance();
                         tv_advance_money.setText(advanceMoney);

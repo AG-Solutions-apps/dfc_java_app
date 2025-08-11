@@ -390,26 +390,6 @@
                             android:layout_marginVertical="@dimen/_5sdp"
                             android:orientation="horizontal">
 
-                            <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:adjustViewBounds="true"
-                                android:contentDescription="@string/advance_money"
-                                android:src="@drawable/advance_money" />
-
-                            <ImageView
-                                android:id="@+id/rs"
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_gravity="center"
-                                android:adjustViewBounds="true"
-                                android:visibility="gone"
-                                android:contentDescription="@string/_ruppee"
-                                android:src="@drawable/rs" />
-
                             <TextView
                                 android:id="@+id/advance_money"
                                 android:layout_width="wrap_content"
