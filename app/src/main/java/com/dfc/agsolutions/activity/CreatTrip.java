@@ -4,18 +4,24 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -57,7 +63,8 @@ public class CreatTrip extends
 
     private Spinner spinnerBranches;
     private Spinner spinnerDriver;
-    Spinner spinnerAgent;
+    //    Spinner spinnerAgent;
+    private TextView tv_agent;
 
     private Spinner spinnerSupplier;
     ProgressDialog dialog;
@@ -118,15 +125,17 @@ public class CreatTrip extends
 
         spinnerBranches = findViewById(R.id.spinnerBranches);
         spinnerDriver = findViewById(R.id.spinner_driver);
-        spinnerAgent = findViewById(R.id.spinner_agent);
+
+//        spinnerAgent = findViewById(R.id.spinner_agent);
+        tv_agent = findViewById(R.id.tv_agent);
 
         spinnerSupplier = findViewById(R.id.spinner_supplier);
         spinnerBranches.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.white),
                 PorterDuff.Mode.SRC_ATOP);
         spinnerDriver.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.white),
                 PorterDuff.Mode.SRC_ATOP);
-        spinnerAgent.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.white),
-                PorterDuff.Mode.SRC_ATOP);
+//        spinnerAgent.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.white),
+//                PorterDuff.Mode.SRC_ATOP);
         spinnerSupplier.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.white),
                 PorterDuff.Mode.SRC_ATOP);
 
@@ -204,40 +213,46 @@ public class CreatTrip extends
                 // Do nothing here
             }
         });
-        spinnerAgent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView,
-                                       View selectedItemView,
-                                       int position,
-                                       long id) {
 
-                trip_agency = adapterAgent.getItem(position);
-                if (position > 0) {
-
-                    trip_agency = adapterAgent.getItem(position);
-
-                    try {
-                        String name = kmArray.get(position - 1);
-                        km = (int) Double.parseDouble(name);
-                        Log.e("position", "pos:-   " + position);
-
-                        String kms = " " + name + " Km";
-                        tv_kilo_m.setText(kms);
-                        fhsd = (int) (km / mil);
-                        reloadFHSD();
-                    } catch (Exception e) {
-                        Log.e("mileage_array: ", "mile:-  " + e);
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-
-            }
+        tv_agent.setOnClickListener(v -> {
+            showSearchableDialog();
         });
+
+
+//        spinnerAgent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView,
+//                                       View selectedItemView,
+//                                       int position,
+//                                       long id) {
+//
+//                trip_agency = adapterAgent.getItem(position);
+//                if (position > 0) {
+//
+//                    trip_agency = adapterAgent.getItem(position);
+//
+//                    try {
+//                        String name = kmArray.get(position - 1);
+//                        km = (int) Double.parseDouble(name);
+//                        Log.e("position", "pos:-   " + position);
+//
+//                        String kms = " " + name + " Km";
+//                        tv_kilo_m.setText(kms);
+//                        fhsd = (int) (km / mil);
+//                        reloadFHSD();
+//                    } catch (Exception e) {
+//                        Log.e("mileage_array: ", "mile:-  " + e);
+//                    }
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//
+//            }
+//        });
 
         spinnerSupplier.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -355,6 +370,51 @@ public class CreatTrip extends
         datePickerDialog.setTitle("Date");
         // Show DatePickerDialog
         datePickerDialog.show();
+    }
+
+    private void showSearchableDialog() {
+        Dialog dialog = new Dialog(CreatTrip.this);
+        dialog.setContentView(R.layout.dialog_searchable);
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+
+        SearchView searchView = dialog.findViewById(R.id.searchView);
+        searchView.setIconifiedByDefault(false);
+        searchView.setIconified(false);
+
+        ListView listView = dialog.findViewById(R.id.listView);
+        ImageView ivCloseSearchAgentDialog = dialog.findViewById(R.id.ivCloseSearchAgentDialog);
+
+        ivCloseSearchAgentDialog.setOnClickListener(v -> dialog.dismiss());
+
+        adapterAgent = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, agentArray);
+        listView.setAdapter(adapterAgent);
+
+        // Search filter
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapterAgent.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            String selected = adapterAgent.getItem(position);
+            trip_agency = selected;
+            tv_agent.setText(selected);
+            dialog.dismiss();
+        });
+
+        dialog.show();
     }
 
     List<String> vehicleArray = new ArrayList<>();
@@ -525,8 +585,8 @@ public class CreatTrip extends
                     }
 
                     adapterAgent = new ArrayAdapter<>(CreatTrip.this, R.layout.simple_spinner_item, agentArray);
-                    adapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerAgent.setAdapter(adapterAgent);
+//                    adapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                    spinnerAgent.setAdapter(adapterAgent);
 
                     Log.e("response..", "branches:-  " + branches.size());
 

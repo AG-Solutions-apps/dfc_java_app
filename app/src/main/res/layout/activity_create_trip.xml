@@ -212,19 +212,19 @@
           app:cardCornerRadius="8dp">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-          <!--                    <androidx.appcompat.widget.SearchView-->
-          <!--                        android:id="@+id/searchView"-->
-          <!--                        android:layout_width="match_parent"-->
-          <!--                        android:layout_height="@dimen/_40sdp"-->
-          <!--                        app:iconifiedByDefault="false"-->
-          <!--                        android:visibility="gone"-->
-          <!--                        app:searchHintIcon="@color/white"-->
-          <!--                        android:queryHint="Search..." />-->
+          <!--                              <androidx.appcompat.widget.SearchView-->
+          <!--                                  android:id="@+id/searchView"-->
+          <!--                                  android:layout_width="match_parent"-->
+          <!--                                  android:layout_height="@dimen/_40sdp"-->
+          <!--                                  app:iconifiedByDefault="false"-->
+          <!--                                  android:visibility="gone"-->
+          <!--                                  app:searchHintIcon="@color/white"-->
+          <!--                                  android:queryHint="Search..." />-->
 
           <!--          <RelativeLayout-->
           <!--            android:layout_width="match_parent"-->
@@ -249,16 +249,40 @@
           <!--                            android:layout_marginStart="8dp" />-->
 
           <!--                        <com.cvaghela.spinner.searchablespinner.SearchableSpinner-->
-          <Spinner
-              android:id="@+id/spinner_agent"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/_40sdp"
-              android:layout_marginStart="8dp"
-              />
+          <!--          <Spinner-->
+          <!--              android:id="@+id/spinner_agent"-->
+          <!--              android:layout_width="wrap_content"-->
+          <!--              android:layout_height="wrap_content"-->
+          <!--              android:layout_marginStart="8dp" />-->
 
           <!--          </RelativeLayout>-->
 
-        </LinearLayout>
+          <ImageView
+              android:id="@+id/ivAgent"
+              android:layout_width="25dp"
+              android:layout_height="@dimen/_36sdp"
+              android:layout_gravity="center_vertical"
+              android:layout_marginStart="10dp"
+              android:foregroundGravity="center"
+              android:contentDescription="@string/drivers"
+              android:src="@drawable/ic_agent" />
+
+          <TextView
+              android:id="@+id/tv_agent"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="8dp"
+              android:padding="10dp"
+              android:hint="@string/select_agent"
+              android:focusable="false"
+              android:clickable="true"
+              android:textColor="@color/white"
+              android:textColorHint="@color/white"
+              android:layout_centerInParent="true"
+              android:layout_toEndOf="@+id/ivAgent"
+              tools:ignore="KeyboardInaccessibleWidget" />
+
+        </RelativeLayout>
 
       </androidx.cardview.widget.CardView>
 

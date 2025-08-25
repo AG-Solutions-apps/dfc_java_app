@@ -166,5 +166,6 @@
     This action cannot be undone.</string>
   <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout ?</string>
   <string name="reached">Reached</string>
+    <string name="select_agent">Select Agent</string>
 
 </resources>

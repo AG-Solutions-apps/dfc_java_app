@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <!-- MaterialCard with SearchView -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvSearchAgent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:strokeColor="@color/light_grey"
+            app:strokeWidth="@dimen/_1sdp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="5dp"
+            android:padding="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivCloseSearchAgentDialog"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:queryHint="Search..." />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Close Icon -->
+        <ImageView
+            android:id="@+id/ivCloseSearchAgentDialog"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_cancel"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="1dp" />
+
+</LinearLayout>
