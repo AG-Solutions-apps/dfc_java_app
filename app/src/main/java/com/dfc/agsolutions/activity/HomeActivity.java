@@ -1,5 +1,8 @@
 package com.dfc.agsolutions.activity;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.IntentSenderRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -9,6 +12,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.preference.PreferenceManager;
+
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,9 +23,20 @@ import android.widget.Toast;
 
 import com.dfc.agsolutions.R;
 import com.dfc.agsolutions.app_utils.NetworkCheck;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.appupdate.AppUpdateOptions;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
 
 public class HomeActivity extends
         AppCompatActivity {
+
+    private static final int FLEXIBLE = AppUpdateType.FLEXIBLE;
+    private static final int IMMEDIATE = AppUpdateType.IMMEDIATE;
+    private AppUpdateManager appUpdateManager;
+    private ActivityResultLauncher<IntentSenderRequest> updateLauncher;
 
     ImageView iv_s_home, iv_u_home, iv_s_his, iv_u_his, iv_s_in, iv_u_in, iv_s_profile, iv_u_profile;
     public String user_type;
@@ -31,6 +48,20 @@ public class HomeActivity extends
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // Prepare launcher for update flow
+        updateLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartIntentSenderForResult(),
+                result -> {
+                    if (result.getResultCode() != RESULT_OK) {
+                        Toast.makeText(this, "Update cancelled!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+        // Code to run after 3 seconds
+        // for example
+        new Handler(Looper.getMainLooper()).postDelayed(this::checkForAppUpdate, 3000); // 3000ms = 3 seconds
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         ed = sp.edit();
@@ -239,6 +270,34 @@ public class HomeActivity extends
                 .setNegativeButton(getString(R.string.cancel), null)
                 .show();
 
+    }
+
+    private void checkForAppUpdate() {
+        appUpdateManager = AppUpdateManagerFactory.create(this);
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                if (appUpdateInfo.isUpdateTypeAllowed(FLEXIBLE)) {
+                    startUpdate(appUpdateInfo, FLEXIBLE);
+                } else if (appUpdateInfo.isUpdateTypeAllowed(IMMEDIATE)) {
+                    startUpdate(appUpdateInfo, IMMEDIATE);
+                }
+            }
+        });
+    }
+
+    private void startUpdate(AppUpdateInfo appUpdateInfo,
+                             int appUpdateType) {
+        try {
+            AppUpdateOptions options = AppUpdateOptions.newBuilder(appUpdateType).build();
+            // startUpdateFlowForResult returns void, and the IntentSender is handled internally
+            appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    updateLauncher,
+                    options
+            );
+        } catch (Exception e) {
+            Log.e("TAG", "startUpdate: " + e);
+        }
     }
 
 }

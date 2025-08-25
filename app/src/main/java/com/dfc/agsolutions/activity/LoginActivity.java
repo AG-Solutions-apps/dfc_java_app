@@ -5,19 +5,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.preference.PreferenceManager;
 
 import android.os.CountDownTimer;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dfc.agsolutions.app_utils.Myapplication;
 import com.dfc.agsolutions.app_utils.NetworkCheck;
 import com.dfc.agsolutions.model.MyResponseData;
 import com.dfc.agsolutions.R;
@@ -40,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor ed;
 
     TextView tvMobileNo, tvResendOTP;
-    private EditText otpTextView;
+    private EditText etOtpView;
 
     private FirebaseAuth mAuth;
 
@@ -71,10 +74,10 @@ public class LoginActivity extends AppCompatActivity {
         // method to send otp to provided number
         sendVerificationCode(sp.getString("mobile", ""));
 
-        otpTextView = findViewById(R.id.otp_view);
+        etOtpView = findViewById(R.id.otp_view);
 
         findViewById(R.id.continues).setOnClickListener(v -> {
-            String enteredOtp = otpTextView.getText().toString();
+            String enteredOtp = etOtpView.getText().toString();
             if (TextUtils.isEmpty(enteredOtp) && enteredOtp.length() < 6) {
                 Toast.makeText(LoginActivity.this,
                         "Please enter valid otp",
@@ -96,6 +99,37 @@ public class LoginActivity extends AppCompatActivity {
             {sendVerificationCode(sp.getString("mobile", ""));}
         });
 
+        etOtpView.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s,
+                                                  int start,
+                                                  int count,
+                                                  int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s,
+                                              int start,
+                                              int before,
+                                              int count) {
+                        if (s.toString().length() == 6) {
+                            // Hide keyboard
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            if (imm != null) {
+                                imm.hideSoftInputFromWindow(etOtpView.getWindowToken(), 0);
+                            }
+                            etOtpView.clearFocus();
+                        }
+                    }
+                }
+        );
+
     }
 
     // show progress dialog
@@ -113,13 +147,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private final PhoneAuthProvider.OnVerificationStateChangedCallbacks
-        mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         @Override
         public void onCodeSent(@NonNull String s,
-            @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                               @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
             verificationId = s;
-            otpTextView.setText("");
+            etOtpView.setText("");
             // hide progress dialog
             hideProgressDialog();
             Toast.makeText(LoginActivity.this,
@@ -135,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
             hideProgressDialog();
             String code = phoneAuthCredential.getSmsCode();
             if (code != null) {
-                otpTextView.setText(code);
+                etOtpView.setText(code);
                 verifyCode(code);
             }
         }
@@ -189,17 +223,17 @@ public class LoginActivity extends AppCompatActivity {
             NetworkCheck.noInternet(LoginActivity.this);
         } else {
             mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(task -> {
-                    // hide progress dialog
-                    hideProgressDialog();
-                    if (task.isSuccessful()) {
-                        getLogin();
-                    } else {
-                        Toast.makeText(LoginActivity.this,
-                                "Something went wrong",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    .addOnCompleteListener(task -> {
+                        // hide progress dialog
+                        hideProgressDialog();
+                        if (task.isSuccessful()) {
+                            getLogin();
+                        } else {
+                            Toast.makeText(LoginActivity.this,
+                                    "Something went wrong",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 
@@ -213,13 +247,13 @@ public class LoginActivity extends AppCompatActivity {
             showProgressDialog();
 
             PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(mAuth)
-                    .setPhoneNumber(getString(R.string._91) + number)       // Phone number to verify
-                    .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                    .setActivity(this)                 // (optional) Activity for callback binding
-                    // If no activity is passed, reCAPTCHA verification can not be used.
-                    .setCallbacks(mCallBack)          // OnVerificationStateChangedCallbacks
-                    .build();
+                    PhoneAuthOptions.newBuilder(mAuth)
+                            .setPhoneNumber(getString(R.string._91) + number)       // Phone number to verify
+                            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                            .setActivity(this)                 // (optional) Activity for callback binding
+                            // If no activity is passed, reCAPTCHA verification can not be used.
+                            .setCallbacks(mCallBack)          // OnVerificationStateChangedCallbacks
+                            .build();
             PhoneAuthProvider.verifyPhoneNumber(options);
 
         }
@@ -230,9 +264,9 @@ public class LoginActivity extends AppCompatActivity {
         showProgressDialog();
 
         Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(getString(R.string.common_url))
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
+                .baseUrl(getString(R.string.common_url))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         Api loginService = retrofit.create(Api.class);
         Call<MyResponseData> call = loginService.getLogin(sp.getString("mobile", ""),
@@ -241,7 +275,7 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<MyResponseData> call,
-                @NonNull Response<MyResponseData> response) {
+                                   @NonNull Response<MyResponseData> response) {
                 // Handle success
                 hideProgressDialog();
                 if (response.isSuccessful()) {
@@ -254,10 +288,10 @@ public class LoginActivity extends AppCompatActivity {
                         ed.commit();
 
                         Intent intent = new Intent(LoginActivity.this,
-                            HomeActivity.class);
+                                HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                            Intent.FLAG_ACTIVITY_NEW_TASK |
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                Intent.FLAG_ACTIVITY_NEW_TASK |
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
 
                         // Inside your LoginActivity, where you start HomeActivity
@@ -276,7 +310,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<MyResponseData> call,
-                @Nullable Throwable t) {
+                                  @Nullable Throwable t) {
                 // Handle failure
                 hideProgressDialog();
                 if (t!= null && t.getMessage() != null) {

@@ -5,13 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.preference.PreferenceManager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
@@ -38,7 +42,6 @@ public class ActivityCheckMobileNumber extends
     Dialog dialog;
     SharedPreferences sp;
     SharedPreferences.Editor ed;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,31 @@ public class ActivityCheckMobileNumber extends
         });
 
         findViewById(R.id.privacy2).setOnClickListener(v -> showUpdateAppDialog());
+
+        edtMobile.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (s.toString().length() == 10) {
+                            // Hide keyboard
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            if (imm != null) {
+                                imm.hideSoftInputFromWindow(edtMobile.getWindowToken(), 0);
+                            }
+                            edtMobile.clearFocus();
+                        }
+                    }
+                }
+        );
 
     }
 
