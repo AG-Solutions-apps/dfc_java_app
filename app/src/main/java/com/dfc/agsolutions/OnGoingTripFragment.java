@@ -27,7 +27,6 @@ import com.dfc.agsolutions.activity.UpdateTripActivity;
 import com.dfc.agsolutions.model.OngoingTruckTypeModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -238,16 +237,16 @@ public class OnGoingTripFragment extends Fragment {
                 intent.putExtra("pass_data", ongoingTruckTypeModel);
                 context.startActivity(intent);
             });
-            String status = ": " + arrayListTopic.get(position).getTrip_status();
-            holder.status.setText(status);
-            String carName =  ": " + arrayListTopic.get(position).getTrip_vehicle();
+            String status = "Status: " + ongoingTruckTypeModel.getTrip_status();
+            holder.tv_status.setText(status);
+            String carName =  ": " + ongoingTruckTypeModel.getTrip_vehicle();
             holder.carName.setText(carName);
-            String location = ": " + arrayListTopic.get(position).getTrip_agency();
+            String location = ": " + ongoingTruckTypeModel.getTrip_agency();
             holder.location.setText(location);
 
-            String driver = ": " + arrayListTopic.get(position).getTrip_driver();
+            String driver = ": " + ongoingTruckTypeModel.getTrip_driver();
             holder.driver.setText(driver);
-            String distance = ": " + arrayListTopic.get(position).getTrip_km() + " Km";
+            String distance = ": " + ongoingTruckTypeModel.getTrip_km() + " Km";
             holder.distance.setText(distance);
             String bhsd = " : " + ongoingTruckTypeModel.getTrip_bhsd() + " Ltr";
             holder.tvBHSDValue.setText(bhsd);
@@ -259,8 +258,7 @@ public class OnGoingTripFragment extends Fragment {
             holder.tvADVValue.setText(adv);
 
             try {
-                String date = arrayListTopic.get(position).getTrip_date();
-
+                String date = ongoingTruckTypeModel.getTrip_date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
                 // Parse the given date string
@@ -273,7 +271,7 @@ public class OnGoingTripFragment extends Fragment {
                     holder.date.setText(dateFormat);
                 }
             } catch (ParseException e) {
-                String dateFormat = "Date : " + arrayListTopic.get(position).getTrip_date();
+                String dateFormat = "Date : " + ongoingTruckTypeModel.getTrip_date();
                 holder.date.setText(dateFormat);
 //                throw new RuntimeException(e);
             }
@@ -281,7 +279,7 @@ public class OnGoingTripFragment extends Fragment {
 /*//            System.out.println("Last Trip Date: " + lastTripDateStr);
 //            System.out.println("New Date (" + daysBeforeLastTrip + " days before last trip): " + formattedNewDate);*/
 
-            holder.status.setOnClickListener(v -> {
+            holder.tv_status.setOnClickListener(v -> {
 
 /*//                    Dialog dialog = new Dialog(requireActivity());
 //                    dialog.setContentView(R.layout.logout_bottom_sheet_dialog_going_trip);
@@ -298,27 +296,27 @@ public class OnGoingTripFragment extends Fragment {
 
                 if (pending != null) {
                     pending.setOnClickListener(v2 -> {
-    /*//                            arrayListTopic.get(position).setTrip_status(pending.getText().toString());
-    //                            Log.d("arrayListTopic", "pending: "+arrayListTopic.get(position).getTrip_status());*/
-                        onGoingCount("Pending", arrayListTopic.get(position).getId());
+    /*//                            ongoingTruckTypeModel.setTrip_status(pending.getText().toString());
+    //                            Log.d("arrayListTopic", "pending: "+ongoingTruckTypeModel.getTrip_status());*/
+                        onGoingCount("Pending", ongoingTruckTypeModel.getId());
                         bottomSheetDialog.dismiss();
                     });
                 }
 
                 if (cancel != null) {
                     cancel.setOnClickListener(v3 -> {
-    /*//                            arrayListTopic.get(position).setTrip_status(cancel.getText().toString());
-    //                            Log.d("arrayListTopic", "cancel: "+arrayListTopic.get(position).getTrip_status());*/
-                        onGoingCount(cancel.getText().toString(), arrayListTopic.get(position).getId());
+    /*//                            ongoingTruckTypeModel.setTrip_status(cancel.getText().toString());
+    //                            Log.d("arrayListTopic", "cancel: "+ongoingTruckTypeModel.getTrip_status());*/
+                        onGoingCount(cancel.getText().toString(), ongoingTruckTypeModel.getId());
                         bottomSheetDialog.dismiss();
                     });
                 }
 
                 if (finish != null) {
                     finish.setOnClickListener(v1 -> {
-    /*//                            arrayListTopic.get(position).setTrip_status(finish.getText().toString());
-    //                            Log.d("arrayListTopic", "finish: "+arrayListTopic.get(position).getTrip_status());*/
-                        onGoingCount(finish.getText().toString(), arrayListTopic.get(position).getId());
+    /*//                            ongoingTruckTypeModel.setTrip_status(finish.getText().toString());
+    //                            Log.d("arrayListTopic", "finish: "+ongoingTruckTypeModel.getTrip_status());*/
+                        onGoingCount(finish.getText().toString(), ongoingTruckTypeModel.getId());
                         bottomSheetDialog.dismiss();
                     });
                 }
@@ -331,7 +329,7 @@ public class OnGoingTripFragment extends Fragment {
 
         class Holder extends RecyclerView.ViewHolder {
             LinearLayout llEdit;
-            TextView status, location, date, driver, distance, carName;
+            TextView tv_status, location, date, driver, distance, carName;
             TextView tvBHSDValue, tvFHSDValue, tvSHSDValue, tvADVValue;
 //            LinearLayout click;
 
@@ -344,7 +342,7 @@ public class OnGoingTripFragment extends Fragment {
                 tvSHSDValue = itemView.findViewById(R.id.tvSHSDValue);
                 tvADVValue = itemView.findViewById(R.id.tvADVValue);
 
-                status = itemView.findViewById(R.id.tv_status);
+                tv_status = itemView.findViewById(R.id.tv_status);
                 location = itemView.findViewById(R.id.tv_location);
                 date = itemView.findViewById(R.id.tv_date);
                 driver = itemView.findViewById(R.id.ll_drivers);
@@ -360,8 +358,7 @@ public class OnGoingTripFragment extends Fragment {
         return new OkHttpClient.Builder();
     }
 
-    public void onGoingCount(String status,
-                             String id) {
+    public void onGoingCount(String tripStatus, String tripId) {
 /*//        ProgressDialog  dialog = new ProgressDialog(activity);
 //        dialog.setMessage("Loading...");
 //        dialog.setCancelable(false);*/
@@ -391,11 +388,13 @@ public class OnGoingTripFragment extends Fragment {
                     .client(httpClient.build())
                     .build();
 
-            Api loginService = retrofit.create(Api.class);
+            Api apiService = retrofit.create(Api.class);
 
             Call<OngoingTruckTypeModel> call =
-                    loginService.getVehicleStatus(sp.getString("userBranch", ""),
-                            status, id);
+                    apiService.updateManagerOnGoingVehicleStatus(
+                            tripId,
+                            sp.getString("userBranch", ""),
+                            tripStatus);
             call.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(@NonNull Call<OngoingTruckTypeModel> call,
@@ -404,9 +403,7 @@ public class OnGoingTripFragment extends Fragment {
 
                     assert response.body() != null;
                     if (response.body().getCode().equalsIgnoreCase("200")) {
-
                         get_trip(mParam1, activity);
-
                     } else {
                         Toast.makeText(requireActivity(), "Network Error!!", Toast.LENGTH_SHORT).show();
                     }

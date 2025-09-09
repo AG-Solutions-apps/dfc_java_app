@@ -203,9 +203,9 @@ public interface Api {
             @Query("service_type_remarks") String service_type_remarks
     );
 
-    @POST("fetch-vehicle-status")
-    Call<OngoingTruckTypeModel> getVehicleStatus(
-            @Query("reg_no") String reg_no,
+    @POST("update-manager-ongoing-trip")
+    Call<OngoingTruckTypeModel> updateManagerOnGoingVehicleStatus(
+            @Query("trip_id") String tripId,
             @Query("branch_name") String branch_name,
             @Query("trip_status") String trip_status
     );
