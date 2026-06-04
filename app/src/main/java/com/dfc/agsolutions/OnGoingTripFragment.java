@@ -425,3 +425,35 @@ public class OnGoingTripFragment extends Fragment {
     }
 
 }
+////example of bottom sheet dialog
+/*//                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity(), R.style.SheetDialog);
+//                bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_going_trip);
+//                bottomSheetDialog.show();
+//              TextView pending = bottomSheetDialog.findViewById(R.id.pending);
+//                TextView cancel           = bottomSheetDialog.findViewById(R.id.cancel);
+//                TextView finish           = bottomSheetDialog.findViewById(R.id.finish);                  
+
+//                if (pending != null) {
+//                    pending.setOnClickListener(v2 -> {
+//                            ongoingTruckTypeModel.setTrip_status(pending.getText().toString());
+
+
+
+
+
+//                            Log.d("arrayListTopic", "pending: "+ongoingTruckTypeModel.getTrip_status());
+//                        onGoingCount("Pending", ongoingTruckTypeModel.getId());
+//                        bottomSheetDialog.dismiss();
+//                    });
+//                }
+
+//                if (cancel != null) {
+//                    cancel.setOnClickListener(v3 -> {
+//                            ongoingTruckTypeModel.setTrip_status(cancel.getText().toString());
+//                            Log.d("arrayListTopic", "cancel: "+ongoingTruckTypeModel.get
+
+Trip_status());
+//                        onGoingCount(cancel.getText().toString(), ongoingTruckTypeModel.getId());
+//
+
+    //* */
